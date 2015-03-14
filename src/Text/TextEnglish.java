@@ -9,7 +9,7 @@ public class TextEnglish extends AbstractText {
 
 	@Override
 	protected String delimitedProvinceMap() {
-		return "The map with delimited provinces named";
+		return "The map with biggest states named";
 	}
 	
 	@Override

@@ -24,7 +24,11 @@ public class Biggest_Pixel {
 	static private int UNKNOWN_R = 38;
 	static private int UNKNOWN_G = 38;
 	static private int UNKNOWN_B = 38;
-	
+
+	// Black and white pixels
+	static private int BLACK = 0;
+	static private int WHITE = 0xffffff;
+
 	private BufferedImage map;
 	private String newMapFile;
 	private JProgressBar bar;
@@ -49,7 +53,7 @@ public class Biggest_Pixel {
 		@Override
 		public void run() {
 			Map<Integer, Integer> kingdoms = new HashMap<Integer, Integer>();
-			
+
 			// Counting pixel for each Kingdom
 			for (int y = 0; y < map.getHeight(); y++) {
 				bar.setValue(y);
@@ -65,11 +69,12 @@ public class Biggest_Pixel {
 					}
 				}
 			}
-			
+
 			// Calculating the nbProvinces to display
 			if (nbKingdoms > kingdoms.size() + 1) {
 				throw new IllegalArgumentException("Plus d'Etat demandés que sur la map"); // TODO Text
 			}
+			// Ranking kingdoms by decreasing pixel number
 			PriorityQueue<Kingdom> orderedKingdoms = new PriorityQueue<Kingdom>(kingdoms.size());
 			Set<Integer> kingdomRGB = kingdoms.keySet();
 			for (int rgb : kingdomRGB) {
@@ -82,11 +87,36 @@ public class Biggest_Pixel {
 				if (rgb != (SEA_R << 16) + (SEA_G << 8) + SEA_B &&
 						rgb != (UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B) {
 					kingdomToDisplay.addLast(rgb);
-					nbKingdoms++;
+					foundKingdoms++;
 				}
 			}
-			
-			// TODO Mettre en blanc chaque pixel qui n'est pas dans la liste
+			/* Transforming the image to the writing image
+			 * by putting in white the pixels not in the kingdom to display */
+			for (int y = 0; y < map.getHeight(); y++) {
+				bar.setValue(map.getHeight() + y);
+				for (int x = 0; x < map.getWidth(); x++) {
+					// Don't touch to sea pixels and unknown
+					if ((map.getRGB(x, y) & 0xffffff) != (SEA_R << 16)
+							+ (SEA_G << 8) + SEA_B
+							&& (map.getRGB(x, y) & 0xffffff) != (UNKNOWN_R << 16)
+									+ (UNKNOWN_G << 8) + UNKNOWN_B
+							&& kingdomToDisplay
+									.indexOf(map.getRGB(x, y) & 0xffffff) == -1) {
+						map.setRGB(x, y, WHITE);
+					}
+				}
+			}
+
+			// Write image on png file
+			try {
+				bar.setString(text.waitingMessage());
+				ImageIO.write(map, "png", new File(newMapFile));
+				System.out.println(text.endMessage(newMapFile));
+				System.exit(0);
+			} catch (IOException e) {
+				System.out.println(text.writingError() + newMapFile);
+				System.exit(1);
+			}
 		}
 	}
 

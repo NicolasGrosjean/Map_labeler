@@ -9,7 +9,7 @@ public class TextFrancais extends AbstractText {
 
 	@Override
 	protected String delimitedProvinceMap() {
-		return "Carte des provinces délimitées nommée";
+		return "Carte des plus grands états nommée";
 	}
 	
 	@Override
