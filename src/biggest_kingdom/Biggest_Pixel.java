@@ -1,11 +1,14 @@
 package biggest_kingdom;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -26,7 +29,6 @@ public class Biggest_Pixel {
 	static private int UNKNOWN_B = 38;
 
 	// Black and white pixels
-	static private int BLACK = 0;
 	static private int WHITE = 0xffffff;
 
 	private BufferedImage map;
@@ -49,6 +51,52 @@ public class Biggest_Pixel {
 	}
 
 	class Algorithm implements Runnable {
+		/**
+		 * Give middle of the province with this rgb
+		 * @param rgb
+		 * @return
+		 */
+		private Point getPosition(int rgb) {
+			int sumX = 0;
+			int sumY = 0;
+			int nbPoints = 0;
+			for (int y = 0; y < map.getHeight(); y++) {
+				for (int x = 0; x < map.getWidth(); x++) {
+					// On chercher une province ayant le même R && G && B
+					if ((map.getRGB(x, y) & 0xffffff) == (rgb  & 0xffffff)) {
+						sumX += x;
+						sumY += y;
+						nbPoints++;
+					}
+				}
+			}
+			if (nbPoints > 0) {
+				return new Point(sumX / nbPoints, sumY / nbPoints);
+			} else {
+				throw new IllegalArgumentException();
+			}
+		}
+
+		private void writeText(Point origin, String textToWrite) {
+			Graphics2D g2d = map.createGraphics();
+	        g2d.setPaint(Color.black);
+	        g2d.setFont(new Font("Serif", Font.BOLD, 40));
+	        FontMetrics fm = g2d.getFontMetrics();
+	        int borderMarge = 5;
+	        int x = (int)origin.getX() -
+	        		fm.stringWidth(textToWrite)/2;
+	        int y = (int)origin.getY() -
+	        		fm.getHeight()/2;
+	        // If the text is not in the image we move it
+	        if (x + fm.stringWidth(textToWrite) > map.getWidth()) {
+	        	x = map.getWidth() - fm.stringWidth(textToWrite) - borderMarge;
+	        }
+	        if (y + fm.getHeight() > map.getHeight()) {
+	        	y = map.getWidth() - fm.getHeight() - borderMarge;
+	        }
+	        g2d.drawString(textToWrite, x, y);
+	        g2d.dispose();
+		}
 
 		@Override
 		public void run() {
@@ -72,7 +120,7 @@ public class Biggest_Pixel {
 
 			// Calculating the nbProvinces to display
 			if (nbKingdoms > kingdoms.size() + 1) {
-				throw new IllegalArgumentException("Plus d'Etat demandés que sur la map"); // TODO Text
+				throw new IllegalArgumentException(text.moreStateThanAvailable());
 			}
 			// Ranking kingdoms by decreasing pixel number
 			PriorityQueue<Kingdom> orderedKingdoms = new PriorityQueue<Kingdom>(kingdoms.size());
@@ -106,10 +154,26 @@ public class Biggest_Pixel {
 					}
 				}
 			}
-
+	        
+			// Writing text
+			bar.setString(text.textWritingMessage());
+			LandedTitle landedTitles = new LandedTitle();
+			Localisation localisation = new Localisation();
+			for (Integer i : kingdomToDisplay) {
+				String stateCode = landedTitles.getStateCode(i);				
+				if (stateCode != null) {
+					String stateName = localisation.getStateName(stateCode);
+					if (stateName != null) {
+						writeText(getPosition(i), stateName);
+					} else {
+						writeText(getPosition(i), stateCode);
+					}
+				}
+			}
+			
 			// Write image on png file
 			try {
-				bar.setString(text.waitingMessage());
+				bar.setString(text.outputWritingMessage());
 				ImageIO.write(map, "png", new File(newMapFile));
 				System.out.println(text.endMessage(newMapFile));
 				System.exit(0);

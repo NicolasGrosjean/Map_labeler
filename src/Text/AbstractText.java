@@ -3,11 +3,17 @@ package Text;
 public abstract class AbstractText {
 	
 	/**
-	 * Message in the JProgressBar when the output file is writing
+	 * Message in the JProgressBar when the text is written
 	 * @return
 	 */
-	public abstract String waitingMessage();
-	
+	public abstract String textWritingMessage();
+
+	/**
+	 * Message in the JProgressBar when the output file is written
+	 * @return
+	 */
+	public abstract String outputWritingMessage();
+
 	/**
 	 * Begging of the end of program sentence
 	 * @return
@@ -64,4 +70,10 @@ public abstract class AbstractText {
 	 * @return
 	 */
 	public abstract String writingError();
+
+	/**
+	 * Error if the number of states to keep is higher than available
+	 * @return
+	 */
+	public abstract String moreStateThanAvailable();
 }

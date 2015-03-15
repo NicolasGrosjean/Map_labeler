@@ -3,7 +3,12 @@ package Text;
 public class TextEnglish extends AbstractText {
 
 	@Override
-	public String waitingMessage() {
+	public String textWritingMessage() {
+		return "Writing text on image, please wait";
+	}
+
+	@Override
+	public String outputWritingMessage() {
 		return "Writing on the output file, please wait";
 	}
 
@@ -37,4 +42,8 @@ public class TextEnglish extends AbstractText {
 		return "ERROR : an error occured during writing on";
 	}
 
+	@Override
+	public String moreStateThanAvailable() {
+		return "ERROR : More states asked than there is on the map";
+	}
 }

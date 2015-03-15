@@ -3,7 +3,12 @@ package Text;
 public class TextFrancais extends AbstractText {
 
 	@Override
-	public String waitingMessage() {
+	public String textWritingMessage() {
+		return "Ecriture du texte sur l'image, patientez";
+	}
+
+	@Override
+	public String outputWritingMessage() {
 		return "Création de l'image résultat, patientez";
 	}
 
@@ -37,4 +42,8 @@ public class TextFrancais extends AbstractText {
 		return "ERROR : une erreur s'est produite lors de l'écriture de";
 	}
 
+	@Override
+	public String moreStateThanAvailable() {
+		return "ERROR : Plus d'Etat demandés que sur la carte";
+	}
 }
