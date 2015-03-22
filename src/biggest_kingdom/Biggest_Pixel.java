@@ -85,7 +85,7 @@ public class Biggest_Pixel {
 	        int borderMarge = 5;
 	        int x = (int)origin.getX() -
 	        		fm.stringWidth(textToWrite)/2;
-	        int y = (int)origin.getY() -
+	        int y = (int)origin.getY() +
 	        		fm.getHeight()/2;
 	        // If the text is not in the image we move it
 	        if (x + fm.stringWidth(textToWrite) > map.getWidth()) {
