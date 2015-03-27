@@ -46,7 +46,7 @@ public class TestTextWriting {
 				System.out.println("");
 			}
 			Writing w = new Writing();
-			String textToWrite = "Holy roman";
+			String[] textToWrite = {"Heiliges","Römisches","Reich"};
 			w.calculateWriting(l.getFirst(), textToWrite, map);
 			if (w.getTextOrigin() != null) {
 				Graphics2D g2d = map.createGraphics();
@@ -56,11 +56,24 @@ public class TestTextWriting {
 				System.out.println("Texte écrit à partir de (" + w.getTextOrigin().x + 
 						";" + w.getTextOrigin().y +") et de taille " + (w.getTextSize() - 1));
 				FontRenderContext frc = g2d.getFontRenderContext();
-				GlyphVector gv = g2d.getFont().createGlyphVector(frc, textToWrite);
-				// (0,0) because it is unimportant, we need only width and height
+				GlyphVector gv = g2d.getFont().createGlyphVector(frc, textToWrite[0]);
+				// (0,0) because it is unimportant, we need only offset
 				Rectangle textRect = gv.getPixelBounds(null, 0, 0); 
-				System.out.println("Taille du texte : " + textRect.width + ";" + -textRect.y);
-				g2d.drawString(textToWrite, w.getTextOrigin().x - textRect.x, w.getTextOrigin().y);
+				//System.out.println("Taille du texte : " + textRect.width + ";" + -textRect.y);
+				int y = w.getTextOrigin().y;
+				// Decreasing loop because text is written from upper to lower
+				for (int k = (textToWrite.length - 1); k >= 0; k--) {
+					g2d.drawString(textToWrite[k], w.getTextOrigin().x - textRect.x, y);
+					y += g2d.getFont().createGlyphVector(frc, textToWrite[k]).
+							getPixelBounds(null, 0,0).y;
+					if (k > 0) {
+						// Height for the i-1th line lower its origin
+						y -= g2d.getFont().createGlyphVector(frc, textToWrite[k - 1]).
+								getPixelBounds(null, 0,0).height +
+								g2d.getFont().createGlyphVector(frc, textToWrite[k - 1]).
+								getPixelBounds(null, 0,0).y;
+					}
+				}
 				g2d.dispose();
 			} else {
 				System.out.println("Ecriture impossible de " + textToWrite);

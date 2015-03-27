@@ -10,16 +10,28 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class Writing {
-	private int textSize;
+	private int textSize = 0;
 	private Point textOrigin;
 	private boolean isCalculated = false;
+
+
+	public Writing() {
+	}
+
+	public Writing(Writing w) {
+		this.textSize = w.textSize;
+		this.textOrigin = w.textOrigin;
+		this.isCalculated = w.isCalculated;
+	}
 
 	/**
 	 * Calculate the fields textSize and textOrigin for the block
 	 * (textOrigin == null) <=> impossible to write text
 	 * @param block Block of a state (obtained with BlockCutting.cutBlocks)
+	 * @param textToWrite Text to write by line, first element represent the upper line
+	 * @param map Image for size text calculation (the image in which text will be writing)
 	 */
-	public void calculateWriting(PriorityQueue<Line> block, String textToWrite,
+	public void calculateWriting(PriorityQueue<Line> block, String[] textToWrite,
 			BufferedImage map) {
 		isCalculated = true;
 		textSize = 20;
@@ -28,10 +40,8 @@ public class Writing {
 		Graphics2D g2d = map.createGraphics();
         g2d.setFont(new Font("Serif", Font.BOLD, textSize));       
         FontRenderContext frc = g2d.getFontRenderContext();
-        GlyphVector gv = g2d.getFont().createGlyphVector(frc, textToWrite);
-        // (0,0) because we need offset from the point
-        int textWidth = gv.getPixelBounds(null, 0,0).width;
-        int textHeigth = -gv.getPixelBounds(null, 0,0).y;
+        int textWidth = Writing.calculateTextWidth(textToWrite, g2d, frc);
+        int textHeigth = Writing.calculateTextHeight(textToWrite, g2d, frc);
         /* .y and not .height because we need need distance between the point
          * and the summit of the text */
         
@@ -90,9 +100,8 @@ public class Writing {
 					// searching a better choice by adding textSize
 					g2d.setFont(new Font("Serif", Font.BOLD, ++textSize));
 					frc = g2d.getFontRenderContext();
-			        gv = g2d.getFont().createGlyphVector(frc, textToWrite);
-			        textWidth = gv.getPixelBounds(null, 0,0).width;
-			        textHeigth = -gv.getPixelBounds(null, 0,0).y;  
+			        textWidth = Writing.calculateTextWidth(textToWrite, g2d, frc);
+			        textHeigth = Writing.calculateTextHeight(textToWrite, g2d, frc);
 				} else {
 					// try another candidate, the next point of the p line
 					if (p.getX() < l.getEndLine().getX()) {
@@ -101,6 +110,38 @@ public class Writing {
 				}
 			}
 		}
+	}
+
+	private static int calculateTextWidth (String[] textLines, Graphics2D g2d, FontRenderContext frc) {
+		// (0,0) because we need offset from the point
+		int textWidth = g2d.getFont().createGlyphVector(frc, textLines[0]).
+				getPixelBounds(null, 0,0).width;
+		for (int i = 1; i < textLines.length; i++) {
+			int lineWidth = g2d.getFont().createGlyphVector(frc, textLines[i]).
+					getPixelBounds(null, 0,0).width;
+			if (textWidth < lineWidth) {
+				textWidth = lineWidth;
+			}
+		}
+		return textWidth;
+	}
+
+	private static int calculateTextHeight (String[] textLines, Graphics2D g2d, FontRenderContext frc) {
+		int textHeight = 0;
+		// Decreasing loop because text is written from upper to lower
+		for (int i = (textLines.length - 1); i >= 0; i--) {
+			// Height for the ith line upper its origin
+			textHeight -= g2d.getFont().createGlyphVector(frc, textLines[i]).
+					getPixelBounds(null, 0,0).y;
+			if (i > 0) {
+				// Height for the i-1th line lower its origin
+				textHeight += g2d.getFont().createGlyphVector(frc, textLines[i - 1]).
+						getPixelBounds(null, 0,0).height +
+						g2d.getFont().createGlyphVector(frc, textLines[i - 1]).
+						getPixelBounds(null, 0,0).y;
+			}
+		}
+		return textHeight;
 	}
 
 	public int getTextSize() {
@@ -117,5 +158,13 @@ public class Writing {
 		} else {
 			throw new IllegalAccessError("Wrinting not calculated");
 		}
+	}
+
+	/**
+	 * Get the text but do not verify it is the result of a calculation
+	 * @return
+	 */
+	public int getUnVerifiedTextSize() {
+		return textSize;
 	}
 }

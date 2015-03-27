@@ -135,7 +135,7 @@ public class Biggest_Pixel {
 					// Blocks for this state
 					LinkedList<PriorityQueue<Line>> l = BlockCutting.cutBlocks(state);
 					// Text to write
-					Writing w = new Writing();
+					Writing w;
 					String textToWrite;
 					if (stateName != null) {
 						textToWrite = stateName;
@@ -144,7 +144,32 @@ public class Biggest_Pixel {
 					}
 					for (PriorityQueue<Line> p : l) {
 						// Calculate optimized writing
-						w.calculateWriting(p, stateName, map);
+						w = new Writing();
+						Writing resWriting = new Writing();
+						// Separate each words of the text to write
+						String[] t = textToWrite.split("[ ]");
+						/* Calculating each combination of repartition of
+						 * these words by line
+						 */
+						for (int k = 0; k < (1 << t.length - 1); k++) {
+							int j = 1;
+							String res = t[0];
+							while (j < t.length) {
+								if ((k & (1 << (j - 1))) == (1 << (j - 1))) {
+									res += "\n";
+								} else {
+									res += " ";
+								}
+								res += t[j];
+								j++;
+							}
+							resWriting.calculateWriting(p, res.split("[\n]"), map);
+							if (w.getUnVerifiedTextSize() < resWriting.getUnVerifiedTextSize()) {
+								// Keep the best combination
+								textToWrite = res;
+								w = new Writing(resWriting);
+							}
+						}
 						if (w.getTextOrigin() != null) {
 							// Write text
 							Graphics2D g2d = map.createGraphics();
@@ -153,8 +178,23 @@ public class Biggest_Pixel {
 					        FontRenderContext frc = g2d.getFontRenderContext();
 					        GlyphVector gv = g2d.getFont().createGlyphVector(frc, textToWrite);
 					        // (0,0) because we need the offset
-					        Rectangle textRect = gv.getPixelBounds(null, 0, 0);
-					        g2d.drawString(textToWrite, w.getTextOrigin().x - textRect.x, w.getTextOrigin().y);
+					        Rectangle textRect = gv.getPixelBounds(null, 0, 0);        
+					        String [] lineToWrite = textToWrite.split("[\n]");
+					        int y = w.getTextOrigin().y;
+					        // Decreasing loop because text is written from upper to lower
+					        for (int k = (lineToWrite.length - 1); k >= 0; k--) {
+								g2d.drawString(lineToWrite[k], w.getTextOrigin().x - textRect.x, y);
+								// Height for the ith line upper its origin
+								y += g2d.getFont().createGlyphVector(frc, lineToWrite[k]).
+										getPixelBounds(null, 0,0).y;
+								if (k > 0) {
+									// Height for the i-1th line lower its origin
+									y -= g2d.getFont().createGlyphVector(frc, lineToWrite[k - 1]).
+											getPixelBounds(null, 0,0).height +
+											g2d.getFont().createGlyphVector(frc, lineToWrite[k - 1]).
+											getPixelBounds(null, 0,0).y;
+								}
+							}
 					        g2d.dispose();
 						}
 					}
