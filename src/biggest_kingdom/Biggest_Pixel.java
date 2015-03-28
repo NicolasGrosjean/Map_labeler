@@ -40,14 +40,17 @@ public class Biggest_Pixel {
 	private JProgressBar bar;
 	private AbstractText text;
 	private int nbKingdoms;
+	private String date;
 
 	public Biggest_Pixel(File mapFile, String newMapFile,
-			JProgressBar bar, AbstractText text, int nbKingdoms) throws IOException {
+			JProgressBar bar, AbstractText text, int nbKingdoms,
+			String date) throws IOException {
 		this.bar = bar;
 		this.map = ImageIO.read(mapFile);
 		this.newMapFile = newMapFile;
 		this.text = text;
 		this.nbKingdoms = nbKingdoms;	
+		this.date = date;
 		// To simplify we measure progression by line
 		bar.setMaximum(2 * map.getHeight());
 		bar.setMinimum(0);
@@ -105,14 +108,14 @@ public class Biggest_Pixel {
 					if ((map.getRGB(x, y) & 0xffffff) != (SEA_R << 16)
 							+ (SEA_G << 8) + SEA_B
 							&& (map.getRGB(x, y) & 0xffffff) != (UNKNOWN_R << 16)
-									+ (UNKNOWN_G << 8) + UNKNOWN_B
+							+ (UNKNOWN_G << 8) + UNKNOWN_B
 							&& kingdomToDisplay
-									.indexOf(map.getRGB(x, y) & 0xffffff) == -1) {
+							.indexOf(map.getRGB(x, y) & 0xffffff) == -1) {
 						map.setRGB(x, y, WHITE);
 					}
 				}
 			}
-	        
+
 			// Writing text
 			bar.setString(text.textWritingMessage());
 			// Load texts
@@ -173,18 +176,18 @@ public class Biggest_Pixel {
 						if (w.getTextOrigin() != null) {
 							// Write text
 							Graphics2D g2d = map.createGraphics();
-					        g2d.setFont(new Font("Serif", Font.BOLD, w.getTextSize() - 1));
-					        g2d.setColor(new Color((i & 0xffffff) ^ 0xffffff));
-					        FontRenderContext frc = g2d.getFontRenderContext();
-					        GlyphVector gv = g2d.getFont().createGlyphVector(frc, textToWrite);
-					        // (0,0) because we need the offset
-					        Rectangle textRect = gv.getPixelBounds(null, 0, 0);        
-					        String [] lineToWrite = textToWrite.split("[\n]");
-					        int y = w.getTextOrigin().y;
-					        int textMaxWidth = Writing.calculateTextWidth(lineToWrite, g2d, frc);
-					        // Decreasing loop because text is written from upper to lower
-					        for (int k = (lineToWrite.length - 1); k >= 0; k--) {
-					        	// Write centered line
+							g2d.setFont(new Font("Serif", Font.BOLD, w.getTextSize() - 1));
+							g2d.setColor(new Color((i & 0xffffff) ^ 0xffffff));
+							FontRenderContext frc = g2d.getFontRenderContext();
+							GlyphVector gv = g2d.getFont().createGlyphVector(frc, textToWrite);
+							// (0,0) because we need the offset
+							Rectangle textRect = gv.getPixelBounds(null, 0, 0);        
+							String [] lineToWrite = textToWrite.split("[\n]");
+							int y = w.getTextOrigin().y;
+							int textMaxWidth = Writing.calculateTextWidth(lineToWrite, g2d, frc);
+							// Decreasing loop because text is written from upper to lower
+							for (int k = (lineToWrite.length - 1); k >= 0; k--) {
+								// Write centered line
 								g2d.drawString(lineToWrite[k], w.getTextOrigin().x - textRect.x +
 										(textMaxWidth - g2d.getFont().createGlyphVector(frc, lineToWrite[k]).
 												getPixelBounds(null, 0,0).width) / 2, y);
@@ -199,12 +202,42 @@ public class Biggest_Pixel {
 											getPixelBounds(null, 0,0).y;
 								}
 							}
-					        g2d.dispose();
+							g2d.dispose();
 						}
 					}
 				}
 			}
+			// Write the date on the sea
+			LinkedList<Line> dateLines = h.get((SEA_R << 16) + (SEA_G << 8) + SEA_B);
+			// Sea blocks
+			System.out.println(dateLines);
+			LinkedList<PriorityQueue<Line>> blocks = BlockCutting.cutBlocks(dateLines);
+			// Searching the bigger text size
+			Writing seaW = new Writing();
+			String dateTab[] = {date};
+			for (PriorityQueue<Line> p : blocks) {
+				Writing resWriting = new Writing();
+				resWriting.calculateWriting(p, dateTab, map);
+				if (seaW.getUnVerifiedTextSize() < resWriting.getUnVerifiedTextSize()) {
+					// Keep the best combination
+					seaW = new Writing(resWriting);
+				}
+			}
+			if (seaW.getTextOrigin() != null) {
+				// Write text
+				Graphics2D g2d = map.createGraphics();
+				g2d.setFont(new Font("Serif", Font.BOLD, seaW.getTextSize() - 1));
+				g2d.setColor(new Color(((SEA_R << 16) + (SEA_G << 8) +
+						SEA_B) ^ 0xffffff));
+				FontRenderContext frc = g2d.getFontRenderContext();
+				GlyphVector gv = g2d.getFont().createGlyphVector(frc, date);
+				// (0,0) because we need the offset
+				Rectangle textRect = gv.getPixelBounds(null, 0, 0);
+				g2d.drawString(date, seaW.getTextOrigin().x - textRect.x, seaW.getTextOrigin().y);			        
+				g2d.dispose();
+			}
 			
+
 			// Write image on png file
 			try {
 				bar.setString(text.outputWritingMessage());

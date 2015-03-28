@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -13,7 +12,6 @@ public class Writing {
 	private int textSize = 0;
 	private Point textOrigin;
 	private boolean isCalculated = false;
-
 
 	public Writing() {
 	}
@@ -36,15 +34,13 @@ public class Writing {
 		isCalculated = true;
 		textSize = 20;
 		textOrigin = null;
-		
+
 		Graphics2D g2d = map.createGraphics();
-        g2d.setFont(new Font("Serif", Font.BOLD, textSize));       
-        FontRenderContext frc = g2d.getFontRenderContext();
-        int textWidth = Writing.calculateTextWidth(textToWrite, g2d, frc);
-        int textHeigth = Writing.calculateTextHeight(textToWrite, g2d, frc);
-        /* .y and not .height because we need need distance between the point
-         * and the summit of the text */
-        
+		g2d.setFont(new Font("Serif", Font.BOLD, textSize));
+		FontRenderContext frc = g2d.getFontRenderContext();
+		int textWidth = Writing.calculateTextWidth(textToWrite, g2d, frc);
+		int textHeigth = Writing.calculateTextHeight(textToWrite, g2d, frc);
+
 		/* Copying block into a LinkedList in order to have Element access
 		 * It MUST be by hand because the copy is made by the iterator
 		 * and PriorityQueue iterator give element without order*/
@@ -53,7 +49,7 @@ public class Writing {
 		while(!tmp.isEmpty()) {
 			blockLines.addLast(tmp.poll());
 		}
-				
+
 		while (!blockLines.isEmpty()) {
 			Line l = blockLines.removeFirst();			
 			Point p = new Point(l.getBeginLine()); // candidate for textOrigin
@@ -100,8 +96,8 @@ public class Writing {
 					// searching a better choice by adding textSize
 					g2d.setFont(new Font("Serif", Font.BOLD, ++textSize));
 					frc = g2d.getFontRenderContext();
-			        textWidth = Writing.calculateTextWidth(textToWrite, g2d, frc);
-			        textHeigth = Writing.calculateTextHeight(textToWrite, g2d, frc);
+					textWidth = Writing.calculateTextWidth(textToWrite, g2d, frc);
+					textHeigth = Writing.calculateTextHeight(textToWrite, g2d, frc);
 				} else {
 					// try another candidate, the next point of the p line
 					if (p.getX() < l.getEndLine().getX()) {

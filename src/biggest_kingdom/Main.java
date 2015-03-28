@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.swing.JProgressBar;
 
+import textWriting.DateWriting;
 import Text.AbstractText;
 import Text.TextEnglish;
 import Text.TextFrancais;
@@ -39,8 +40,11 @@ public class Main {
 			JProgressBar bar = new JProgressBar();
 			new Window(args[3], "Carte des plus grands Etats", 600, 400, bar);
 
+			// Date
+			String date = DateWriting.readDate(args[1]);
+
 			// Algorithm
-			new Biggest_Pixel(mapFile, args[2], bar, text, 10);
+			new Biggest_Pixel(mapFile, args[2], bar, text, 10, date);
 		} catch (IOException e) {
 			System.out.println(text.fileNotFound(args[1]));
 			System.exit(1);
