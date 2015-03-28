@@ -14,8 +14,11 @@ public class Localisation {
 	public Localisation() {
 		stateName = new HashMap<String, String>();
 		init("text1.csv");
+		init("text2.csv");
+		init("v1_06.csv");
 		init("India.csv");
 		init("DuchiesKingdomsandEmpires de jure.csv");
+		init("DuchiesKingdomsandEmpires titular.csv");
 	}
 
 	private void init(String nomFichierLecture) {
