@@ -61,9 +61,12 @@ public class TestTextWriting {
 				Rectangle textRect = gv.getPixelBounds(null, 0, 0); 
 				//System.out.println("Taille du texte : " + textRect.width + ";" + -textRect.y);
 				int y = w.getTextOrigin().y;
+				int textMaxWidth = Writing.calculateTextWidth(textToWrite, g2d, frc);
 				// Decreasing loop because text is written from upper to lower
 				for (int k = (textToWrite.length - 1); k >= 0; k--) {
-					g2d.drawString(textToWrite[k], w.getTextOrigin().x - textRect.x, y);
+					g2d.drawString(textToWrite[k], w.getTextOrigin().x - textRect.x +
+							(textMaxWidth - g2d.getFont().createGlyphVector(frc, textToWrite[k]).
+									getPixelBounds(null, 0,0).width) / 2, y);
 					y += g2d.getFont().createGlyphVector(frc, textToWrite[k]).
 							getPixelBounds(null, 0,0).y;
 					if (k > 0) {

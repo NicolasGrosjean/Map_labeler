@@ -112,7 +112,7 @@ public class Writing {
 		}
 	}
 
-	private static int calculateTextWidth (String[] textLines, Graphics2D g2d, FontRenderContext frc) {
+	public static int calculateTextWidth (String[] textLines, Graphics2D g2d, FontRenderContext frc) {
 		// (0,0) because we need offset from the point
 		int textWidth = g2d.getFont().createGlyphVector(frc, textLines[0]).
 				getPixelBounds(null, 0,0).width;

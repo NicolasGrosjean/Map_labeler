@@ -181,9 +181,13 @@ public class Biggest_Pixel {
 					        Rectangle textRect = gv.getPixelBounds(null, 0, 0);        
 					        String [] lineToWrite = textToWrite.split("[\n]");
 					        int y = w.getTextOrigin().y;
+					        int textMaxWidth = Writing.calculateTextWidth(lineToWrite, g2d, frc);
 					        // Decreasing loop because text is written from upper to lower
 					        for (int k = (lineToWrite.length - 1); k >= 0; k--) {
-								g2d.drawString(lineToWrite[k], w.getTextOrigin().x - textRect.x, y);
+					        	// Write centered line
+								g2d.drawString(lineToWrite[k], w.getTextOrigin().x - textRect.x +
+										(textMaxWidth - g2d.getFont().createGlyphVector(frc, lineToWrite[k]).
+												getPixelBounds(null, 0,0).width) / 2, y);
 								// Height for the ith line upper its origin
 								y += g2d.getFont().createGlyphVector(frc, lineToWrite[k]).
 										getPixelBounds(null, 0,0).y;
