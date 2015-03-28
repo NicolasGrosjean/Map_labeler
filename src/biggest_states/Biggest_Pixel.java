@@ -89,13 +89,13 @@ public class Biggest_Pixel {
 			for (int rgb : stateRGB) {
 				orderedStates.offer(new State(rgb, states.get(rgb)));
 			}
-			LinkedList<Integer> stateToDisplay = new LinkedList<Integer>();
+			LinkedList<State> stateToDisplay = new LinkedList<State>();
 			int foundStates = 0;
 			while (foundStates < nbStates) {
-				int rgb = orderedStates.poll().getRGB();
-				if (rgb != (SEA_R << 16) + (SEA_G << 8) + SEA_B &&
-						rgb != (UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B) {
-					stateToDisplay.addLast(rgb);
+				State bigState = orderedStates.poll();
+				if (bigState.getRGB() != (SEA_R << 16) + (SEA_G << 8) + SEA_B &&
+						bigState.getRGB() != (UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B) {
+					stateToDisplay.addLast(bigState);
 					foundStates++;
 				}
 			}
@@ -110,7 +110,7 @@ public class Biggest_Pixel {
 							&& (map.getRGB(x, y) & 0xffffff) != (UNKNOWN_R << 16)
 							+ (UNKNOWN_G << 8) + UNKNOWN_B
 							&& stateToDisplay
-							.indexOf(map.getRGB(x, y) & 0xffffff) == -1) {
+							.indexOf(new State(map.getRGB(x, y) & 0xffffff, 0)) == -1) {
 						map.setRGB(x, y, WHITE);
 					}
 				}
@@ -125,13 +125,15 @@ public class Biggest_Pixel {
 			HashMap<Integer, LinkedList<Line>> h = BlockCutting.enumerateLine(
 					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B,
 					(UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B);	
-			for (Integer i : stateToDisplay) {
-				String stateCode = landedTitles.getStateCode(i);				
+			// Upper size for the date
+			int maxTextSize = 0;
+			for (State s : stateToDisplay) {
+				String stateCode = landedTitles.getStateCode(s.getRGB());
 				if (stateCode != null) {
 					// Search state name
 					String stateName = localisation.getStateName(stateCode);
 					// Loads lines for this state
-					LinkedList<Line> state = h.get(i & 0xffffff);
+					LinkedList<Line> state = h.get(s.getRGB());
 					if (state == null) {
 						throw new IllegalArgumentException("No block to cut");
 					}
@@ -174,10 +176,12 @@ public class Biggest_Pixel {
 							}
 						}
 						if (w.getTextOrigin() != null) {
+							// Update maxTextSize
+							maxTextSize = Math.max(maxTextSize, w.getTextSize());
 							// Write text
 							Graphics2D g2d = map.createGraphics();
 							g2d.setFont(new Font("Serif", Font.BOLD, w.getTextSize() - 1));
-							g2d.setColor(new Color((i & 0xffffff) ^ 0xffffff));
+							g2d.setColor(new Color(s.getTextColor()));
 							FontRenderContext frc = g2d.getFontRenderContext();
 							GlyphVector gv = g2d.getFont().createGlyphVector(frc, textToWrite);
 							// (0,0) because we need the offset
@@ -210,7 +214,6 @@ public class Biggest_Pixel {
 			// Write the date on the sea
 			LinkedList<Line> dateLines = h.get((SEA_R << 16) + (SEA_G << 8) + SEA_B);
 			// Sea blocks
-			System.out.println(dateLines);
 			LinkedList<PriorityQueue<Line>> blocks = BlockCutting.cutBlocks(dateLines);
 			// Searching the bigger text size
 			Writing seaW = new Writing();
@@ -226,7 +229,8 @@ public class Biggest_Pixel {
 			if (seaW.getTextOrigin() != null) {
 				// Write text
 				Graphics2D g2d = map.createGraphics();
-				g2d.setFont(new Font("Serif", Font.BOLD, seaW.getTextSize() - 1));
+				g2d.setFont(new Font("Serif", Font.BOLD,
+						Math.min(seaW.getTextSize(), maxTextSize) - 1));
 				g2d.setColor(new Color(((SEA_R << 16) + (SEA_G << 8) +
 						SEA_B) ^ 0xffffff));
 				FontRenderContext frc = g2d.getFontRenderContext();
