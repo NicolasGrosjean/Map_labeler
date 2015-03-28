@@ -1,4 +1,4 @@
-package biggest_kingdom;
+package biggest_states;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -39,17 +39,17 @@ public class Biggest_Pixel {
 	private String newMapFile;
 	private JProgressBar bar;
 	private AbstractText text;
-	private int nbKingdoms;
+	private int nbStates;
 	private String date;
 
 	public Biggest_Pixel(File mapFile, String newMapFile,
-			JProgressBar bar, AbstractText text, int nbKingdoms,
+			JProgressBar bar, AbstractText text, int nbStates,
 			String date) throws IOException {
 		this.bar = bar;
 		this.map = ImageIO.read(mapFile);
 		this.newMapFile = newMapFile;
 		this.text = text;
-		this.nbKingdoms = nbKingdoms;	
+		this.nbStates = nbStates;	
 		this.date = date;
 		// To simplify we measure progression by line
 		bar.setMaximum(2 * map.getHeight());
@@ -61,42 +61,42 @@ public class Biggest_Pixel {
 
 		@Override
 		public void run() {
-			Map<Integer, Integer> kingdoms = new HashMap<Integer, Integer>();
+			Map<Integer, Integer> states = new HashMap<Integer, Integer>();
 
-			// Counting pixel for each Kingdom
+			// Counting pixel for each State
 			for (int y = 0; y < map.getHeight(); y++) {
 				bar.setValue(y);
 				for (int x = 0; x < map.getWidth(); x++) {
 					// Integer and not int because it can be null
-					Integer nbPixels = kingdoms.get(0xffffff & map.getRGB(x, y));
+					Integer nbPixels = states.get(0xffffff & map.getRGB(x, y));
 					if (nbPixels == null) {
-						// First occur of this kingdom
-						kingdoms.put(0xffffff & map.getRGB(x, y), 1);
+						// First occur of this State
+						states.put(0xffffff & map.getRGB(x, y), 1);
 					} else {
-						// Another pixel of this kingdom
-						kingdoms.put(0xffffff & map.getRGB(x, y), ++nbPixels);
+						// Another pixel of this State
+						states.put(0xffffff & map.getRGB(x, y), ++nbPixels);
 					}
 				}
 			}
 
 			// Calculating the nbProvinces to display
-			if (nbKingdoms > kingdoms.size() + 1) {
+			if (nbStates > states.size() + 1) {
 				throw new IllegalArgumentException(text.moreStateThanAvailable());
 			}
-			// Ranking kingdoms by decreasing pixel number
-			PriorityQueue<Kingdom> orderedKingdoms = new PriorityQueue<Kingdom>(kingdoms.size());
-			Set<Integer> kingdomRGB = kingdoms.keySet();
-			for (int rgb : kingdomRGB) {
-				orderedKingdoms.offer(new Kingdom(rgb, kingdoms.get(rgb)));
+			// Ranking states by decreasing pixel number
+			PriorityQueue<State> orderedStates = new PriorityQueue<State>(states.size());
+			Set<Integer> stateRGB = states.keySet();
+			for (int rgb : stateRGB) {
+				orderedStates.offer(new State(rgb, states.get(rgb)));
 			}
-			LinkedList<Integer> kingdomToDisplay = new LinkedList<Integer>();
-			int foundKingdoms = 0;
-			while (foundKingdoms < nbKingdoms) {
-				int rgb = orderedKingdoms.poll().getRGB();
+			LinkedList<Integer> stateToDisplay = new LinkedList<Integer>();
+			int foundStates = 0;
+			while (foundStates < nbStates) {
+				int rgb = orderedStates.poll().getRGB();
 				if (rgb != (SEA_R << 16) + (SEA_G << 8) + SEA_B &&
 						rgb != (UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B) {
-					kingdomToDisplay.addLast(rgb);
-					foundKingdoms++;
+					stateToDisplay.addLast(rgb);
+					foundStates++;
 				}
 			}
 			/* Transforming the image to the writing image
@@ -109,7 +109,7 @@ public class Biggest_Pixel {
 							+ (SEA_G << 8) + SEA_B
 							&& (map.getRGB(x, y) & 0xffffff) != (UNKNOWN_R << 16)
 							+ (UNKNOWN_G << 8) + UNKNOWN_B
-							&& kingdomToDisplay
+							&& stateToDisplay
 							.indexOf(map.getRGB(x, y) & 0xffffff) == -1) {
 						map.setRGB(x, y, WHITE);
 					}
@@ -125,7 +125,7 @@ public class Biggest_Pixel {
 			HashMap<Integer, LinkedList<Line>> h = BlockCutting.enumerateLine(
 					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B,
 					(UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B);	
-			for (Integer i : kingdomToDisplay) {
+			for (Integer i : stateToDisplay) {
 				String stateCode = landedTitles.getStateCode(i);				
 				if (stateCode != null) {
 					// Search state name

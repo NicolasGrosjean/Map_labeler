@@ -1,4 +1,4 @@
-package biggest_kingdom;
+package biggest_states;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

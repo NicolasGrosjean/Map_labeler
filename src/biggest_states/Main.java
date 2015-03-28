@@ -1,4 +1,4 @@
-package biggest_kingdom;
+package biggest_states;
 import graphics.Window;
 
 import java.io.File;
