@@ -44,7 +44,7 @@ public class Main {
 			String date = DateWriting.readDate(args[1]);
 
 			// Algorithm
-			new Biggest_Pixel(mapFile, args[2], bar, text, 20, date);
+			new Biggest_Pixel(mapFile, args[2], bar, text, 10, date, true);
 		} catch (IOException e) {
 			System.out.println(text.fileNotFound(args[1]));
 			System.exit(1);

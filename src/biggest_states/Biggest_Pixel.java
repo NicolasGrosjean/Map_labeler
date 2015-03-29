@@ -41,16 +41,18 @@ public class Biggest_Pixel {
 	private AbstractText text;
 	private int nbStates;
 	private String date;
+	private boolean harmonize;
 
 	public Biggest_Pixel(File mapFile, String newMapFile,
 			JProgressBar bar, AbstractText text, int nbStates,
-			String date) throws IOException {
+			String date, boolean harmonize) throws IOException {
 		this.bar = bar;
 		this.map = ImageIO.read(mapFile);
 		this.newMapFile = newMapFile;
 		this.text = text;
 		this.nbStates = nbStates;	
 		this.date = date;
+		this.harmonize = harmonize;
 		// To simplify we measure progression by line
 		bar.setMaximum(2 * map.getHeight());
 		bar.setMinimum(0);
@@ -87,7 +89,7 @@ public class Biggest_Pixel {
 			PriorityQueue<State> orderedStates = new PriorityQueue<State>(states.size());
 			Set<Integer> stateRGB = states.keySet();
 			for (int rgb : stateRGB) {
-				orderedStates.offer(new State(rgb, states.get(rgb)));
+				orderedStates.offer(new State(rgb, states.get(rgb), harmonize));
 			}
 			LinkedList<State> stateToDisplay = new LinkedList<State>();
 			int foundStates = 0;
@@ -110,7 +112,7 @@ public class Biggest_Pixel {
 							&& (map.getRGB(x, y) & 0xffffff) != (UNKNOWN_R << 16)
 							+ (UNKNOWN_G << 8) + UNKNOWN_B
 							&& stateToDisplay
-							.indexOf(new State(map.getRGB(x, y) & 0xffffff, 0)) == -1) {
+							.indexOf(new State(map.getRGB(x, y) & 0xffffff, 0, harmonize)) == -1) {
 						map.setRGB(x, y, WHITE);
 					}
 				}

@@ -16,11 +16,22 @@ public class State implements Comparable<State> {
 	 */
 	private int textColor;
 	
-	public State(int rGB, int size) {
+	public State(int rGB, int size, boolean harmonize) {
 		this.rgb = rGB & 0xffffff;
 		this.size = size;
-		this.textColor = rgb ^ 0xffffff;
-		harmonizeTextColor();
+		if (harmonize) {
+			if (((rGB & 0xff0000) >> 16) > 128 &&
+					((rGB & 0xff00) >> 8) > 128 &&
+					(rGB & 0xff) > 128) {
+				// State has V (in TSV code) upper than 128
+				// To maximize contrast, textColor has V=0
+				this.textColor = 0x0;
+			} else {
+				this.textColor = 0xffffff;
+			}
+		} else {
+			this.textColor = rgb ^ 0xffffff;
+		}
 	}
 
 	public State(State s) {
@@ -39,24 +50,6 @@ public class State implements Comparable<State> {
 
 	public int getTextColor() {
 		return textColor;
-	}
-
-	private void harmonizeTextColor() {
-		int r = (textColor & 0xff0000) >> 16;
-		int g = (textColor & 0xff00) >> 8;
-		int b = textColor & 0xff;
-		r = selectNeighboor(r);
-		g = selectNeighboor(g);
-		b = selectNeighboor(b);
-		textColor = (r << 16) + (g << 8) + b;
-	}
-
-	private int selectNeighboor(int col) {
-		if (col < 128) {
-			return 0;
-		} else {
-			return 255;
-		}
 	}
 
 	/**
