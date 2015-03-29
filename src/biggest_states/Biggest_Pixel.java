@@ -178,7 +178,7 @@ public class Biggest_Pixel {
 								w = new Writing(resWriting);
 							}
 						}
-						if (w.getTextOrigin() != null) {
+						if (w.getTextOriginSolution() != null) {
 							// Update maxTextSize
 							sumTextSize += w.getTextSize();
 							nbText++;
@@ -187,28 +187,15 @@ public class Biggest_Pixel {
 							g2d.setFont(new Font("Serif", Font.BOLD, w.getTextSize() - 1));
 							g2d.setColor(new Color(s.getTextColor()));
 							FontRenderContext frc = g2d.getFontRenderContext();
-							GlyphVector gv = g2d.getFont().createGlyphVector(frc, textToWrite);
-							// (0,0) because we need the offset
-							Rectangle textRect = gv.getPixelBounds(null, 0, 0);        
 							String [] lineToWrite = textToWrite.split("[\n]");
-							int y = w.getTextOrigin().y;
-							int textMaxWidth = Writing.calculateTextWidth(lineToWrite, g2d, frc);
 							// Decreasing loop because text is written from upper to lower
 							for (int k = (lineToWrite.length - 1); k >= 0; k--) {
 								// Write centered line
-								g2d.drawString(lineToWrite[k], w.getTextOrigin().x - textRect.x +
-										(textMaxWidth - g2d.getFont().createGlyphVector(frc, lineToWrite[k]).
-												getPixelBounds(null, 0,0).width) / 2, y);
-								// Height for the ith line upper its origin
-								y += g2d.getFont().createGlyphVector(frc, lineToWrite[k]).
-										getPixelBounds(null, 0,0).y;
-								if (k > 0) {
-									// Height for the i-1th line lower its origin
-									y -= g2d.getFont().createGlyphVector(frc, lineToWrite[k - 1]).
-											getPixelBounds(null, 0,0).height +
-											g2d.getFont().createGlyphVector(frc, lineToWrite[k - 1]).
-											getPixelBounds(null, 0,0).y;
-								}
+								g2d.drawString(lineToWrite[k],
+										w.getTextOriginSolution()[lineToWrite.length - 1 - k].x
+										- g2d.getFont().createGlyphVector(frc, lineToWrite[k])
+										.getPixelBounds(null, 0, 0).x,
+										w.getTextOriginSolution()[lineToWrite.length - 1 - k].y);
 							}
 							g2d.dispose();
 						}
@@ -230,7 +217,7 @@ public class Biggest_Pixel {
 					seaW = new Writing(resWriting);
 				}
 			}
-			if (seaW.getTextOrigin() != null) {
+			if (seaW.getTextOriginSolution() != null) {
 				// Write text
 				Graphics2D g2d = map.createGraphics();
 				g2d.setFont(new Font("Serif", Font.BOLD,sumTextSize / nbText - 1));
@@ -240,7 +227,9 @@ public class Biggest_Pixel {
 				GlyphVector gv = g2d.getFont().createGlyphVector(frc, date);
 				// (0,0) because we need the offset
 				Rectangle textRect = gv.getPixelBounds(null, 0, 0);
-				g2d.drawString(date, seaW.getTextOrigin().x - textRect.x, seaW.getTextOrigin().y);			        
+				g2d.drawString(date,
+						seaW.getTextOriginSolution()[0].x - textRect.x,
+						seaW.getTextOriginSolution()[0].y);			        
 				g2d.dispose();
 			}
 			

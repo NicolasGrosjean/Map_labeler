@@ -3,9 +3,7 @@ package textWriting;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -48,34 +46,21 @@ public class TestTextWriting {
 			Writing w = new Writing();
 			String[] textToWrite = {"Heiliges", "Heiliges", "Römisches", "Reich", "Reich"};
 			w.calculateWriting(l.getFirst(), textToWrite, map);
-			if (w.getTextOrigin() != null) {
+			if (w.getTextOriginSolution() != null) {
 				Graphics2D g2d = map.createGraphics();
 				g2d.setFont(new Font("Serif", Font.BOLD, w.getTextSize() - 1));		        
 				g2d.setColor(new Color(0xff0000 ^ 0xffffff));
 
-				System.out.println("Texte écrit à partir de (" + w.getTextOrigin().x + 
-						";" + w.getTextOrigin().y +") et de taille " + (w.getTextSize() - 1));
+				System.out.println("Texte écrit à partir de (" + w.getTextOriginSolution()[0].x +
+						";" + w.getTextOriginSolution()[0].y +") et de taille " + (w.getTextSize() - 1));
 				FontRenderContext frc = g2d.getFontRenderContext();
-				GlyphVector gv = g2d.getFont().createGlyphVector(frc, textToWrite[0]);
-				// (0,0) because it is unimportant, we need only offset
-				Rectangle textRect = gv.getPixelBounds(null, 0, 0); 
-				//System.out.println("Taille du texte : " + textRect.width + ";" + -textRect.y);
-				int y = w.getTextOrigin().y;
-				int textMaxWidth = Writing.calculateTextWidth(textToWrite, g2d, frc);
 				// Decreasing loop because text is written from upper to lower
 				for (int k = (textToWrite.length - 1); k >= 0; k--) {
-					g2d.drawString(textToWrite[k], w.getTextOrigin().x - textRect.x +
-							(textMaxWidth - g2d.getFont().createGlyphVector(frc, textToWrite[k]).
-									getPixelBounds(null, 0,0).width) / 2, y);
-					y += g2d.getFont().createGlyphVector(frc, textToWrite[k]).
-							getPixelBounds(null, 0,0).y;
-					if (k > 0) {
-						// Height for the i-1th line lower its origin
-						y -= g2d.getFont().createGlyphVector(frc, textToWrite[k - 1]).
-								getPixelBounds(null, 0,0).height +
-								g2d.getFont().createGlyphVector(frc, textToWrite[k - 1]).
-								getPixelBounds(null, 0,0).y;
-					}
+					g2d.drawString(textToWrite[k],
+							w.getTextOriginSolution()[textToWrite.length - 1 - k].x
+							- g2d.getFont().createGlyphVector(frc, textToWrite[k])
+							.getPixelBounds(null, 0, 0).x,
+							w.getTextOriginSolution()[textToWrite.length - 1 - k].y);
 				}
 				g2d.dispose();
 			} else {
