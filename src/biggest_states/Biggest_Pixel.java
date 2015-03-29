@@ -127,8 +127,9 @@ public class Biggest_Pixel {
 			HashMap<Integer, LinkedList<Line>> h = BlockCutting.enumerateLine(
 					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B,
 					(UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B);	
-			// Upper size for the date
-			int maxTextSize = 0;
+			// Calculating the mean size in order to use it for the date
+			int sumTextSize = 0;
+			int nbText = 0;
 			for (State s : stateToDisplay) {
 				String stateCode = landedTitles.getStateCode(s.getRGB());
 				if (stateCode != null) {
@@ -179,7 +180,8 @@ public class Biggest_Pixel {
 						}
 						if (w.getTextOrigin() != null) {
 							// Update maxTextSize
-							maxTextSize = Math.max(maxTextSize, w.getTextSize());
+							sumTextSize += w.getTextSize();
+							nbText++;
 							// Write text
 							Graphics2D g2d = map.createGraphics();
 							g2d.setFont(new Font("Serif", Font.BOLD, w.getTextSize() - 1));
@@ -231,8 +233,7 @@ public class Biggest_Pixel {
 			if (seaW.getTextOrigin() != null) {
 				// Write text
 				Graphics2D g2d = map.createGraphics();
-				g2d.setFont(new Font("Serif", Font.BOLD,
-						Math.min(seaW.getTextSize(), maxTextSize) - 1));
+				g2d.setFont(new Font("Serif", Font.BOLD,sumTextSize / nbText - 1));
 				g2d.setColor(new Color(((SEA_R << 16) + (SEA_G << 8) +
 						SEA_B) ^ 0xffffff));
 				FontRenderContext frc = g2d.getFontRenderContext();
