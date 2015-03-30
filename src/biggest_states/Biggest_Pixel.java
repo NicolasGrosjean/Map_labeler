@@ -184,19 +184,7 @@ public class Biggest_Pixel {
 							nbText++;
 							// Write text
 							Graphics2D g2d = map.createGraphics();
-							g2d.setFont(new Font("Serif", Font.BOLD, w.getTextSize() - 1));
-							g2d.setColor(new Color(s.getTextColor()));
-							FontRenderContext frc = g2d.getFontRenderContext();
-							String [] lineToWrite = textToWrite.split("[\n]");
-							// Decreasing loop because text is written from upper to lower
-							for (int k = (lineToWrite.length - 1); k >= 0; k--) {
-								// Write centered line
-								g2d.drawString(lineToWrite[k],
-										w.getTextOriginSolution()[lineToWrite.length - 1 - k].x
-										- g2d.getFont().createGlyphVector(frc, lineToWrite[k])
-										.getPixelBounds(null, 0, 0).x,
-										w.getTextOriginSolution()[lineToWrite.length - 1 - k].y);
-							}
+							s.writeText(g2d, w, textToWrite);
 							g2d.dispose();
 						}
 					}
