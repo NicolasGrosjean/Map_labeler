@@ -62,10 +62,15 @@ public class Writing {
 	 * @param map Image for size text calculation (the image in which text will be writing)
 	 */
 	public void calculateWriting(PriorityQueue<Line> block, String[] textToWrite,
-			BufferedImage map) {
+			BufferedImage map, int maxTextSize, boolean date) {
 		isCalculated = true;
 		textSize = 20;
 		textOrigin = new Point[textToWrite.length];
+
+		// Variable for text size maximum limit
+		Point addSolution = new Point(0, 0); // add of valid textOrigin[0] except first
+		LinkedList<Point> solutions = new LinkedList<Point>();
+		// list of valid textOrigin[0] except first
 
 		Graphics2D g2d = map.createGraphics();
 		g2d.setFont(new Font("Serif", Font.BOLD, textSize));
@@ -75,6 +80,7 @@ public class Writing {
 		textHeight = new int[textToWrite.length];
 		calculateTextHeight(textToWrite, g2d, frc);
 
+		int solutionNumber = 0;
 		/* Copying block into a LinkedList in order to have Element access
 		 * It MUST be by hand because the copy is made by the iterator
 		 * and PriorityQueue iterator give element without order*/
@@ -88,7 +94,7 @@ public class Writing {
 			Line l = blockLines.removeFirst();			
 			textOrigin[0] = new Point(l.getBeginLine());
 			calculateTextOrigin(textToWrite, g2d, frc);
-			// the line of p is enough big
+			// the line of textOrigin[0] is enough big
 			while (textWidth[0] <= l.getEndLine().x - textOrigin[0].x) {
 				boolean textOK = true; // textOrigin[0] is a good candidate
 				// verify the text can be printed in the upper lines of the blocks
@@ -135,22 +141,56 @@ public class Writing {
 					}
 				}
 				if (textOK) {
-					// p is the better choice at this moment
-					saveSolution();
-					// searching a better choice by adding textSize
-					g2d.setFont(new Font("Serif", Font.BOLD, ++textSize));
-					frc = g2d.getFontRenderContext();
-					calculateTextWidth(textToWrite, g2d, frc);
-					calculateTextHeight(textToWrite, g2d, frc);
+					if (textSize < maxTextSize) {
+						// textOrigin[0] is the better choice at this moment
+						saveSolution();
+						// searching a better choice by adding textSize
+						g2d.setFont(new Font("Serif", Font.BOLD, ++textSize));
+						frc = g2d.getFontRenderContext();
+						calculateTextWidth(textToWrite, g2d, frc);
+						calculateTextHeight(textToWrite, g2d, frc);
+					} else if (solutionNumber == 0) {
+						// textOrigin[0] is the better choice at this moment
+						saveSolution();
+						// Now searching other solution of this size
+						nextCandidate(l);
+						// For the date we store only the last solution
+						if (!date) {
+							// For State we search to center
+							solutionNumber++;
+						}
+					} else {
+						// Another solution found
+						solutionNumber++;
+						addSolution.x += textOrigin[0].x;
+						addSolution.y += textOrigin[0].y;
+						solutions.add(new Point(textOrigin[0]));
+						// searching other solution of this size
+						nextCandidate(l);
+					}
 				} else {
 					// try another candidate, the next point of the line
-					if (textOrigin[0].x < l.getEndLine().x) {
-						for (int i = 0; i < textOrigin.length; i++) {
-							textOrigin[i].translate(1, 0);
-						}
-					}
+					nextCandidate(l);
 				}
 			}
+		}
+		if (solutionNumber > 1) {
+			int meanX = (addSolution.x + textOriginSolution[0].x) /
+					solutionNumber;
+			int meanY = (addSolution.y + textOriginSolution[0].y) /
+					solutionNumber;
+			// Search in the solution list the nearest Point
+			nearestSolution(solutions, meanX, meanY);
+			// Calculate textOrigin[i] for i>0
+			calculateTextOrigin(textToWrite, g2d, frc);
+			// Save final result
+			saveSolution();
+			// Add 1 to textSize because subtract 1 when we draw
+			textSize++;
+		}
+		if (date && textSize == maxTextSize) {
+			// Add 1 to textSize because subtract 1 when we draw
+			textSize++;
 		}
 	}
 
@@ -202,6 +242,29 @@ public class Writing {
 		textOriginSolution = new Point[textOrigin.length];
 		for (int i = 0; i < textOrigin.length; i++) {
 			textOriginSolution[i] = new Point(textOrigin[i].x, textOrigin[i].y);
+		}
+	}
+
+	private void nextCandidate (Line l) {
+		if (textOrigin[0].x < l.getEndLine().x) {
+			for (int i = 0; i < textOrigin.length; i++) {
+				textOrigin[i].translate(1, 0);
+			}
+		}
+	}
+
+	private void nearestSolution(LinkedList<Point> solutions, int meanX, int meanY) {
+		double dist = Math.sqrt((textOrigin[0].x - meanX) * (textOrigin[0].x - meanX) +
+				(textOrigin[0].y - meanY) * (textOrigin[0].y - meanY));
+		while (!solutions.isEmpty()) {
+			Point p = solutions.removeFirst();
+			double pDist = Math.sqrt((p.x - meanX) * (p.x - meanX) +
+					(p.y - meanY) * (p.y - meanY));
+			if (pDist < dist) {
+				dist = pDist;
+				textOrigin[0].x = p.x;
+				textOrigin[0].y = p.y;
+			}
 		}
 	}
 

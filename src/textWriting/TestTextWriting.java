@@ -45,7 +45,7 @@ public class TestTextWriting {
 			}
 			Writing w = new Writing();
 			String[] textToWrite = {"Heiliges", "Heiliges", "Römisches", "Reich", "Reich"};
-			w.calculateWriting(l.getFirst(), textToWrite, map);
+			w.calculateWriting(l.getFirst(), textToWrite, map, 100, false);
 			if (w.getTextOriginSolution() != null) {
 				Graphics2D g2d = map.createGraphics();
 				g2d.setFont(new Font("Serif", Font.BOLD, w.getTextSize() - 1));		        

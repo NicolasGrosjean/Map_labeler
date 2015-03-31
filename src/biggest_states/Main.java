@@ -11,7 +11,11 @@ import Text.AbstractText;
 import Text.TextEnglish;
 import Text.TextFrancais;
 
-
+/* Pour la taille max du texte prévoir 3 options
+ * - Aucune : Integer.MAX_VALUE
+ * - Absolu : ex 100 alors c'est celle valeur
+ * - Proportionnel : calculé à partir de la taille de l'image
+ */
 public class Main {
 
 	/**
@@ -44,7 +48,7 @@ public class Main {
 			String date = DateWriting.readDate(args[1]);
 
 			// Algorithm
-			new Biggest_Pixel(mapFile, args[2], bar, text, 10, date, true);
+			new Biggest_Pixel(mapFile, args[2], bar, text, 10, date, true, 100);
 		} catch (IOException e) {
 			System.out.println(text.fileNotFound(args[1]));
 			System.exit(1);
