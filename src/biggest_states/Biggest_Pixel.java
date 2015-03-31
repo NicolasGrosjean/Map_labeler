@@ -43,10 +43,12 @@ public class Biggest_Pixel {
 	private String date;
 	private boolean harmonize;
 	private int maxTextSize;
+	private boolean leftDate;
 
 	public Biggest_Pixel(File mapFile, String newMapFile,
 			JProgressBar bar, AbstractText text, int nbStates,
-			String date, boolean harmonize, int maxTextSize) throws IOException {
+			String date, boolean harmonize, int maxTextSize,
+			boolean leftDate) throws IOException {
 		this.bar = bar;
 		this.map = ImageIO.read(mapFile);
 		this.newMapFile = newMapFile;
@@ -55,6 +57,7 @@ public class Biggest_Pixel {
 		this.date = date;
 		this.harmonize = harmonize;
 		this.maxTextSize = maxTextSize;
+		this.leftDate = leftDate;
 		// To simplify we measure progression by line
 		bar.setMaximum(2 * map.getHeight());
 		bar.setMinimum(0);
@@ -173,7 +176,7 @@ public class Biggest_Pixel {
 								res += t[j];
 								j++;
 							}
-							resWriting.calculateWriting(p, res.split("[\n]"), map, maxTextSize, false);
+							resWriting.calculateWriting(p, res.split("[\n]"), map, maxTextSize, false, leftDate);
 							if (w.getUnVerifiedTextSize() < resWriting.getUnVerifiedTextSize()) {
 								// Keep the best combination
 								textToWrite = res;
@@ -201,7 +204,7 @@ public class Biggest_Pixel {
 			String dateTab[] = {date};
 			for (PriorityQueue<Line> p : blocks) {
 				Writing resWriting = new Writing();
-				resWriting.calculateWriting(p, dateTab, map, maxTextSize, true);
+				resWriting.calculateWriting(p, dateTab, map, maxTextSize, true, leftDate);
 				if (seaW.getUnVerifiedTextSize() < resWriting.getUnVerifiedTextSize()) {
 					// Keep the best combination
 					seaW = new Writing(resWriting);

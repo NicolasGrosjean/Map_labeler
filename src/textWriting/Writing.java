@@ -62,7 +62,7 @@ public class Writing {
 	 * @param map Image for size text calculation (the image in which text will be writing)
 	 */
 	public void calculateWriting(PriorityQueue<Line> block, String[] textToWrite,
-			BufferedImage map, int maxTextSize, boolean date) {
+			BufferedImage map, int maxTextSize, boolean date, boolean leftDate) {
 		isCalculated = true;
 		textSize = 20;
 		textOrigin = new Point[textToWrite.length];
@@ -151,7 +151,12 @@ public class Writing {
 						calculateTextHeight(textToWrite, g2d, frc);
 					} else if (solutionNumber == 0) {
 						// textOrigin[0] is the better choice at this moment
-						saveSolution();
+						if (!date || !leftDate ||
+								textOriginSolution[0].y > textOrigin[0].y) {
+							// For a date in left, we save only if it is higher
+							// Else always save
+							saveSolution();
+						}
 						// Now searching other solution of this size
 						nextCandidate(l);
 						// For the date we store only the last solution
