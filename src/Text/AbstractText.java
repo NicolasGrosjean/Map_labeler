@@ -43,7 +43,14 @@ public abstract class AbstractText {
 	 * @return
 	 */
 	public abstract String badNumberArguments();
-	
+
+	/**
+	 * Bad argument to run the program
+	 * @param arg
+	 * @return
+	 */
+	public abstract String wrongArgument(String arg);
+
 	/**
 	 * Word file
 	 * @return
@@ -76,4 +83,23 @@ public abstract class AbstractText {
 	 * @return
 	 */
 	public abstract String moreStateThanAvailable();
+
+	/**
+	 * The name of the map file which will be decorated is missing
+	 * @return
+	 */
+	public abstract String missingMapFile();
+
+	/**
+	 * The name of the out file is missing
+	 * @return
+	 */
+	public abstract String missingOutMapFile();
+
+	/**
+	 * The name of the waiting image file is missing
+	 * @return
+	 */
+	public abstract String missingWaitingImageFile();
+
 }

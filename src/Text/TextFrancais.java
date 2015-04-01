@@ -26,7 +26,13 @@ public class TextFrancais extends AbstractText {
 	public String badNumberArguments() {
 		return "ERROR : Nombre d'arguments incorrect!";
 	}
-	
+
+	@Override
+	public String wrongArgument(String arg) {
+		return "ERROR : " + arg + " est un argument inconnu."+
+				"Les arguments doivent commencer par un '-'";
+	}
+
 	@Override
 	protected String file() {
 		return "fichier";
@@ -45,5 +51,20 @@ public class TextFrancais extends AbstractText {
 	@Override
 	public String moreStateThanAvailable() {
 		return "ERROR : Plus d'Etat demandés que sur la carte";
+	}
+
+	@Override
+	public  String missingMapFile() {
+		return "ERROR : fichier de la carte manquant";
+	}
+
+	@Override
+	public  String missingOutMapFile() {
+		return "ERROR : fichier de la carte résultat manquant";
+	}
+
+	@Override
+	public  String missingWaitingImageFile() {
+		return "ERROR : fichier de l'image d'attente manquant";
 	}
 }

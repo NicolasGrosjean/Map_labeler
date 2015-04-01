@@ -1,4 +1,5 @@
 package biggest_states;
+import graphics.ImageNotFoundException;
 import graphics.Window;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import Text.TextFrancais;
 
 /* OPTIONS A FAIRE :
  * - fichiers de localisation
+ * - si le fichier résultat existe déjà faire une mini-IG pour dire si l'écraser ou donner un autre nom
  * - nombre d'Etats à afficher
  * - harmonisation
  * - taille max du texte
@@ -24,6 +26,7 @@ import Text.TextFrancais;
  * - Proportionnel : calculé à partir de la taille de l'image
  */
 public class Main {
+	static public boolean TESTMOD = false;
 
 	/**
 	 * The main of the software
@@ -31,38 +34,90 @@ public class Main {
 	 *  3 : illustration file}
 	 */
 	public static void main(String[] args) {
-		// Language (English by default)
-		AbstractText text = new TextEnglish();
+		// Language
+		AbstractText text = null;
+		// Files
+		String mapFileName = null;
+		String outFileName = null;
+		String imageFileName = null;
 
 		try {
-			if (args.length != 4) {
-				throw new IllegalArgumentException("Bad number of arguments");
+			int i = 0;
+			while (i < args.length) {
+				switch (args[i]) {
+				case "-fr" :
+					// French language asked
+					text = new TextFrancais();
+					break;
+				case "-en" :
+					// English language asked
+					text = new TextEnglish();
+					break;
+				case "-map" :
+					i++;
+					if (i < args.length) {
+						mapFileName = args[i];
+					}
+					break;
+				case "-out" :
+					i++;
+					if (i < args.length) {
+						outFileName = args[i];
+					}
+					break;
+				case "-img" :
+					i++;
+					if (i < args.length) {
+						imageFileName = args[i];
+					}
+					break;
+				default :
+					if (text == null) {
+						throw new IllegalArgumentException("ERROR : language not specified");
+					}
+					throw new IllegalArgumentException(text.wrongArgument(args[i]));
+				}
+				i++;
 			}
 
-			// French language if it is asked
-			if (args[0].equals("-fr")) {
-				text = new TextFrancais();
+			// Check the needed parameters are here
+			if (text == null) {
+				throw new IllegalArgumentException("ERROR : language not specified");
+			}
+			if (mapFileName == null) {
+				throw new IllegalArgumentException(text.missingMapFile());
+			}
+			if (outFileName == null) {
+				throw new IllegalArgumentException(text.missingOutMapFile());
+			}
+			if (imageFileName == null) {
+				throw new IllegalArgumentException(text.missingWaitingImageFile());
 			}
 
 			// Input : BMP map file
-			File mapFile = new File(args[1]);
+			File mapFile = new File(mapFileName);
 
 			// Progression information
 			JProgressBar bar = new JProgressBar();
-			new Window(args[3], "Carte des plus grands Etats", 600, 400, bar);
+			new Window(imageFileName, "Carte des plus grands Etats", 600, 400, bar);
 
 			// Date
-			String date = DateWriting.readDate(args[1]);
+			String date = DateWriting.readDate(mapFileName);
 
 			// Algorithm
-			new Biggest_Pixel(mapFile, args[2], bar, text, 10, date, true, 100,
+			new Biggest_Pixel(mapFile, outFileName, bar, text, 10, date, true, 100,
 					true);
 		} catch (IOException e) {
-			System.out.println(text.fileNotFound(args[1]));
-			System.exit(1);
+			System.out.println(text.fileNotFound(mapFileName));
+			if (!TESTMOD) {
+				System.exit(1);
+			}
+		} catch (ImageNotFoundException e) {
+			System.out.println(text.fileNotFound(imageFileName));
+			if (!TESTMOD)
+				System.exit(1);
 		} catch (IllegalArgumentException e) {
-			System.out.println(text.badNumberArguments());
-			System.exit(1);
+			System.out.println(e.getLocalizedMessage());
 		}
 	}
 }
