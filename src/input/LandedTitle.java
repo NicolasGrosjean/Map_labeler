@@ -1,4 +1,4 @@
-package biggest_states;
+package input;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

@@ -1,5 +1,8 @@
 package biggest_states;
 
+import input.LandedTitle;
+import input.Localisation;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
