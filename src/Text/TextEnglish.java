@@ -130,7 +130,7 @@ public class TextEnglish extends AbstractText {
 
 	@Override
 	public  String invalidMaxTextSize() {
-		return "ERROR : a positive integer is waited after -size. " +
+		return "ERROR : an integer greater than 20 is waited after -size. " +
 				"It is the maximum text size.";
 	}
 

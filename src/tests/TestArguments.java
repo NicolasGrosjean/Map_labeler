@@ -174,7 +174,7 @@ public class TestArguments extends TestCase {
 				"-img", waitingImage, "-loc", loc1, loc2, loc3, loc4, loc5, loc6,
 				"-sta", "10", "-size", "bad", "-pol", "Serif", "-land", "landed_titles.txt"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : un entier strictement positif est attendu après -size. " +
+		assertEquals("ERROR : un entier supérieur à 20 est attendu après -size. " +
 				"Cet entier est la taille maximale du texte." + separator,
 				outContent.toString());
 	}
@@ -185,7 +185,7 @@ public class TestArguments extends TestCase {
 				"-img", waitingImage, "-loc", loc1, loc2, loc3, loc4, loc5, loc6,
 				"-sta", "10", "-size", "-1", "-pol", "Serif", "-land", "landed_titles.txt"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : un entier strictement positif est attendu après -size. " +
+		assertEquals("ERROR : un entier supérieur à 20 est attendu après -size. " +
 				"Cet entier est la taille maximale du texte." + separator,
 				outContent.toString());
 	}

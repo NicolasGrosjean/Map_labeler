@@ -162,7 +162,7 @@ public class MainArguments {
 		} else if (nbState < 0) {
 			throw new IllegalArgumentException(text.invalidStateNumber());
 		}
-		if (maxTextSize <= 0) {
+		if (maxTextSize < 20) {
 			throw new IllegalArgumentException(text.invalidMaxTextSize());
 		}
 	}

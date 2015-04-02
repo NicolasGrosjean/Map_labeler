@@ -130,7 +130,7 @@ public class TextFrancais extends AbstractText {
 
 	@Override
 	public  String invalidMaxTextSize() {
-		return "ERROR : un entier strictement positif est attendu après -size. " +
+		return "ERROR : un entier supérieur à 20 est attendu après -size. " +
 				"Cet entier est la taille maximale du texte.";
 	}
 
