@@ -102,4 +102,57 @@ public abstract class AbstractText {
 	 */
 	public abstract String missingWaitingImageFile();
 
+	/**
+	 * The name of the landed title file is missing
+	 * @return
+	 */
+	public abstract String missingLandedTitleFile();
+
+	/**
+	 * The name of a localisation file is missing
+	 * @return
+	 */
+	public abstract String missingLocalisationFiles();
+
+	/**
+	 * The font name for the text is missing
+	 * @return
+	 */
+	public abstract String missingFontName();
+
+	/**
+	 * The number of biggest states to display is missing
+	 * @return
+	 */
+	public abstract String missingStateNumber();
+
+	/**
+	 * The number of biggest states to display is invalid
+	 * @return
+	 */
+	public abstract String invalidStateNumber();
+
+	/**
+	 * The maximum text size is invalid
+	 * @return
+	 */
+	public abstract String invalidMaxTextSize();
+
+	/**
+	 * The day of the date is invalid
+	 * @return
+	 */
+	public abstract String invalidDay();
+
+	/**
+	 * The month of the date is invalid
+	 * @return
+	 */
+	public abstract String invalidMonth();
+
+	/**
+	 * The year of the date is invalid
+	 * @return
+	 */
+	public abstract String invalidYear();
 }

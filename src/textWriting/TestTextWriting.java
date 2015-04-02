@@ -45,7 +45,7 @@ public class TestTextWriting {
 			}
 			Writing w = new Writing();
 			String[] textToWrite = {"Heiliges", "Heiliges", "Römisches", "Reich", "Reich"};
-			w.calculateWriting(l.getFirst(), textToWrite, map, 100, false, true);
+			w.calculateWriting(l.getFirst(), textToWrite, map, 100, false, true, "Serif");
 			if (w.getTextOriginSolution() != null) {
 				Graphics2D g2d = map.createGraphics();
 				g2d.setFont(new Font("Serif", Font.BOLD, w.getTextSize() - 1));		        
@@ -67,8 +67,6 @@ public class TestTextWriting {
 				System.out.println("Ecriture impossible de " + textToWrite);
 			}
 			ImageIO.write(map, "png", new File("tache_empire.png"));
-
-			System.out.println(DateWriting.readDate("bla_bla_15_12_1066_blabla.bmp"));
 		} catch (IOException e) {
 			System.out.println("file not found!");
 			System.exit(1);

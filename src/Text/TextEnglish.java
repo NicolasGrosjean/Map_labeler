@@ -29,7 +29,7 @@ public class TextEnglish extends AbstractText {
 
 	@Override
 	public String wrongArgument(String arg) {
-		return "ERROR : " + arg + " is unknown argument.\n"+
+		return "ERROR : " + arg + " is unknown argument. "+
 				"The arguments must start with '-'";
 	}
 
@@ -66,5 +66,52 @@ public class TextEnglish extends AbstractText {
 	@Override
 	public  String missingWaitingImageFile() {
 		return "ERROR : missing waiting image file";
+	}
+
+	@Override
+	public  String missingLandedTitleFile() {
+		return "ERROR : missing landed title file";
+	}
+
+	@Override
+	public  String missingLocalisationFiles() {
+		return "ERROR : missing localisation file";
+	}
+
+	@Override
+	public  String missingFontName() {
+		return "ERROR : missing font name";
+	}
+
+	@Override
+	public  String missingStateNumber() {
+		return "ERROR : missing the number of biggest States to display";
+	}
+
+	@Override
+	public  String invalidStateNumber() {
+		return "ERROR : a positive integer is waited after -sta. " +
+				"It is the number of biggest States to display.";
+	}
+
+	@Override
+	public  String invalidMaxTextSize() {
+		return "ERROR : a positive integer is waited after -size. " +
+				"It is the maximum text size.";
+	}
+
+	@Override
+	public  String invalidDay() {
+		return "ERROR : incorrect day number on map file name!";
+	}
+
+	@Override
+	public  String invalidMonth() {
+		return "ERROR : incorrect month number on map file name!";
+	}
+
+	@Override
+	public  String invalidYear() {
+		return "ERROR : incorrect year number on map file name!";
 	}
 }

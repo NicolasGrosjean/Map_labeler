@@ -62,7 +62,8 @@ public class Writing {
 	 * @param map Image for size text calculation (the image in which text will be writing)
 	 */
 	public void calculateWriting(PriorityQueue<Line> block, String[] textToWrite,
-			BufferedImage map, int maxTextSize, boolean date, boolean leftDate) {
+			BufferedImage map, int maxTextSize, boolean date, boolean leftDate,
+			String fontName) {
 		isCalculated = true;
 		textSize = 20;
 		textOrigin = new Point[textToWrite.length];
@@ -73,7 +74,7 @@ public class Writing {
 		// list of valid textOrigin[0] except first
 
 		Graphics2D g2d = map.createGraphics();
-		g2d.setFont(new Font("Serif", Font.BOLD, textSize));
+		g2d.setFont(new Font(fontName, Font.BOLD, textSize));
 		FontRenderContext frc = g2d.getFontRenderContext();
 		textWidth = new int[textToWrite.length];
 		calculateTextWidth(textToWrite, g2d, frc);
@@ -145,7 +146,7 @@ public class Writing {
 						// textOrigin[0] is the better choice at this moment
 						saveSolution();
 						// searching a better choice by adding textSize
-						g2d.setFont(new Font("Serif", Font.BOLD, ++textSize));
+						g2d.setFont(new Font(fontName, Font.BOLD, ++textSize));
 						frc = g2d.getFontRenderContext();
 						calculateTextWidth(textToWrite, g2d, frc);
 						calculateTextHeight(textToWrite, g2d, frc);

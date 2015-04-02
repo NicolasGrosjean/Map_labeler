@@ -47,23 +47,30 @@ public class State implements Comparable<State> {
 		this.textColor = s.textColor;
 	}
 
-	public void writeText (Graphics2D g2d, Writing w, String textToWrite) {
-		g2d.setFont(new Font("Serif", Font.BOLD, w.getTextSize() - 1));
+	public void writeText (Graphics2D g2d, Writing w, String textToWrite,
+			String fontName) {
+		g2d.setFont(new Font(fontName, Font.BOLD, w.getTextSize() - 1));
 		// Border in white if necessary
 		if (textColor == 0xffffff) {
 			for (int i = 1; i < 4; i++) {
-				writeColorText(g2d, w, textToWrite, i, i);
-				writeColorText(g2d, w, textToWrite, -i, i);
-				writeColorText(g2d, w, textToWrite, i, -i);
-				writeColorText(g2d, w, textToWrite, -i, -i);
+				writeColorText(g2d, w, textToWrite, i, i, 0xffffff);
+				writeColorText(g2d, w, textToWrite, -i, i, 0xffffff);
+				writeColorText(g2d, w, textToWrite, i, -i, 0xffffff);
+				writeColorText(g2d, w, textToWrite, -i, -i, 0xffffff);
 			}
 		}
-		g2d.setColor(new Color(0x0)); // Text in black
-		writeColorText(g2d, w, textToWrite, 0, 0);
+		if (textColor == 0xffffff || textColor == 0x0) {
+			// Text in black
+			writeColorText(g2d, w, textToWrite, 0, 0, 0x0);
+		} else {
+			// Text in text color (it is the case when harmonize in constructor)
+			writeColorText(g2d, w, textToWrite, 0, 0, textColor);
+		}
 	}
 
 	private void writeColorText (Graphics2D g2d, Writing w, String textToWrite,
-			int dx, int dy) {
+			int dx, int dy, int color) {
+		g2d.setColor(new Color(color));
 		FontRenderContext frc = g2d.getFontRenderContext();
 		String [] lineToWrite = textToWrite.split("[\n]");
 		// Decreasing loop because text is written from upper to lower

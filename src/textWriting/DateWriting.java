@@ -1,8 +1,10 @@
 package textWriting;
 
+import Text.AbstractText;
+
 public class DateWriting {
 
-	public static String readDate(String fileName) {
+	public static String readDate(String fileName, AbstractText text) {
 		String [] words = fileName.split("[_]");
 		int intNb = 0;
 		int day = 0;
@@ -22,10 +24,16 @@ public class DateWriting {
 			} catch (NumberFormatException e) {			
 			}
 		}
-		return day + " " + monthToString(month) + " " + year;
+		if (day < 1 || day > 31) {
+			throw new IllegalArgumentException(text.invalidDay());
+		}
+		if (year < 0) {
+			throw new IllegalArgumentException(text.invalidYear());
+		}
+		return day + " " + monthToString(month, text) + " " + year;
 	}
 	
-	private static String monthToString(int month) {
+	private static String monthToString(int month, AbstractText text) {
 		switch (month) {
 			case 1 :
 				return "Janvier";
@@ -52,6 +60,6 @@ public class DateWriting {
 			case 12 :
 				return "Décembre";
 		}
-		throw new IllegalArgumentException("Incorrect month number");
+		throw new IllegalArgumentException(text.invalidMonth());
 	}
 }

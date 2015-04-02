@@ -11,16 +11,15 @@ import java.util.regex.Pattern;
 public class LandedTitle {
 	private Map<Integer, String> stateCode;
 
-	public LandedTitle() {
+	public LandedTitle(String landedTitleFileName) {
 		this.stateCode = new HashMap<Integer, String>();
-		init();
+		init(landedTitleFileName);
 	}
 
-	private void init() {
-		final String nomFichierLecture = "landed_titles.txt";
+	private void init(String landedTitleFileName) {
 		FileInputStream fichierLecture = null;
 		try {
-			fichierLecture = new FileInputStream(nomFichierLecture); 
+			fichierLecture = new FileInputStream(landedTitleFileName); 
 			Scanner scanner=new Scanner(fichierLecture, "ISO-8859-1");
 			scanner.useDelimiter(Pattern.compile("[ \n\t]"));
 			// Searching empire, kingdoms, duchies and counties

@@ -4,24 +4,28 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import Text.AbstractText;
+
 public class Localisation {
 	private Map<String, String> stateName;
+	private AbstractText text;
 
-	public Localisation() {
+	public Localisation(LinkedList<String> localisationFiles, AbstractText text) {
+		this.text = text;
 		stateName = new HashMap<String, String>();
-		init("text1.csv");
-		init("text2.csv");
-		init("v1_06.csv");
-		init("India.csv");
-		init("DuchiesKingdomsandEmpires de jure.csv");
-		init("DuchiesKingdomsandEmpires titular.csv");
+		while (!localisationFiles.isEmpty()) {
+			init(localisationFiles.removeFirst());
+		}
 	}
 
 	private void init(String nomFichierLecture) {
+		boolean error = false;
+
 		FileInputStream fichierLecture = null;
 		try {
 			fichierLecture = new FileInputStream(nomFichierLecture);
@@ -47,13 +51,17 @@ public class Localisation {
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("File not found");
+			error = true;
 		} finally {
 			try {
 				if (fichierLecture != null)
 					fichierLecture.close();
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+			if (error) {
+				throw new IllegalArgumentException(
+						text.fileNotFound(nomFichierLecture));
 			}
 		}
 	}

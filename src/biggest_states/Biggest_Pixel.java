@@ -44,11 +44,17 @@ public class Biggest_Pixel {
 	private boolean harmonize;
 	private int maxTextSize;
 	private boolean leftDate;
+	private LinkedList<String> localisationFiles;
+	private String fontName;
+	private String landedTitleFileName;
 
 	public Biggest_Pixel(File mapFile, String newMapFile,
 			JProgressBar bar, AbstractText text, int nbStates,
 			String date, boolean harmonize, int maxTextSize,
-			boolean leftDate) throws IOException {
+			boolean proportional, boolean leftDate,
+			LinkedList<String> localisationFiles,
+			String fontName,
+			String landedTitleFileName) throws IOException {
 		this.bar = bar;
 		this.map = ImageIO.read(mapFile);
 		this.newMapFile = newMapFile;
@@ -56,8 +62,16 @@ public class Biggest_Pixel {
 		this.nbStates = nbStates;	
 		this.date = date;
 		this.harmonize = harmonize;
-		this.maxTextSize = maxTextSize;
+		if (proportional) {
+			this.maxTextSize = Math.min(map.getHeight(), map.getWidth()) / 2048
+					* 100;
+		} else {
+			this.maxTextSize = maxTextSize;
+		}
 		this.leftDate = leftDate;
+		this.localisationFiles = localisationFiles;
+		this.fontName = fontName;
+		this.landedTitleFileName = landedTitleFileName;
 		// To simplify we measure progression by line
 		bar.setMaximum(2 * map.getHeight());
 		bar.setMinimum(0);
@@ -126,8 +140,8 @@ public class Biggest_Pixel {
 			// Writing text
 			bar.setString(text.textWritingMessage());
 			// Load texts
-			LandedTitle landedTitles = new LandedTitle();
-			Localisation localisation = new Localisation();
+			LandedTitle landedTitles = new LandedTitle(landedTitleFileName);
+			Localisation localisation = new Localisation(localisationFiles, text);
 			// Load lines of the states
 			HashMap<Integer, LinkedList<Line>> h = BlockCutting.enumerateLine(
 					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B,
@@ -176,7 +190,8 @@ public class Biggest_Pixel {
 								res += t[j];
 								j++;
 							}
-							resWriting.calculateWriting(p, res.split("[\n]"), map, maxTextSize, false, leftDate);
+							resWriting.calculateWriting(p, res.split("[\n]"), map,
+									maxTextSize, false, leftDate, fontName);
 							if (w.getUnVerifiedTextSize() < resWriting.getUnVerifiedTextSize()) {
 								// Keep the best combination
 								textToWrite = res;
@@ -189,7 +204,7 @@ public class Biggest_Pixel {
 							nbText++;
 							// Write text
 							Graphics2D g2d = map.createGraphics();
-							s.writeText(g2d, w, textToWrite);
+							s.writeText(g2d, w, textToWrite, fontName);
 							g2d.dispose();
 						}
 					}
@@ -204,7 +219,8 @@ public class Biggest_Pixel {
 			String dateTab[] = {date};
 			for (PriorityQueue<Line> p : blocks) {
 				Writing resWriting = new Writing();
-				resWriting.calculateWriting(p, dateTab, map, maxTextSize, true, leftDate);
+				resWriting.calculateWriting(p, dateTab, map, maxTextSize, true,
+						leftDate, fontName);
 				if (seaW.getUnVerifiedTextSize() < resWriting.getUnVerifiedTextSize()) {
 					// Keep the best combination
 					seaW = new Writing(resWriting);
@@ -213,7 +229,7 @@ public class Biggest_Pixel {
 			if (seaW.getTextOriginSolution() != null) {
 				// Write text
 				Graphics2D g2d = map.createGraphics();
-				g2d.setFont(new Font("Serif", Font.BOLD,sumTextSize / nbText - 1));
+				g2d.setFont(new Font(fontName, Font.BOLD,sumTextSize / nbText - 1));
 				g2d.setColor(new Color(((SEA_R << 16) + (SEA_G << 8) +
 						SEA_B) ^ 0xffffff));
 				FontRenderContext frc = g2d.getFontRenderContext();
