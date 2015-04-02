@@ -5,7 +5,7 @@ import Text.AbstractText;
 public class DateWriting {
 
 	public static String readDate(String fileName, AbstractText text) {
-		String [] words = fileName.split("[_]");
+		String [] words = fileName.split("[_.]");
 		int intNb = 0;
 		int day = 0;
 		int month = 0;
