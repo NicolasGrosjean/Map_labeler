@@ -22,6 +22,40 @@ public class TextFrancais extends AbstractText {
 		return "disponible";
 	}
 
+	/* --------------------------- DIALOG ----------------------------------- */
+	public String yes() {
+		return "Oui";
+	}
+
+	public String no() {
+		return "Non";
+	}
+
+	public String cancel() {
+		return "Annuler";
+	}
+
+	public String confirmReplacementTitle() {
+		return "Confirmer remplacement";
+	}
+
+	public String warningReplacementMessage(String outFileName) {
+		return outFileName + " existe déjà.\n Voulez-vous le remplacer ?";
+	}
+
+	public String anotherChoiceTitle() {
+		return "Nouveau choix";
+	}
+
+	public String anotherChoiceMessage() {
+		return "Choisir un autre nom de fichier";
+	}
+
+	public String exitDialog() {
+		return "Le programme s'est terminé car la boîte de dialogue a été quittée";
+	}
+
+	/* --------------------------- ERRORS ----------------------------------- */
 	@Override
 	public String badNumberArguments() {
 		return "ERROR : Nombre d'arguments incorrect!";

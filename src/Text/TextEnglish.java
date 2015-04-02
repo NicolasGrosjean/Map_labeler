@@ -22,6 +22,40 @@ public class TextEnglish extends AbstractText {
 		return "is available";
 	}
 
+	/* --------------------------- DIALOG ----------------------------------- */
+	public String yes() {
+		return "Yes";
+	}
+
+	public String no() {
+		return "No";
+	}
+
+	public String cancel() {
+		return "Cancel";
+	}
+
+	public String confirmReplacementTitle() {
+		return "Confirm replacement";
+	}
+
+	public String warningReplacementMessage(String outFileName) {
+		return outFileName + " already exists. Do you want replace it ?";
+	}
+
+	public String anotherChoiceTitle() {
+		return "New choice";
+	}
+
+	public String anotherChoiceMessage() {
+		return "Chose another output file name";
+	}
+
+	public String exitDialog() {
+		return "Program exited by leaving dialog box";
+	}
+
+	/* --------------------------- ERRORS ----------------------------------- */
 	@Override
 	public String badNumberArguments() {
 		return "ERROR : Incorrect arguments number!";

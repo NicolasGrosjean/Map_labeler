@@ -13,14 +13,13 @@ public class Window extends JFrame{
 	
 	private JPanel container = new JPanel();
 	
-	public Window(String fileName, String title, int width, int height,
+	public Window(String fileName, int width, int height,
 			JProgressBar bar) {
 
 		// Windows param
 		setSize(width, height);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle(title);
 		setLocationRelativeTo(null);
 
 		// Object container

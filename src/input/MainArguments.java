@@ -6,6 +6,11 @@ import Text.AbstractText;
 import Text.TextEnglish;
 import Text.TextFrancais;
 
+/**
+ * Management of the main arguments
+ * @author Mouchi
+ *
+ */
 public class MainArguments {
 	// Language
 	private AbstractText text = null;

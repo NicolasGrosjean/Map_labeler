@@ -35,8 +35,57 @@ public abstract class AbstractText {
 		return delimitedProvinceMap() + " " + delimitedProvinceMapName +
 				" " + isAvailable();
 	}
+
+	/* --------------------------- DIALOG ----------------------------------- */
+	/**
+	 * Translation of the word yes
+	 * @return
+	 */
+	public abstract String yes();
+
+	/**
+	 * Translation of the word no
+	 * @return
+	 */
+	public abstract String no();
+
+	/**
+	 * Translation of the word cancel
+	 * @return
+	 */
+	public abstract String cancel();
+
+	/**
+	 * Title of the replacement confirmation dialog box
+	 * @return
+	 */
+	public abstract String confirmReplacementTitle();
+
+	/**
+	 * Message of the replacement confirmation dialog box
+	 * @return
+	 */
+	public abstract String warningReplacementMessage(String outFileName);
+
+	/**
+	 * Title of the choice another output file name dialog box
+	 * @return
+	 */
+	public abstract String anotherChoiceTitle();
+
+	/**
+	 * Message of the choice another output file name dialog box
+	 * @return
+	 */
+	public abstract String anotherChoiceMessage();
 	
-	/* ERRORS */
+	/**
+	 * Error when exit the confirmation dialog box
+	 * @return
+	 */
+	public abstract String exitDialog();
+
+	/* --------------------------- ERRORS ----------------------------------- */
 	/**
 	 * Bad number of arguments to run the program
 	 * USELESS in fact
