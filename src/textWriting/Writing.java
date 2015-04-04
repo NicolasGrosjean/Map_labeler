@@ -298,6 +298,18 @@ public class Writing {
 		return textSize;
 	}
 
+	/**
+	 * Get the text but do not verify it is the result of a calculation
+	 * @return
+	 */
+	public int getTextOriginSolutionYOfLowerWord() {
+		if (isCalculated && textOriginSolution != null) {
+			return textOriginSolution[0].y;
+		} else {
+			return Integer.MAX_VALUE;
+		}
+	}
+
 	public int[] getTextWidth() {
 		return textWidth;
 	}

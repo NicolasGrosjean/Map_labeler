@@ -149,9 +149,6 @@ public class Biggest_Pixel {
 			HashMap<Integer, LinkedList<Line>> h = BlockCutting.enumerateLine(
 					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B,
 					(UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B);	
-			// Calculating the mean size in order to use it for the date
-			int sumTextSize = 0;
-			int nbText = 0;
 			for (State s : stateToDisplay) {
 				String stateCode = landedTitles.getStateCode(s.getRGB());
 				if (stateCode != null) {
@@ -202,9 +199,6 @@ public class Biggest_Pixel {
 							}
 						}
 						if (w.getTextOriginSolution() != null) {
-							// Update maxTextSize
-							sumTextSize += w.getTextSize();
-							nbText++;
 							// Write text
 							Graphics2D g2d = map.createGraphics();
 							s.writeText(g2d, w, textToWrite, fontName);
@@ -214,17 +208,18 @@ public class Biggest_Pixel {
 				}
 			}
 			// Write the date on the sea
-			LinkedList<Line> dateLines = h.get((SEA_R << 16) + (SEA_G << 8) + SEA_B);
+			LinkedList<Line> dateLines = BlockCutting.enumerateSeaLine(
+					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B);
 			// Sea blocks
 			LinkedList<PriorityQueue<Line>> blocks = BlockCutting.cutBlocks(dateLines);
-			// Searching the bigger text size
+			// Searching the higher position of date
 			Writing seaW = new Writing();
 			String dateTab[] = {date};
 			for (PriorityQueue<Line> p : blocks) {
 				Writing resWriting = new Writing();
-				resWriting.calculateWriting(p, dateTab, map, maxTextSize, true,
+				resWriting.calculateWriting(p, dateTab, map, 3 * maxTextSize / 4, true,
 						leftDate, fontName);
-				if (seaW.getUnVerifiedTextSize() < resWriting.getUnVerifiedTextSize()) {
+				if (resWriting.getTextOriginSolutionYOfLowerWord() < seaW.getTextOriginSolutionYOfLowerWord()) {
 					// Keep the best combination
 					seaW = new Writing(resWriting);
 				}
@@ -232,7 +227,7 @@ public class Biggest_Pixel {
 			if (seaW.getTextOriginSolution() != null) {
 				// Write text
 				Graphics2D g2d = map.createGraphics();
-				g2d.setFont(new Font(fontName, Font.BOLD,sumTextSize / nbText - 1));
+				g2d.setFont(new Font(fontName, Font.BOLD, seaW.getTextSize() - 1));
 				g2d.setColor(new Color(((SEA_R << 16) + (SEA_G << 8) +
 						SEA_B) ^ 0xffffff));
 				FontRenderContext frc = g2d.getFontRenderContext();

@@ -50,6 +50,34 @@ public class BlockCutting {
 		return storeStateLines;
 	}
 
+
+	public static LinkedList<Line> enumerateSeaLine(
+			BufferedImage map, int waterColor) {
+		LinkedList<Line> seaLines = new LinkedList<Line>();
+		for (int y = 0; y < map.getHeight(); y++) {
+			int x = 0;
+			// Searching a line with sea
+			while (x < map.getWidth()) {
+				if ((map.getRGB(x, y) & 0xffffff) != waterColor) {
+					x++;
+				} else {
+					// Line with sea found
+					int beginLine = x;
+					x++;
+					// Searching the end of this line
+					while (x < map.getWidth() &&
+							(map.getRGB(x, y) & 0xffffff) == waterColor) {
+						x++;
+					}
+					// Store this sea line
+					seaLines.addLast(new Line(new Point(beginLine, y),
+							new Point(x - 1, y)));
+				}
+			}
+		}
+		return seaLines;
+	}
+
 	/**
 	 * Cut the blocks of the state
 	 * @param state List of lines of the State (obtained by enumerateLine)
