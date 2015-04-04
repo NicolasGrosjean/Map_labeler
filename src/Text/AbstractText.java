@@ -9,6 +9,12 @@ public abstract class AbstractText {
 	public abstract String textWritingMessage();
 
 	/**
+	 * Message in the JProgressBar when the date is written
+	 * @return
+	 */
+	public abstract String dateWritingMessage();
+
+	/**
 	 * Message in the JProgressBar when the output file is written
 	 * @return
 	 */

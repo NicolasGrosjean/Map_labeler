@@ -8,6 +8,11 @@ public class TextFrancais extends AbstractText {
 	}
 
 	@Override
+	public String dateWritingMessage() {
+		return "Ecriture de la date sur l'image, patientez";
+	}
+
+	@Override
 	public String outputWritingMessage() {
 		return "Création de l'image résultat, patientez";
 	}

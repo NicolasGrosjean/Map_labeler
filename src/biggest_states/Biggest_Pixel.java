@@ -76,7 +76,7 @@ public class Biggest_Pixel {
 		this.fontName = fontName;
 		this.landedTitleFileName = landedTitleFileName;
 		// To simplify we measure progression by line
-		bar.setMaximum(2 * map.getHeight());
+		bar.setMaximum(4 * map.getHeight());
 		bar.setMinimum(0);
 		new Thread(new Algorithm()).run();
 	}
@@ -148,8 +148,13 @@ public class Biggest_Pixel {
 			// Load lines of the states
 			HashMap<Integer, LinkedList<Line>> h = BlockCutting.enumerateLine(
 					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B,
-					(UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B);	
+					(UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B);
+			// Indicator for the progression bar
+			int displayedStates = 0;
 			for (State s : stateToDisplay) {
+				displayedStates++;
+				bar.setValue(2 * map.getHeight() +
+						displayedStates * map.getHeight() / stateToDisplay.size());
 				String stateCode = landedTitles.getStateCode(s.getRGB());
 				if (stateCode != null) {
 					// Search state name
@@ -208,9 +213,12 @@ public class Biggest_Pixel {
 				}
 			}
 			// Write the date on the sea
+			bar.setString(text.dateWritingMessage());
 			LinkedList<Line> dateLines = h.get((SEA_R << 16) + (SEA_G << 8) + SEA_B);
 			// Sea blocks
+			// TODO : Optimiser le découpage par exemple, ne découper que les y<100 et ne regarder le reste que si tout ne rentre pas
 			LinkedList<PriorityQueue<Line>> blocks = BlockCutting.cutBlocks(dateLines);
+			bar.setValue(3 * map.getHeight() + map.getHeight()/2);
 			// Searching the higher position of date
 			Writing seaW = new Writing();
 			String dateTab[] = {date};
@@ -242,6 +250,7 @@ public class Biggest_Pixel {
 
 			// Write image on png file
 			try {
+				bar.setValue(4 * map.getHeight());
 				bar.setString(text.outputWritingMessage());
 				ImageIO.write(map, "png", new File(newMapFile));
 				System.out.println(text.endMessage(newMapFile));

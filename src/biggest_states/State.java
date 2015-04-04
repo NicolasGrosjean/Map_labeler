@@ -14,7 +14,7 @@ public class State implements Comparable<State> {
 	private int rgb;
 
 	/**
-	 * Size of the State (unit depending of the context)
+	 * Size of the State in terms of pixels
 	 */
 	private int size;
 

@@ -8,6 +8,11 @@ public class TextEnglish extends AbstractText {
 	}
 
 	@Override
+	public String dateWritingMessage() {
+		return "Writing date on image, please wait";
+	}
+
+	@Override
 	public String outputWritingMessage() {
 		return "Writing on the output file, please wait";
 	}
