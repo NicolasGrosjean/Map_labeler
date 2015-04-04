@@ -4,35 +4,51 @@ import Text.AbstractText;
 
 public class DateWriting {
 
-	public static String readDate(String fileName, AbstractText text) {
+	public static String readDate(String fileName, AbstractText text,
+			boolean yearOnly, boolean textualDate) {
 		String [] words = fileName.split("[_.]");
 		int intNb = 0;
 		int day = 0;
 		int month = 0;
 		int year = 0;
 		for (int i = 0; i < words.length; i++) {
-			try {
-				int readInt = Integer.parseInt(words[i]);
-				intNb++;
-				if (intNb == 1) {
-					day = readInt;
-				} else if (intNb == 2) {
-					month = readInt;
-				} else if (intNb == 3) {
-					year = readInt;
+			if(!yearOnly) {
+				try {
+					int readInt = Integer.parseInt(words[i]);
+					intNb++;
+					if (intNb == 1) {
+						day = readInt;
+					} else if (intNb == 2) {
+						month = readInt;
+					} else if (intNb == 3) {
+						year = readInt;
+					}
+				} catch (NumberFormatException e) {
 				}
-			} catch (NumberFormatException e) {			
+			} else {
+				try {
+					year = Integer.parseInt(words[i]);
+				} catch (NumberFormatException e) {
+				}
 			}
 		}
-		if (day < 1 || day > 31) {
+		if (!yearOnly && (day < 1 || day > 31)) {
 			throw new IllegalArgumentException(text.invalidDay());
 		}
 		if (year < 0) {
 			throw new IllegalArgumentException(text.invalidYear());
 		}
-		return day + " " + monthToString(month, text) + " " + year;
+		if (yearOnly) {
+			return year + "";
+		}
+		if (textualDate) {
+			return day + " " + monthToString(month, text) + " " + year;
+		} else {
+			return numberToString(day) + "/" + numberToString(month) + "/" +
+					year;
+		}
 	}
-	
+
 	private static String monthToString(int month, AbstractText text) {
 		switch (month) {
 			case 1 :
@@ -61,5 +77,13 @@ public class DateWriting {
 				return "Décembre";
 		}
 		throw new IllegalArgumentException(text.invalidMonth());
+	}
+
+	private static String numberToString(int number) {
+		if (number < 10) {
+			return "0" + number;
+		} else {
+			return "" + number;
+		}
 	}
 }

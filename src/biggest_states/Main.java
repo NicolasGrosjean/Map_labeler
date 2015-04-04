@@ -11,6 +11,14 @@ import javax.swing.JProgressBar;
 
 import textWriting.DateWriting;
 
+/* TODO
+ * - Formatage de la date
+ * - Taille de la date (proportionnel/2 ou maxDateSize + abandonner moyenne des textes)
+ * - Revoir la barre de progression
+ * - Traduction de la date
+ * - Traduction dans le landed title
+ * - Prendre en argument les dossiers du jeu et des mods (3) plutôt que les fichiers de localisation et landed titles
+ */
 public class Main {
 	static public boolean TESTMOD = false;
 
@@ -69,7 +77,8 @@ public class Main {
 
 			// Date
 			String date = DateWriting.readDate(mainArgs.getMapFileName(),
-					mainArgs.getText());
+					mainArgs.getText(), mainArgs.isYearOnly(),
+					mainArgs.isTextualDate());
 
 			// Algorithm
 			new Biggest_Pixel(mapFile, outFileName, bar, mainArgs.getText(),

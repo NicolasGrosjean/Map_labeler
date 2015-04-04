@@ -28,8 +28,11 @@ public class MainArguments {
 	/* States text color (if true black and white -> harmonized
 	 * else it is the opposite color of the state -> multicolor) */
 	private boolean harmonize = true;
-	/* Position of the date on the map */
+	// Position of the date on the map
 	private boolean leftDate = true;
+	// Formatage de la date
+	private boolean yearOnly = false;
+	private boolean textualDate = false;
 
 	public MainArguments() {}
 
@@ -123,6 +126,12 @@ public class MainArguments {
 			case "-rightDate" :
 				leftDate = false;
 				break;
+			case "-yearOnly" :
+				yearOnly = true;
+				break;
+			case "-textualDate" :
+				textualDate = true;
+				break;
 			default :
 				if (text == null) {
 					throw new IllegalArgumentException("ERROR : language not specified");
@@ -213,5 +222,13 @@ public class MainArguments {
 
 	public boolean isLeftDate() {
 		return leftDate;
+	}
+
+	public boolean isYearOnly() {
+		return yearOnly;
+	}
+
+	public boolean isTextualDate() {
+		return textualDate;
 	}
 }

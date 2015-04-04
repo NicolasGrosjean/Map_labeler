@@ -214,7 +214,8 @@ public class TestArguments extends TestCase {
 	public void testBadMonth() {
 		String args[] = {"-fr", "-map", "blabla_1_42_1066_bla_bla", "-out", pngFileName,
 				"-img", waitingImage, "-loc", loc1, loc2, loc3, loc4, loc5, loc6,
-				"-sta", "10", "-size", "100", "-pol", "Serif", "-land", "landed_titles.txt"};
+				"-sta", "10", "-size", "100", "-pol", "Serif", "-land", "landed_titles.txt",
+				"-textualDate"};
 		biggest_states.Main.main(args);
 		assertEquals("ERROR : le numéro du mois présent dans le fichier de la carte est invalide!"
 				+ separator, outContent.toString());
