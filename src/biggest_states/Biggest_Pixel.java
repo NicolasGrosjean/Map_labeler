@@ -208,8 +208,7 @@ public class Biggest_Pixel {
 				}
 			}
 			// Write the date on the sea
-			LinkedList<Line> dateLines = BlockCutting.enumerateSeaLine(
-					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B);
+			LinkedList<Line> dateLines = h.get((SEA_R << 16) + (SEA_G << 8) + SEA_B);
 			// Sea blocks
 			LinkedList<PriorityQueue<Line>> blocks = BlockCutting.cutBlocks(dateLines);
 			// Searching the higher position of date
