@@ -216,7 +216,6 @@ public class Biggest_Pixel {
 			bar.setString(text.dateWritingMessage());
 			LinkedList<Line> dateLines = h.get((SEA_R << 16) + (SEA_G << 8) + SEA_B);
 			// Sea blocks
-			// TODO : Optimiser le découpage par exemple, ne découper que les y<100 et ne regarder le reste que si tout ne rentre pas
 			LinkedList<PriorityQueue<Line>> blocks = BlockCutting.cutBlocks(dateLines);
 			bar.setValue(3 * map.getHeight() + map.getHeight()/2);
 			// Searching the higher position of date

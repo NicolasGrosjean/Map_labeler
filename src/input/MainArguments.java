@@ -24,7 +24,7 @@ public class MainArguments {
 	private String fontName = null;
 	private int nbState = 0;
 	private int maxTextSize = Integer.MAX_VALUE;
-	private boolean proportional = false; // if true -> proportional to map size
+	private boolean proportional = true; // if true -> proportional to map size
 	/* States text color (if true black and white -> harmonized
 	 * else it is the opposite color of the state -> multicolor) */
 	private boolean harmonize = true;
@@ -103,20 +103,15 @@ public class MainArguments {
 			case "-size" :
 				i++;
 				if (i < args.length) {
-					String sMaxTextSize = args[i];
-					if (sMaxTextSize.charAt(0) == 'p') {
-						// The max text size is proportional to the map
-						proportional = true;
-					} else {
-						// The max text size is absolute
-						try {
-							maxTextSize = Integer.parseInt(sMaxTextSize);
-						} catch (NumberFormatException e) {
-							if (text == null) {
-								throw new IllegalArgumentException("ERROR : language not specified");
-							}
-							throw new IllegalArgumentException(text.invalidMaxTextSize());
+					// The max text size is absolute
+					try {
+						maxTextSize = Integer.parseInt(args[i]);
+						proportional = false;
+					} catch (NumberFormatException e) {
+						if (text == null) {
+							throw new IllegalArgumentException("ERROR : language not specified");
 						}
+						throw new IllegalArgumentException(text.invalidMaxTextSize());
 					}
 				}
 				break;

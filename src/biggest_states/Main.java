@@ -12,12 +12,15 @@ import javax.swing.JProgressBar;
 import textWriting.DateWriting;
 
 /* TODO
- * - DEBUG la date
- * - Taille de la date (proportionnel/2 ou maxDateSize)
  * - Traduction de la date
  * - Traduction dans le landed title
  * - Prendre en argument les dossiers du jeu et des mods (3) plutôt que les fichiers de localisation et landed titles
  */
+/* MESURE DU TEMPS
+ * long begin = System.currentTimeMillis();
+ * CODE
+ * long end = System.currentTimeMillis();
+ * System.out.println("Temps : " + (((float) (end-begin)) / 1000f));*/
 public class Main {
 	static public boolean TESTMOD = false;
 
