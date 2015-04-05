@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -11,9 +12,11 @@ import java.util.regex.Pattern;
 public class LandedTitle {
 	private Map<Integer, String> stateCode;
 
-	public LandedTitle(String landedTitleFileName) {
+	public LandedTitle(LinkedList<String> landedTitlesFileNames) {
 		this.stateCode = new HashMap<Integer, String>();
-		init(landedTitleFileName);
+		while (!landedTitlesFileNames.isEmpty()) {
+			init(landedTitlesFileNames.removeFirst());
+		}
 	}
 
 	private void init(String landedTitleFileName) {

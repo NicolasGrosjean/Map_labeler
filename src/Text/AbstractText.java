@@ -210,4 +210,17 @@ public abstract class AbstractText {
 	 * @return
 	 */
 	public abstract String invalidYear();
+
+	/**
+	 * The directory name is not valid
+	 * @param directoryName
+	 * @return
+	 */
+	public abstract String invalidDirectoryName(String directoryName);
+
+	/**
+	 * The directory name is missing
+	 * @return
+	 */
+	public abstract String missingDirectoryName();
 }

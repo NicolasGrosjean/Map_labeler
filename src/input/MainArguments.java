@@ -1,6 +1,9 @@
 package input;
 
+import java.io.File;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 import Text.AbstractText;
 import Text.TextEnglish;
@@ -18,8 +21,12 @@ public class MainArguments {
 	private String mapFileName = null;
 	private String outFileName = null;
 	private String imageFileName = null;
-	private String landedTitleFileName = null;
-	private LinkedList<String> localisationFiles = new LinkedList<String>();
+	private PriorityQueue<File> landedTitlesFiles;
+	private PriorityQueue<File> localisationFiles;
+	private LinkedList<String> landedTitlesFilesNames = new LinkedList<String>();
+	private LinkedList<String> localisationFilesNames = new LinkedList<String>();
+	private String gameDirectory = null;
+	private LinkedList<String> modDirectories = new LinkedList<String>();
 	// Other parameters
 	private String fontName = null;
 	private int nbState = 0;
@@ -67,19 +74,19 @@ public class MainArguments {
 					imageFileName = args[i];
 				}
 				break;
-			case "-land" :
-				i++;
-				if (i < args.length) {
-					landedTitleFileName = args[i];
-				}
-				break;
-			case "-loc" :
+			case "-mod" :
 				i++;
 				while (i < args.length && args[i].charAt(0) != '-') {
-					localisationFiles.addLast(args[i]);
+					modDirectories.addLast(args[i]);
 					i++;
 				}
 				i--;
+				break;
+			case "-game" :
+				i++;
+				if (i < args.length) {
+					gameDirectory = args[i];
+				}
 				break;
 			case "-pol" :
 				i++;
@@ -135,6 +142,23 @@ public class MainArguments {
 			}
 			i++;
 		}
+		// Read the directories and sort the files
+		Comparator<File> comparator = new FileComparator();
+		landedTitlesFiles = new PriorityQueue<File>(20, comparator);
+		localisationFiles = new PriorityQueue<File>(20, comparator);
+		DirectoryReader.readAndSortDirectoryFiles(gameDirectory, text,
+				landedTitlesFiles, localisationFiles);
+		while (!modDirectories.isEmpty()) {
+			DirectoryReader.readAndSortDirectoryFiles(modDirectories.removeFirst(),
+					text, landedTitlesFiles, localisationFiles);
+		}
+		// Transform Files priority queues list into String list
+		while (!landedTitlesFiles.isEmpty()) {
+			landedTitlesFilesNames.addLast(landedTitlesFiles.remove().toString());
+		}
+		while (!localisationFiles.isEmpty()) {
+			localisationFilesNames.addLast(localisationFiles.remove().toString());
+		}
 		// Check the needed parameters are here and correct
 		checkArgs();
 	}
@@ -152,10 +176,10 @@ public class MainArguments {
 		if (imageFileName == null) {
 			throw new IllegalArgumentException(text.missingWaitingImageFile());
 		}
-		if (landedTitleFileName == null) {
+		if (landedTitlesFilesNames == null) {
 			throw new IllegalArgumentException(text.missingLandedTitleFile());
 		}
-		if (localisationFiles.isEmpty()) {
+		if (localisationFilesNames.isEmpty()) {
 			throw new IllegalArgumentException(text.missingLocalisationFiles());
 		}
 		if (fontName == null) {
@@ -187,12 +211,12 @@ public class MainArguments {
 		return imageFileName;
 	}
 
-	public String getLandedTitleFileName() {
-		return landedTitleFileName;
+	public LinkedList<String> getLandedTitlesFileNames() {
+		return landedTitlesFilesNames;
 	}
 
-	public LinkedList<String> getLocalisationFiles() {
-		return localisationFiles;
+	public LinkedList<String> getLocalisationFilesNames() {
+		return localisationFilesNames;
 	}
 
 	public String getFontName() {
@@ -225,5 +249,16 @@ public class MainArguments {
 
 	public boolean isTextualDate() {
 		return textualDate;
+	}
+
+	/**
+	 * Order File from the older to the younger
+	 *
+	 */
+	private class FileComparator implements Comparator<File>{
+		@Override
+		public int compare(File f1, File f2) {
+			return (int)(f2.lastModified() - f1.lastModified());
+		}
 	}
 }

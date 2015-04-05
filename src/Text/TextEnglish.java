@@ -153,4 +153,14 @@ public class TextEnglish extends AbstractText {
 	public  String invalidYear() {
 		return "ERROR : incorrect year number on map file name!";
 	}
+
+	@Override
+	public String invalidDirectoryName(String directoryName) {
+		return "ERROR : invalid directory name" + directoryName;
+	}
+
+	@Override
+	public String missingDirectoryName() {
+		return "ERROR : missing directory name";
+	}
 }

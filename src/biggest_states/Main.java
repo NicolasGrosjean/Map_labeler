@@ -86,8 +86,8 @@ public class Main {
 			new Biggest_Pixel(mapFile, outFileName, bar, mainArgs.getText(),
 					mainArgs.getNbState(), date, mainArgs.isHarmonize(),
 					mainArgs.getMaxTextSize(), mainArgs.isProportional(),
-					mainArgs.isLeftDate(), mainArgs.getLocalisationFiles(),
-					mainArgs.getFontName(), mainArgs.getLandedTitleFileName());
+					mainArgs.isLeftDate(), mainArgs.getLocalisationFilesNames(),
+					mainArgs.getFontName(), mainArgs.getLandedTitlesFileNames());
 		} catch (IOException e) {
 			System.out.println(mainArgs.getText().fileNotFound(
 					mainArgs.getMapFileName()));

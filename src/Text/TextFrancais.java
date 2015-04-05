@@ -153,4 +153,14 @@ public class TextFrancais extends AbstractText {
 	public  String invalidYear() {
 		return "ERROR : le numéro de l'année présent dans le fichier de la carte est invalide!";
 	}
+
+	@Override
+	public String invalidDirectoryName(String directoryName) {
+		return "ERROR : nom de dossier " + directoryName + " incorrect";
+	}
+
+	@Override
+	public String missingDirectoryName() {
+		return "ERROR : nom de dossier manquant";
+	}
 }

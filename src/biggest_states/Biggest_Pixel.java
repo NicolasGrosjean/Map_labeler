@@ -49,7 +49,7 @@ public class Biggest_Pixel {
 	private boolean leftDate;
 	private LinkedList<String> localisationFiles;
 	private String fontName;
-	private String landedTitleFileName;
+	private LinkedList<String> landedTitleFileName;
 
 	public Biggest_Pixel(File mapFile, String newMapFile,
 			JProgressBar bar, AbstractText text, int nbStates,
@@ -57,7 +57,7 @@ public class Biggest_Pixel {
 			boolean proportional, boolean leftDate,
 			LinkedList<String> localisationFiles,
 			String fontName,
-			String landedTitleFileName) throws IOException {
+			LinkedList<String> landedTitlesFileNames) throws IOException {
 		this.bar = bar;
 		this.map = ImageIO.read(mapFile);
 		this.newMapFile = newMapFile;
@@ -74,7 +74,7 @@ public class Biggest_Pixel {
 		this.leftDate = leftDate;
 		this.localisationFiles = localisationFiles;
 		this.fontName = fontName;
-		this.landedTitleFileName = landedTitleFileName;
+		this.landedTitleFileName = landedTitlesFileNames;
 		// To simplify we measure progression by line
 		bar.setMaximum(4 * map.getHeight());
 		bar.setMinimum(0);
