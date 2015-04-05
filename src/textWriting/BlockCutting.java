@@ -43,8 +43,10 @@ public class BlockCutting {
 					x++;
 				}
 				// End of map line or of state line (next pixel => lastRGB)
-				storeLines.addLast(new Line(new Point(beginLine, y),
-						new Point(lastRGB, y)));
+				if (beginLine < lastRGB) {
+					storeLines.addLast(new Line(new Point(beginLine, y),
+							new Point(lastRGB, y)));
+				}
 				// Search for storing the sea
 				int lastX = x;
 				x = lastRGB + 1;
@@ -52,6 +54,7 @@ public class BlockCutting {
 						(map.getRGB(x, y) & 0xffffff) != waterColor) {
 					x++;
 				}
+				beginLine = x;
 				while (x < lastX &&
 						((map.getRGB(x, y) & 0xffffff) == waterColor ||
 						(map.getRGB(x, y) & 0xffffff) == borderColor)) {
@@ -67,11 +70,46 @@ public class BlockCutting {
 					seaLines = new LinkedList<Line>();
 					storeStateLines.put(waterColor, seaLines);
 				}
-				seaLines.addLast(new Line(new Point(beginLine, y),
+				if (beginLine < lastRGB) {
+					seaLines.addLast(new Line(new Point(beginLine, y),
 						new Point(lastRGB, y)));
+				}
 			}
 		}
 		return storeStateLines;
+	}
+
+	/**
+	 * USELESS because now done in enumerateLine
+	 * @param map
+	 * @param waterColor
+	 * @return
+	 */
+	public static LinkedList<Line> enumerateSeaLine(
+			BufferedImage map, int waterColor) {
+		LinkedList<Line> seaLines = new LinkedList<Line>();
+		for (int y = 0; y < map.getHeight(); y++) {
+			int x = 0;
+			// Searching a line with sea
+			while (x < map.getWidth()) {
+				if ((map.getRGB(x, y) & 0xffffff) != waterColor) {
+					x++;
+				} else {
+					// Line with sea found
+					int beginLine = x;
+					x++;
+					// Searching the end of this line
+					while (x < map.getWidth() &&
+							(map.getRGB(x, y) & 0xffffff) == waterColor) {
+						x++;
+					}
+					// Store this sea line
+					seaLines.addLast(new Line(new Point(beginLine, y),
+							new Point(x - 1, y)));
+				}
+			}
+		}
+		return seaLines;
 	}
 
 	/**

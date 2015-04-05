@@ -104,6 +104,10 @@ public class Writing {
 					int j = 0;
 					// For each block line for this text line
 					for (int i = 0; i < textHeight[k]; i++) {
+						if (blockLines.size() == 0) {
+							// Not enough lines in the block for the text
+							return; // It is impossible to write text with textSize
+						}
 						Line upperLine = blockLines.get(j);
 						// Impose that upperLine is upper than the previous line			
 						while (j < blockLines.size() - 1 && 
