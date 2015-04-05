@@ -14,7 +14,6 @@ import textWriting.DateWriting;
 /* TODO
  * - Traduction de la date
  * - Traduction dans le landed title
- * - Prendre en argument les dossiers du jeu et des mods (3) plutôt que les fichiers de localisation et landed titles
  */
 /* MESURE DU TEMPS
  * long begin = System.currentTimeMillis();
@@ -84,10 +83,11 @@ public class Main {
 
 			// Algorithm
 			new Biggest_Pixel(mapFile, outFileName, bar, mainArgs.getText(),
-					mainArgs.getNbState(), date, mainArgs.isHarmonize(),
-					mainArgs.getMaxTextSize(), mainArgs.isProportional(),
-					mainArgs.isLeftDate(), mainArgs.getLocalisationFilesNames(),
-					mainArgs.getFontName(), mainArgs.getLandedTitlesFileNames());
+					mainArgs.getNbState(), mainArgs.isAllStates(), date,
+					mainArgs.isHarmonize(), mainArgs.getMaxTextSize(),
+					mainArgs.isProportional(), mainArgs.isLeftDate(),
+					mainArgs.getLocalisationFilesNames(), mainArgs.getFontName(),
+					mainArgs.getLandedTitlesFileNames());
 		} catch (IOException e) {
 			System.out.println(mainArgs.getText().fileNotFound(
 					mainArgs.getMapFileName()));

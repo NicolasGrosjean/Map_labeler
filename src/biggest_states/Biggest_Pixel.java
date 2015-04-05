@@ -43,6 +43,7 @@ public class Biggest_Pixel {
 	private JProgressBar bar;
 	private AbstractText text;
 	private int nbStates;
+	private boolean allStates;
 	private String date;
 	private boolean harmonize;
 	private int maxTextSize;
@@ -53,8 +54,8 @@ public class Biggest_Pixel {
 
 	public Biggest_Pixel(File mapFile, String newMapFile,
 			JProgressBar bar, AbstractText text, int nbStates,
-			String date, boolean harmonize, int maxTextSize,
-			boolean proportional, boolean leftDate,
+			boolean allStates, String date, boolean harmonize,
+			int maxTextSize, boolean proportional, boolean leftDate,
 			LinkedList<String> localisationFiles,
 			String fontName,
 			LinkedList<String> landedTitlesFileNames) throws IOException {
@@ -62,7 +63,8 @@ public class Biggest_Pixel {
 		this.map = ImageIO.read(mapFile);
 		this.newMapFile = newMapFile;
 		this.text = text;
-		this.nbStates = nbStates;	
+		this.nbStates = nbStates;
+		this.allStates = allStates;
 		this.date = date;
 		this.harmonize = harmonize;
 		if (proportional) {
@@ -104,8 +106,12 @@ public class Biggest_Pixel {
 			}
 
 			// Calculating the nbProvinces to display
-			if (nbStates > states.size() + 1) {
+			if (!allStates && nbStates > states.size() - 2) {
 				throw new IllegalArgumentException(text.moreStateThanAvailable());
+			}
+			if (allStates) {
+				nbStates = states.size() - 2;
+				System.out.println(nbStates);
 			}
 			// Ranking states by decreasing pixel number
 			PriorityQueue<State> orderedStates = new PriorityQueue<State>(states.size());

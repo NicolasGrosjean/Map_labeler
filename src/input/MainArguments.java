@@ -30,6 +30,7 @@ public class MainArguments {
 	// Other parameters
 	private String fontName = null;
 	private int nbState = 0;
+	private boolean allStates = false;
 	private int maxTextSize = Integer.MAX_VALUE;
 	private boolean proportional = true; // if true -> proportional to map size
 	/* States text color (if true black and white -> harmonized
@@ -97,13 +98,18 @@ public class MainArguments {
 			case "-sta" :
 				i++;
 				if (i < args.length) {
-					try {
-						nbState = Integer.parseInt(args[i]);
-					} catch (NumberFormatException e) {
-						if (text == null) {
-							throw new IllegalArgumentException("ERROR : language not specified");
+					String sNbState = args[i];
+					if (sNbState.charAt(0) == 'a') {
+						allStates = true;
+					} else {
+						try {
+							nbState = Integer.parseInt(sNbState);
+						} catch (NumberFormatException e) {
+							if (text == null) {
+								throw new IllegalArgumentException("ERROR : language not specified");
+							}
+							throw new IllegalArgumentException(text.invalidStateNumber());
 						}
-						throw new IllegalArgumentException(text.invalidStateNumber());
 					}
 				}
 				break;
@@ -185,9 +191,9 @@ public class MainArguments {
 		if (fontName == null) {
 			throw new IllegalArgumentException(text.missingFontName());
 		}
-		if (nbState == 0) {
+		if (!allStates && nbState == 0) {
 			throw new IllegalArgumentException(text.missingStateNumber());
-		} else if (nbState < 0) {
+		} else if (!allStates && nbState < 0) {
 			throw new IllegalArgumentException(text.invalidStateNumber());
 		}
 		if (maxTextSize < 20) {
@@ -225,6 +231,10 @@ public class MainArguments {
 
 	public int getNbState() {
 		return nbState;
+	}
+
+	public boolean isAllStates() {
+		return allStates;
 	}
 
 	public int getMaxTextSize() {
