@@ -287,11 +287,7 @@ public class Writing {
 	}
 
 	public Point[] getTextOriginSolution() {
-		if (isCalculated) {
 			return textOriginSolution;
-		} else {
-			throw new IllegalAccessError("Writing not calculated");
-		}
 	}
 
 	/**

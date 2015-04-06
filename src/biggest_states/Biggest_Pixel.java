@@ -68,8 +68,8 @@ public class Biggest_Pixel {
 		this.date = date;
 		this.harmonize = harmonize;
 		if (proportional) {
-			this.maxTextSize = Math.min(map.getHeight(), map.getWidth()) / 2048
-					* 100;
+			this.maxTextSize = Math.min(map.getHeight(), map.getWidth()) *100 
+					/ 2048;
 		} else {
 			this.maxTextSize = maxTextSize;
 		}
@@ -111,7 +111,6 @@ public class Biggest_Pixel {
 			}
 			if (allStates) {
 				nbStates = states.size() - 2;
-				System.out.println(nbStates);
 			}
 			// Ranking states by decreasing pixel number
 			PriorityQueue<State> orderedStates = new PriorityQueue<State>(states.size());
@@ -167,8 +166,9 @@ public class Biggest_Pixel {
 					String stateName = localisation.getStateName(stateCode);
 					// Loads lines for this state
 					LinkedList<Line> state = h.get(s.getRGB());
-					if (state == null) {
-						throw new IllegalArgumentException("No block to cut");
+					if (state == null || state.isEmpty()) {
+						// No block to cut
+						continue;
 					}
 					// Blocks for this state
 					LinkedList<PriorityQueue<Line>> l = BlockCutting.cutBlocks(state);
@@ -229,7 +229,7 @@ public class Biggest_Pixel {
 			String dateTab[] = {date};
 			for (PriorityQueue<Line> p : blocks) {
 				Writing resWriting = new Writing();
-				resWriting.calculateWriting(p, dateTab, map, 3 * maxTextSize / 4, true,
+				resWriting.calculateWriting(p, dateTab, map, Math.max(3 * maxTextSize / 4, 21), true,
 						leftDate, fontName);
 				if (resWriting.getTextOriginSolutionYOfLowerWord() < seaW.getTextOriginSolutionYOfLowerWord()) {
 					// Keep the best combination
