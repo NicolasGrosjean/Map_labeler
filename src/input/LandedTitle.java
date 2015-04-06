@@ -31,10 +31,14 @@ public class LandedTitle {
 				// Skipping comment
 				if (word.regionMatches(0, "#", 0, 1)) {
 					word = scanner.nextLine();
-				} else if (word.regionMatches(0, "e_", 0, 2) ||
+				} else if ((word.regionMatches(0, "e_", 0, 2) ||
 						word.regionMatches(0, "k_", 0, 2) ||
 						word.regionMatches(0, "d_", 0, 2) ||
-						word.regionMatches(0, "c_", 0, 2)) {
+						word.regionMatches(0, "c_", 0, 2)) &&
+						!word.regionMatches(word.length() - 1,
+								System.getProperty("line.separator"), 0, 1)) {
+					// Words finishing by line.separator are not that we need
+					// A better thing is to see if the words is followed by "= {"
 					// Searching its color
 					while (scanner.hasNext()) {
 						String color = scanner.next();
