@@ -101,17 +101,22 @@ public class Writing {
 				// verify the text can be printed in the upper lines of the blocks
 				// For each text line
 				for (int k = 0; k < textToWrite.length; k++) {
-					int j = 0;
+					int j = -1;
 					// For each block line for this text line
 					for (int i = 0; i < textHeight[k]; i++) {
 						if (blockLines.size() == 0) {
 							// Not enough lines in the block for the text
 							return; // It is impossible to write text with textSize
 						}
-						Line upperLine = blockLines.get(j);
+						Line upperLine;
+						if (j == -1) {
+							upperLine = l;
+						} else {
+							upperLine = blockLines.get(j);
+						}
 						// Impose that upperLine is upper than the previous line			
 						while (j < blockLines.size() - 1 && 
-								upperLine.getBeginLine().y > textOrigin[k].y - i) {
+								upperLine.getBeginLine().y != textOrigin[k].y - i) {
 							upperLine = blockLines.get(++j);
 						}
 						if (j == blockLines.size() - 1) {

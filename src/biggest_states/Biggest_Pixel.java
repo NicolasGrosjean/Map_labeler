@@ -128,6 +128,10 @@ public class Biggest_Pixel {
 					foundStates++;
 				}
 			}
+			// Load lines of the states (must be done before transforming map because of Java bug on map)
+			HashMap<Integer, LinkedList<Line>> h = BlockCutting.enumerateLine(
+					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B,
+					(UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B);
 			/* Transforming the image to the writing image
 			 * by putting in white the pixels not in the kingdom to display */
 			for (int y = 0; y < map.getHeight(); y++) {
@@ -150,10 +154,6 @@ public class Biggest_Pixel {
 			// Load texts
 			LandedTitle landedTitles = new LandedTitle(landedTitleFileName);
 			Localisation localisation = new Localisation(localisationFiles, text);
-			// Load lines of the states
-			HashMap<Integer, LinkedList<Line>> h = BlockCutting.enumerateLine(
-					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B,
-					(UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B);
 			// Indicator for the progression bar
 			int displayedStates = 0;
 			for (State s : stateToDisplay) {
