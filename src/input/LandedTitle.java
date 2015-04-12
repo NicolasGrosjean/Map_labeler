@@ -37,15 +37,42 @@ public class LandedTitle {
 						word.regionMatches(0, "c_", 0, 2)) &&
 						!word.regionMatches(word.length() - 1,
 								System.getProperty("line.separator"), 0, 1)) {
+					// If it is not the beginning of a block ("= {") we must search again
+					if (scanner.hasNext()) {
+						String afterWord = scanner.next();
+						while (afterWord.length() == 0 && scanner.hasNext()) {
+							afterWord = scanner.next();
+						}
+						if (afterWord.charAt(0) != '=') {
+							continue; // It is not a title definition
+						}
+						if (afterWord.length() > 1 && afterWord.charAt(1) != '{') {
+							while (afterWord.length() == 0 && scanner.hasNext()) {
+								afterWord = scanner.next();
+							}
+							if (afterWord.charAt(0) != '{') {
+								continue; // It is not a title definition
+							}
+						}
+					}
+					// Counting number of blocks in which we are from this state
+					// Because the States which open blocks doesn't necessary declare a color
+					int nbBlock = 1;
 					// Words finishing by line.separator are not that we need
 					// A better thing is to see if the words is followed by "= {"
 					// Searching its color
 					while (scanner.hasNext()) {
 						String color = scanner.next();
+//						System.out.println(nbBlock +" : " + color);
+						if (nbBlock == 0) {
+							// We are not yet in the state
+							break;
+						}
 						// Skipping comment
 						if (color.regionMatches(0, "#", 0, 1)) {
 							color = scanner.nextLine();
 						} else if (color.regionMatches(0, "color", 0, 5)){
+//							System.out.println("COLOR : " + color);
 							// Color found
 							// Searching integer (r code)
 							while (!scanner.hasNextInt() && scanner.hasNext()) {
@@ -66,6 +93,12 @@ public class LandedTitle {
 							// Storing state code with rgb code
 							stateCode.put((r << 16)	+ (g << 8) + b, word);
 							break;
+						} else if (color.contains("{")) {
+							 // Enter in a new block eventually except color
+							// It is unimportant when we found a color
+							nbBlock++;
+						} else if (color.contains("}")) {
+							nbBlock--; // Leave a block
 						}
 					}
 				}
