@@ -1,6 +1,7 @@
 package tests;
 
 import input.LandedTitle;
+
 import java.util.LinkedList;
 
 import org.junit.Test;
@@ -8,6 +9,16 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 public class TestLandedTitle extends TestCase {
+
+	@Test
+	public void testSWMHLandedTitleOneStateOneColor() {
+		LinkedList<String> list = new LinkedList<String>();
+		list.add("landed_titles.txt");
+		LandedTitle lt = new LandedTitle(list);
+		LinkedList<String> doubleStates = lt.getDouble();
+		//System.out.println(doubleStates);
+		assertEquals(0, doubleStates.size());
+	}
 
 	@Test
 	public void testSWMHLandedTitle() {

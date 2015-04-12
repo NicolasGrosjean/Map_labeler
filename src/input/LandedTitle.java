@@ -3,6 +3,7 @@ package input;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -118,5 +119,23 @@ public class LandedTitle {
 
 	public String getStateCode(int rgb) {
 		return stateCode.get(rgb & 0xffffff);
+	}
+
+	/**
+	 * USEFULL ONLY FOR TESTING
+	 * List of States which are in double (or more) in the result of parsing
+	 * @return
+	 */
+	public LinkedList<String> getDouble() {
+		Collection<String> states = stateCode.values();
+		LinkedList<String> seenStates = new LinkedList<String>();
+		LinkedList<String> doubleStates = new LinkedList<String>();
+		for (String s : states) {
+			if (seenStates.contains(s)) {
+				doubleStates.add(s);
+			}
+			seenStates.add(s);
+		}
+		return doubleStates;
 	}
 }
