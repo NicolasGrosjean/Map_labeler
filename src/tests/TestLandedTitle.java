@@ -299,7 +299,7 @@ public class TestLandedTitle extends TestCase {
 		assertEquals("k_canarias", lt.getStateCode((182 << 16) + (198 << 8) + 176));
 		//assertEquals("d_canarias", lt.getStateCode((24 << 16) + (58 << 8) + 121)); // d_galloway
 		assertEquals("d_madeira", lt.getStateCode((213 << 16) + (196 << 8) + 1));
-		
+
 		assertEquals("e_arabia", lt.getStateCode((21 << 16) + (128 << 8) + 0));
 		assertEquals("k_arabia", lt.getStateCode((45 << 16) + (169 << 8) + 12));
 		assertEquals("k_egypt", lt.getStateCode((65 << 16) + (36 << 8) + 40));
@@ -337,8 +337,14 @@ public class TestLandedTitle extends TestCase {
 		assertEquals("d_orkney", lt.getStateCode((102 << 16) + (51 << 8) + 93));
 		assertEquals("d_western_isles", lt.getStateCode((32 << 16) + (48 << 8) + 99));
 
-//		assertEquals("", lt.getStateCode(( << 16) + ( << 8) + ));
-//		assertEquals("", lt.getStateCode(( << 16) + ( << 8) + ));
-		
+		assertEquals("e_mali", lt.getStateCode((223 << 16) + (139 << 8) + 40));
+		assertEquals("k_ghana", lt.getStateCode((90 << 16) + (130 << 8) + 30));
+		//assertEquals("k_mali", lt.getStateCode((158 << 16) + (188 << 8) + 61)); // c_mali
+		assertEquals("k_takrur", lt.getStateCode((46 << 16) + (180 << 8) + 70));
+		assertEquals("k_songhay", lt.getStateCode((85 << 16) + (125 << 8) + 120));
+		assertEquals("k_sahara", lt.getStateCode((196 << 16) + (176 << 8) + 46));
+		assertEquals("k_fezzan", lt.getStateCode((110 << 16) + (105 << 8) + 60));
+		assertEquals("k_kanem", lt.getStateCode((255 << 16) + (119 << 8) + 112));
+		assertEquals("k_hausaland", lt.getStateCode((220 << 16) + (58 << 8) + 200));		
 	}
 }

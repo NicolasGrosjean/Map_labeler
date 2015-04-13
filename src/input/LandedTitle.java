@@ -10,6 +10,11 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+/**
+ * Read the landed titles files
+ * @author Mouchi
+ * @bug The case color={0 (missing space between those elements) is not manage
+ */
 public class LandedTitle {
 	private Map<Integer, String> stateCode;
 
@@ -85,10 +90,19 @@ public class LandedTitle {
 //							System.out.println("COLOR : " + color);
 							// Color found
 							// Searching integer (r code)
-							while (!scanner.hasNextInt() && scanner.hasNext()) {
-								scanner.next();
+							int r = -1;
+							while (r == -1 && !scanner.hasNextInt() && scanner.hasNext()) {
+								String s = scanner.next();
+								// If there is non space between '{' and the int
+								// So the string must contains { and a int, its length > 1
+								if (s.length() > 1 && s.charAt(0) == '{') {
+									r = Integer.parseInt(s.substring(1, s.length()));
+								}
 							}
-							int r = scanner.nextInt();
+							// r didn't read yet
+							if (r == -1) {
+								r = scanner.nextInt();
+							}
 							// Searching integer (g code)
 							while (!scanner.hasNextInt() && scanner.hasNext()) {
 								scanner.next();
@@ -105,6 +119,7 @@ public class LandedTitle {
 									b = Integer.parseInt(s.substring(0, s.length() - 2));
 								}
 							}
+							// b didn't read yet
 							if (b == -1) {
 								b = scanner.nextInt();
 							}
