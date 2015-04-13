@@ -30,17 +30,26 @@ public class LandedTitle {
 			while (scanner.hasNext()) {
 				String word = scanner.next();
 				// Skipping comment
-				if (word.regionMatches(0, "#", 0, 1)) {
+				if (word.contains("#")) {
 					word = scanner.nextLine();
-				} else if ((word.regionMatches(0, "e_", 0, 2) ||
+				} else if (word.regionMatches(0, "e_", 0, 2) ||
 						word.regionMatches(0, "k_", 0, 2) ||
 						word.regionMatches(0, "d_", 0, 2) ||
-						word.regionMatches(0, "c_", 0, 2)) &&
-						!word.regionMatches(word.length() - 1,
-								System.getProperty("line.separator"), 0, 1)) {
+						word.regionMatches(0, "c_", 0, 2)) {
 					// If it is not the beginning of a block ("= {") we must search again
-					if (scanner.hasNext()) {
-						String afterWord = scanner.next();
+					String afterWord;
+					if (word.contains("=")) {
+						afterWord = word;
+						if (afterWord.length() > 1 && !afterWord.contains("{")) {
+							while (afterWord.length() == 0 && scanner.hasNext()) {
+								afterWord = scanner.next();
+							}
+							if (afterWord.charAt(0) != '{') {
+								continue; // It is not a title definition
+							}
+						}
+					} else if (scanner.hasNext()) {
+						afterWord = scanner.next();
 						while (afterWord.length() == 0 && scanner.hasNext()) {
 							afterWord = scanner.next();
 						}
@@ -70,7 +79,7 @@ public class LandedTitle {
 							break;
 						}
 						// Skipping comment
-						if (color.regionMatches(0, "#", 0, 1)) {
+						if (color.contains("#")) {
 							color = scanner.nextLine();
 						} else if (color.regionMatches(0, "color", 0, 5)){
 //							System.out.println("COLOR : " + color);
@@ -86,11 +95,23 @@ public class LandedTitle {
 							}
 							int g = scanner.nextInt();
 							// Searching integer (b code)
-							while (!scanner.hasNextInt() && scanner.hasNext()) {
-								scanner.next();
+							/* Put b to -1 (impossible value) in order to see
+							 * if b is affected in the "while" boucle */
+							int b = -1;
+							while (b == - 1 && !scanner.hasNextInt() && scanner.hasNext()) {
+								String s = scanner.next();
+								// If there is non space between the int and '}'
+								if (s.length() > 0 && s.charAt(s.length() - 2) == '}') {
+									b = Integer.parseInt(s.substring(0, s.length() - 2));
+								}
 							}
-							int b = scanner.nextInt();
-
+							if (b == -1) {
+								b = scanner.nextInt();
+							}
+							// Remove all characters after '=' in word if necessary
+							if (word.contains("=")) {
+								word = word.substring(0, word.indexOf("="));
+							}
 							// Storing state code with rgb code
 							stateCode.put((r << 16)	+ (g << 8) + b, word);
 							break;
