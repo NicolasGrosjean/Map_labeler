@@ -106,7 +106,10 @@ public class Writing {
 					for (int i = 0; i < textHeight[k]; i++) {
 						if (blockLines.size() == 0) {
 							// Not enough lines in the block for the text
-							return; // It is impossible to write text with textSize
+							// It is impossible to write text with textSize
+							calculateCenteredSolution(solutionNumber,addSolution, solutions,
+									textToWrite, g2d, frc, date, maxTextSize);
+							return;
 						}
 						Line upperLine;
 						if (j == -1) {
@@ -121,7 +124,10 @@ public class Writing {
 						}
 						if (j == blockLines.size() - 1) {
 							// Not enough lines in the block for the text
-							return; // It is impossible to write text with textSize
+							// It is impossible to write text with textSize
+							calculateCenteredSolution(solutionNumber,addSolution, solutions,
+									textToWrite, g2d, frc, date, maxTextSize);
+							return;
 						}
 						/* Search if a line with the height p.getY() - i can contains
 						 * the text */
@@ -190,24 +196,8 @@ public class Writing {
 				}
 			}
 		}
-		if (solutionNumber > 1) {
-			int meanX = (addSolution.x + textOriginSolution[0].x) /
-					solutionNumber;
-			int meanY = (addSolution.y + textOriginSolution[0].y) /
-					solutionNumber;
-			// Search in the solution list the nearest Point
-			nearestSolution(solutions, meanX, meanY);
-			// Calculate textOrigin[i] for i>0
-			calculateTextOrigin(textToWrite, g2d, frc);
-			// Save final result
-			saveSolution();
-			// Add 1 to textSize because subtract 1 when we draw
-			textSize++;
-		}
-		if (date && textSize == maxTextSize) {
-			// Add 1 to textSize because subtract 1 when we draw
-			textSize++;
-		}
+		calculateCenteredSolution(solutionNumber,addSolution, solutions,
+				textToWrite, g2d, frc, date, maxTextSize);
 	}
 
 	private void calculateTextWidth(String[] textLines, Graphics2D g2d, FontRenderContext frc) {
@@ -280,6 +270,29 @@ public class Writing {
 				textOrigin[0].x = p.x;
 				textOrigin[0].y = p.y;
 			}
+		}
+	}
+
+	private void calculateCenteredSolution(int solutionNumber, Point addSolution,
+			LinkedList<Point> solutions, String[] textToWrite, Graphics2D g2d, 
+			FontRenderContext frc, boolean date, int maxTextSize) {
+		if (solutionNumber > 1) {
+			int meanX = (addSolution.x + textOriginSolution[0].x) /
+					solutionNumber;
+			int meanY = (addSolution.y + textOriginSolution[0].y) /
+					solutionNumber;
+			// Search in the solution list the nearest Point
+			nearestSolution(solutions, meanX, meanY);
+			// Calculate textOrigin[i] for i>0
+			calculateTextOrigin(textToWrite, g2d, frc);
+			// Save final result
+			saveSolution();
+			// Add 1 to textSize because subtract 1 when we draw
+			textSize++;
+		}
+		if (date && textSize == maxTextSize) {
+			// Add 1 to textSize because subtract 1 when we draw
+			textSize++;
 		}
 	}
 
