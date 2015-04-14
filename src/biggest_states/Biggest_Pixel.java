@@ -178,7 +178,10 @@ public class Biggest_Pixel {
 					if (stateName != null) {
 						textToWrite = stateName;
 					} else {
-						textToWrite = stateCode;
+						/* If not found in the localization files, use the name
+						 * of the title code with uppercase letter */
+						String maj = stateCode.substring(2, 3).toUpperCase();
+						textToWrite = maj + stateCode.substring(3);
 					}
 					for (PriorityQueue<Line> p : l) {
 						// Calculate optimized writing
