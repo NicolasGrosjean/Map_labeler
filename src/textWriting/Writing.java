@@ -159,6 +159,7 @@ public class Writing {
 						frc = g2d.getFontRenderContext();
 						calculateTextWidth(textToWrite, g2d, frc);
 						calculateTextHeight(textToWrite, g2d, frc);
+						calculateTextOrigin(textToWrite, g2d, frc);
 					} else if (solutionNumber == 0) {
 						// textOrigin[0] is the better choice at this moment
 						if (!date || !leftDate || textOriginSolution != null &&								
@@ -227,7 +228,7 @@ public class Writing {
 
 	/**
 	 * Calculate textOrigin[i] for i > 0 with textOrigin[0]
-	 * Required textOrigin[0] and textWidth known/calculated
+	 * Required textOrigin[0], textWidth and textHeight known/calculated
 	 * @param textLines
 	 * @param g2d
 	 * @param frc
@@ -237,10 +238,9 @@ public class Writing {
 		for (int i = 1; i < textLines.length; i++) {
 			textOrigin[i] = new Point();
 			textOrigin[i].x = textOrigin[0].x - (textWidth[i] - textWidth[0]) / 2;
-			GlyphVector gvI = g2d.getFont().createGlyphVector(frc, textLines[i]);
+			GlyphVector gvI = g2d.getFont().createGlyphVector(frc, textLines[textLines.length - 1 - i]);
 			textOrigin[i].y = textOrigin[i - 1].y // origin of the lower line
-					+ g2d.getFont().createGlyphVector(frc, textLines[i - 1]).
-					getPixelBounds(null, 0,0).y  // height of the lower line compared to its origin
+					- textHeight[i - 1]  // height of the lower line compared to its origin
 					- calculateMargin(g2d, frc) // margin
 					- gvI.getPixelBounds(null, 0,0).y
 					- gvI.getPixelBounds(null, 0,0).height; // height under its origin of the ith lower line
@@ -292,7 +292,7 @@ public class Writing {
 	}
 
 	public Point[] getTextOriginSolution() {
-			return textOriginSolution;
+		return textOriginSolution;
 	}
 
 	/**
