@@ -27,15 +27,7 @@ public class State implements Comparable<State> {
 		this.rgb = rGB & 0xffffff;
 		this.size = size;
 		if (harmonize) {
-			if (((rGB & 0xff0000) >> 16) > 128 &&
-					((rGB & 0xff00) >> 8) > 128 &&
-					(rGB & 0xff) > 128) {
-				// State has V (in TSV code) upper than 128
-				// To maximize contrast, textColor has V=0
-				this.textColor = 0x0;
-			} else {
-				this.textColor = 0xffffff;
-			}
+			this.textColor = 0xffffff;
 		} else {
 			this.textColor = rgb ^ 0xffffff;
 		}
