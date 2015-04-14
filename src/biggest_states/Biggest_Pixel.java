@@ -179,9 +179,30 @@ public class Biggest_Pixel {
 						textToWrite = stateName;
 					} else {
 						/* If not found in the localization files, use the name
-						 * of the title code with uppercase letter */
-						String maj = stateCode.substring(2, 3).toUpperCase();
-						textToWrite = maj + stateCode.substring(3);
+						 * of the title code with upper case letter */
+						String maj = stateCode.substring(2, 3).toUpperCase();						
+						textToWrite = maj;
+						int i = 3;
+						int j = 3;
+						while (i < stateCode.length() - 1) {
+							while (i < stateCode.length() - 1 && stateCode.charAt(i) != '_') {
+								i++;
+							}
+							// Copy of the text until this end or '_'
+							if (stateCode.charAt(i) != '_') {
+								textToWrite = textToWrite + stateCode.substring(j, i + 1);
+							} else {
+								textToWrite = textToWrite + stateCode.substring(j, i);
+							}
+							i++;
+							j = i + 1;
+							if (i < stateCode.length() - 1) {
+								// '_' found
+								// The next letter is in upper case and '_' replace by ' '
+								maj = stateCode.substring(i, i + 1).toUpperCase();
+								textToWrite = textToWrite + " " + maj;
+							}
+						}
 					}
 					for (PriorityQueue<Line> p : l) {
 						// Calculate optimized writing
@@ -254,7 +275,7 @@ public class Biggest_Pixel {
 						seaW.getTextOriginSolution()[0].y);			        
 				g2d.dispose();
 			}
-			
+
 
 			// Write image on png file
 			try {
