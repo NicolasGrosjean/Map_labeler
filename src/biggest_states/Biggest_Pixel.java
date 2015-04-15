@@ -255,9 +255,10 @@ public class Biggest_Pixel {
 				Writing resWriting = new Writing();
 				resWriting.calculateWriting(p, dateTab, map, Math.max(3 * maxTextSize / 4, 21), true,
 						leftDate, fontName);
-				if (resWriting.getTextOriginSolutionYOfLowerWord() < seaW.getTextOriginSolutionYOfLowerWord()) {
-					// Keep the best combination
+				if (resWriting.getUnVerifiedTextSize() > 20) {
+					// Keep the first good combination because it is ordered by decreasing y
 					seaW = new Writing(resWriting);
+					break;
 				}
 			}
 			if (seaW.getTextOriginSolution() != null) {

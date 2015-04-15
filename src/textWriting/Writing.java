@@ -168,8 +168,8 @@ public class Writing {
 						calculateTextOrigin(textToWrite, g2d, frc);
 					} else if (solutionNumber == 0) {
 						// textOrigin[0] is the better choice at this moment
-						if (!date || !leftDate || textOriginSolution != null &&								
-								textOriginSolution[0].y > textOrigin[0].y) {
+						if (!date || !leftDate || (textOriginSolution != null &&
+								textOriginSolution[0].y > textOrigin[0].y)) {
 							// For a date in left, we save only if it is higher
 							// Else always save
 							saveSolution();
