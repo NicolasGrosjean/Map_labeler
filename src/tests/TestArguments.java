@@ -24,7 +24,7 @@ public class TestArguments extends TestCase {
 	private final String pngFileName = "res.png";
 	private final String waitingImage = "fond.png";
 	private final String gameDirectory = "C:/Jeux/Steam/SteamApps/common/Crusader Kings II";
-	private final String modDirectory = "C:/Users/Nicolas/Documents/Paradox Interactive/Crusader Kings II/MOD/swmh2.854";
+	private final String modDirectory = "C:/Users/Nicolas/Documents/Paradox Interactive/Crusader Kings II/MOD/Historical Immersion Project";
 
 	@Before
 	public void setUp() {
