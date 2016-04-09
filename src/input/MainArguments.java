@@ -1,10 +1,9 @@
 package input;
 
-import java.io.File;
-import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 
+import stateNames.Ck2Files;
+import stateNames.GameFiles;
 import Text.AbstractText;
 import Text.TextEnglish;
 import Text.TextFrancais;
@@ -21,10 +20,7 @@ public class MainArguments {
 	private String mapFileName = null;
 	private String outFileName = null;
 	private String imageFileName = null;
-	private PriorityQueue<File> landedTitlesFiles;
-	private PriorityQueue<File> localisationFiles;
-	private LinkedList<String> landedTitlesFilesNames = new LinkedList<String>();
-	private LinkedList<String> localisationFilesNames = new LinkedList<String>();
+	private GameFiles gameFiles;
 	private String gameDirectory = null;
 	private LinkedList<String> modDirectories = new LinkedList<String>();
 	// Other parameters
@@ -148,22 +144,11 @@ public class MainArguments {
 			}
 			i++;
 		}
-		// Read the directories and sort the files
-		landedTitlesFiles = new PriorityQueue<File>(20, new TimeFileComparator());
-		localisationFiles = new PriorityQueue<File>(20, new LexicalFileComparator());
-		DirectoryReader.readAndSortDirectoryFiles(gameDirectory, text,
-				landedTitlesFiles, localisationFiles);
-		while (!modDirectories.isEmpty()) {
-			DirectoryReader.readAndSortDirectoryFiles(modDirectories.removeFirst(),
-					text, landedTitlesFiles, localisationFiles);
-		}
-		// Transform Files priority queues list into String list
-		while (!landedTitlesFiles.isEmpty()) {
-			landedTitlesFilesNames.addLast(landedTitlesFiles.remove().toString());
-		}
-		while (!localisationFiles.isEmpty()) {
-			localisationFilesNames.addLast(localisationFiles.remove().toString());
-		}
+		
+		// TODO : EUIV
+		gameFiles = new Ck2Files(gameDirectory, modDirectories, text);
+		
+		
 		// Check the needed parameters are here and correct
 		checkArgs();
 	}
@@ -180,12 +165,6 @@ public class MainArguments {
 		}
 		if (imageFileName == null) {
 			throw new IllegalArgumentException(text.missingWaitingImageFile());
-		}
-		if (landedTitlesFilesNames == null) {
-			throw new IllegalArgumentException(text.missingLandedTitleFile());
-		}
-		if (localisationFilesNames.isEmpty()) {
-			throw new IllegalArgumentException(text.missingLocalisationFiles());
 		}
 		if (fontName == null) {
 			throw new IllegalArgumentException(text.missingFontName());
@@ -214,14 +193,10 @@ public class MainArguments {
 
 	public String getImageFileName() {
 		return imageFileName;
-	}
+	}	
 
-	public LinkedList<String> getLandedTitlesFileNames() {
-		return landedTitlesFilesNames;
-	}
-
-	public LinkedList<String> getLocalisationFilesNames() {
-		return localisationFilesNames;
+	public GameFiles getGameFiles() {
+		return gameFiles;
 	}
 
 	public String getFontName() {
@@ -260,25 +235,5 @@ public class MainArguments {
 		return textualDate;
 	}
 
-	/**
-	 * Order File from the older to the younger
-	 *
-	 */
-	public class TimeFileComparator implements Comparator<File>{
-		@Override
-		public int compare(File f1, File f2) {
-			return (int)(f2.lastModified() - f1.lastModified());
-		}
-	}
 
-	/**
-	 * Order File with the lexical order
-	 *
-	 */
-	public class LexicalFileComparator implements Comparator<File>{
-		@Override
-		public int compare(File f1, File f2) {
-			return f1.getName().compareTo(f2.getName());
-		}
-	}
 }

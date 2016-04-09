@@ -1,4 +1,4 @@
-package input;
+package stateNames;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,10 +15,10 @@ import java.util.regex.Pattern;
  * @author Mouchi
  * @bug The case color={0 (missing space between those elements) is not manage
  */
-public class LandedTitle {
+public class Ck2LandedTitle {
 	private Map<Integer, String> stateCode;
 
-	public LandedTitle(LinkedList<String> landedTitlesFileNames) {
+	public Ck2LandedTitle(LinkedList<String> landedTitlesFileNames) {
 		this.stateCode = new HashMap<Integer, String>();
 		while (!landedTitlesFileNames.isEmpty()) {
 			init(landedTitlesFileNames.removeFirst());

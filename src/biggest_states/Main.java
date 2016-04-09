@@ -86,8 +86,7 @@ public class Main {
 					mainArgs.getNbState(), mainArgs.isAllStates(), date,
 					mainArgs.isHarmonize(), mainArgs.getMaxTextSize(),
 					mainArgs.isProportional(), mainArgs.isLeftDate(),
-					mainArgs.getLocalisationFilesNames(), mainArgs.getFontName(),
-					mainArgs.getLandedTitlesFileNames());
+					mainArgs.getGameFiles(), mainArgs.getFontName());
 		} catch (IOException e) {
 			System.out.println(mainArgs.getText().fileNotFound(
 					mainArgs.getMapFileName()));

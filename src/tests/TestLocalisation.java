@@ -1,6 +1,5 @@
 package tests;
 
-import input.DirectoryReader;
 import input.MainArguments;
 
 import java.io.File;
@@ -10,6 +9,9 @@ import java.util.PriorityQueue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import stateNames.Ck2DirectoryReader;
+import stateNames.Ck2Files;
+import stateNames.GameFiles;
 import Text.AbstractText;
 import Text.TextFrancais;
 
@@ -21,21 +23,22 @@ public class TestLocalisation {
 	private static String gameDirectory;
 	private static LinkedList<String> modDirectories = new LinkedList<String>();
 	private static AbstractText text = new TextFrancais();
-	private static MainArguments ma = new MainArguments();
+	private static Ck2Files files;
 
 	@BeforeClass
 	public static void SetUp() {
 		/* Game parameters */
 		gameDirectory = "C:/Jeux/Steam/SteamApps/common/Crusader Kings II";
 		modDirectories.add("C:/Users/Nicolas/Documents/Paradox Interactive/Crusader Kings II/MOD/Historical Immersion Project");
+		files = new Ck2Files(gameDirectory, modDirectories, text);
 		
 		/* Sort and read the files */
-		landedTitlesFiles = new PriorityQueue<File>(20, ma.new TimeFileComparator());
-		localisationFiles = new PriorityQueue<File>(20, ma.new LexicalFileComparator());
-		DirectoryReader.readAndSortDirectoryFiles(gameDirectory, text,
+		landedTitlesFiles = new PriorityQueue<File>(20, files.new TimeFileComparator());
+		localisationFiles = new PriorityQueue<File>(20, files.new LexicalFileComparator());
+		Ck2DirectoryReader.readAndSortDirectoryFiles(gameDirectory, text,
 				landedTitlesFiles, localisationFiles);
 		while (!modDirectories.isEmpty()) {
-			DirectoryReader.readAndSortDirectoryFiles(modDirectories.removeFirst(),
+			Ck2DirectoryReader.readAndSortDirectoryFiles(modDirectories.removeFirst(),
 					text, landedTitlesFiles, localisationFiles);
 		}
 		// Transform Files priority queues list into String list

@@ -1,11 +1,11 @@
-package input;
+package stateNames;
 
 import java.io.File;
 import java.util.PriorityQueue;
 
 import Text.AbstractText;
 
-public class DirectoryReader {
+public class Ck2DirectoryReader {
 
 	public static void readAndSortDirectoryFiles(String directoryName, AbstractText text,
 			PriorityQueue<File> landedTitlesFiles,

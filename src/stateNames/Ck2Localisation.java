@@ -1,4 +1,4 @@
-package input;
+package stateNames;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 
 import Text.AbstractText;
 
-public class Localisation {
+public class Ck2Localisation {
 	private Map<String, String> stateName;
 	private AbstractText text;
 
-	public Localisation(LinkedList<String> localisationFiles, AbstractText text) {
+	public Ck2Localisation(LinkedList<String> localisationFiles, AbstractText text) {
 		this.text = text;
 		stateName = new HashMap<String, String>();
 		while (!localisationFiles.isEmpty()) {

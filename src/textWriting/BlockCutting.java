@@ -14,6 +14,7 @@ public class BlockCutting {
 	 * @param map The image to be cut
 	 * @return
 	 */
+	// TODO: Adapt to EUIV
 	public static HashMap<Integer, LinkedList<Line>> enumerateLine(
 			BufferedImage map, int waterColor, int borderColor) {
 		HashMap<Integer, LinkedList<Line>> storeStateLines = 

@@ -1,11 +1,10 @@
 package tests;
 
-import input.LandedTitle;
-
 import java.util.LinkedList;
 
 import org.junit.Test;
 
+import stateNames.Ck2LandedTitle;
 import junit.framework.TestCase;
 
 public class TestLandedTitle extends TestCase {
@@ -14,7 +13,7 @@ public class TestLandedTitle extends TestCase {
 	public void testSWMHLandedTitleOneStateOneColor() {
 		LinkedList<String> list = new LinkedList<String>();
 		list.add("landed_titles.txt");
-		LandedTitle lt = new LandedTitle(list);
+		Ck2LandedTitle lt = new Ck2LandedTitle(list);
 		LinkedList<String> doubleStates = lt.getDouble();
 		//System.out.println(doubleStates);
 		assertEquals(0, doubleStates.size());
@@ -24,7 +23,7 @@ public class TestLandedTitle extends TestCase {
 	public void testSWMHLandedTitle() {
 		LinkedList<String> list = new LinkedList<String>();
 		list.add("landed_titles.txt");
-		LandedTitle lt = new LandedTitle(list);
+		Ck2LandedTitle lt = new Ck2LandedTitle(list);
 		assertEquals("k_papal_state", lt.getStateCode((255 << 16) + (249 << 8) + 198));
 		assertEquals("k_orthodox", lt.getStateCode((183 << 16) + (60 << 8) + 155));
 		assertEquals("e_sunni", lt.getStateCode((40 << 16) + (160 << 8) + 40));
