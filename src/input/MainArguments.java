@@ -149,9 +149,8 @@ public class MainArguments {
 			i++;
 		}
 		// Read the directories and sort the files
-		Comparator<File> comparator = new FileComparator();
-		landedTitlesFiles = new PriorityQueue<File>(20, comparator);
-		localisationFiles = new PriorityQueue<File>(20, comparator);
+		landedTitlesFiles = new PriorityQueue<File>(20, new TimeFileComparator());
+		localisationFiles = new PriorityQueue<File>(20, new LexicalFileComparator());
 		DirectoryReader.readAndSortDirectoryFiles(gameDirectory, text,
 				landedTitlesFiles, localisationFiles);
 		while (!modDirectories.isEmpty()) {
@@ -265,10 +264,21 @@ public class MainArguments {
 	 * Order File from the older to the younger
 	 *
 	 */
-	private class FileComparator implements Comparator<File>{
+	public class TimeFileComparator implements Comparator<File>{
 		@Override
 		public int compare(File f1, File f2) {
 			return (int)(f2.lastModified() - f1.lastModified());
+		}
+	}
+
+	/**
+	 * Order File with the lexical order
+	 *
+	 */
+	public class LexicalFileComparator implements Comparator<File>{
+		@Override
+		public int compare(File f1, File f2) {
+			return f1.getName().compareTo(f2.getName());
 		}
 	}
 }
