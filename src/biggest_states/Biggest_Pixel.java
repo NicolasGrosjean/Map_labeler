@@ -218,7 +218,7 @@ public class Biggest_Pixel {
 				// Write text
 				Graphics2D g2d = map.createGraphics();
 				g2d.setFont(new Font(fontName, Font.BOLD, seaW.getTextSize() - 1));
-				g2d.setColor(new Color(mapColors.getWaterColor()));
+				g2d.setColor(new Color(mapColors.getWaterColor() ^ 0xffffff));
 				FontRenderContext frc = g2d.getFontRenderContext();
 				GlyphVector gv = g2d.getFont().createGlyphVector(frc, date);
 				// (0,0) because we need the offset
