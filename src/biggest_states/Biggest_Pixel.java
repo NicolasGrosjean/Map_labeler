@@ -18,6 +18,7 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.JProgressBar;
 
+import colors.MapColors;
 import stateNames.Ck2LandedTitle;
 import stateNames.Ck2Localisation;
 import stateNames.GameFiles;
@@ -27,17 +28,6 @@ import textWriting.Writing;
 import Text.AbstractText;
 
 public class Biggest_Pixel {
-	// RGB code of sea and unknown provinces
-	static private int SEA_R = 51;
-	static private int SEA_G = 67;
-	static private int SEA_B = 85;
-	static private int UNKNOWN_R = 38;
-	static private int UNKNOWN_G = 38;
-	static private int UNKNOWN_B = 38;
-
-	// Black and white pixels
-	static private int WHITE = 0xffffff;
-
 	private BufferedImage map;
 	private String newMapFile;
 	private JProgressBar bar;
@@ -50,12 +40,14 @@ public class Biggest_Pixel {
 	private boolean leftDate;
 	private GameFiles gameFiles;
 	private String fontName;
+	private MapColors mapColors;
 
 	public Biggest_Pixel(File mapFile, String newMapFile,
 			JProgressBar bar, AbstractText text, int nbStates,
 			boolean allStates, String date, boolean harmonize,
 			int maxTextSize, boolean proportional, boolean leftDate,
-			GameFiles gameFiles, String fontName) throws IOException {
+			GameFiles gameFiles, String fontName, MapColors mapColors)
+					throws IOException {
 		this.bar = bar;
 		this.map = ImageIO.read(mapFile);
 		this.newMapFile = newMapFile;
@@ -73,6 +65,7 @@ public class Biggest_Pixel {
 		this.leftDate = leftDate;
 		this.gameFiles = gameFiles;
 		this.fontName = fontName;
+		this.mapColors = mapColors;
 		// To simplify we measure progression by line
 		bar.setMaximum(4 * map.getHeight());
 		bar.setMinimum(0);
@@ -102,11 +95,11 @@ public class Biggest_Pixel {
 			}
 
 			// Calculating the nbProvinces to display
-			if (!allStates && nbStates > states.size() - 2) { // TODO : Replace -2 by -FalseState (2 for Ck2, 3 for EUIV)
+			if (!allStates && nbStates > states.size() - mapColors.getFalseStateColorNumber()) {
 				throw new IllegalArgumentException(text.moreStateThanAvailable());
 			}
 			if (allStates) {
-				nbStates = states.size() - 2; // TODO : Replace -2 by -FalseState (2 for Ck2, 3 for EUIV)
+				nbStates = states.size() - mapColors.getFalseStateColorNumber();
 			}
 			// Ranking states by decreasing pixel number
 			PriorityQueue<State> orderedStates = new PriorityQueue<State>(states.size());
@@ -118,29 +111,22 @@ public class Biggest_Pixel {
 			int foundStates = 0;
 			while (foundStates < nbStates) {
 				State bigState = orderedStates.poll();
-				if (bigState.getRGB() != (SEA_R << 16) + (SEA_G << 8) + SEA_B &&
-						bigState.getRGB() != (UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B) { // TODO : Replace by isTrueState(int rgb)
+				if (mapColors.isTrueState(bigState.getRGB())) {
 					stateToDisplay.addLast(bigState);
 					foundStates++;
 				}
 			}
 			// Load lines of the states (must be done before transforming map because of Java bug on map)
-			HashMap<Integer, LinkedList<Line>> h = BlockCutting.enumerateLine(
-					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B,
-					(UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B); // TODO : Adapt to EUIV
+			HashMap<Integer, LinkedList<Line>> h = BlockCutting.enumerateLine(map, mapColors);
 			/* Transforming the image to the writing image
 			 * by putting in white the pixels not in the kingdom to display */
 			for (int y = 0; y < map.getHeight(); y++) {
 				bar.setValue(map.getHeight() + y);
 				for (int x = 0; x < map.getWidth(); x++) {
 					// Don't touch to sea pixels and unknown
-					if ((map.getRGB(x, y) & 0xffffff) != (SEA_R << 16)
-							+ (SEA_G << 8) + SEA_B
-							&& (map.getRGB(x, y) & 0xffffff) != (UNKNOWN_R << 16)
-							+ (UNKNOWN_G << 8) + UNKNOWN_B
-							&& stateToDisplay
-							.indexOf(new State(map.getRGB(x, y) & 0xffffff, 0, harmonize)) == -1) { // TODO : Adapt to EUIV
-						map.setRGB(x, y, WHITE);
+					if (mapColors.isTrueState(map.getRGB(x, y)) && stateToDisplay
+							.indexOf(new State(map.getRGB(x, y) & 0xffffff, 0, harmonize)) == -1) {
+						map.setRGB(x, y, mapColors.emptyLandFillColor());
 					}
 				}
 			}
@@ -211,7 +197,7 @@ public class Biggest_Pixel {
 			}
 			// Write the date on the sea
 			bar.setString(text.dateWritingMessage());
-			LinkedList<Line> dateLines = h.get((SEA_R << 16) + (SEA_G << 8) + SEA_B); // TODO : put a getSeeColor()
+			LinkedList<Line> dateLines = h.get(mapColors.getWaterColor());
 			// Sea blocks
 			LinkedList<PriorityQueue<Line>> blocks = BlockCutting.cutBlocks(dateLines);
 			bar.setValue(3 * map.getHeight() + map.getHeight()/2);
@@ -232,8 +218,7 @@ public class Biggest_Pixel {
 				// Write text
 				Graphics2D g2d = map.createGraphics();
 				g2d.setFont(new Font(fontName, Font.BOLD, seaW.getTextSize() - 1));
-				g2d.setColor(new Color(((SEA_R << 16) + (SEA_G << 8) +
-						SEA_B) ^ 0xffffff)); // TODO : put a getSeeColor()
+				g2d.setColor(new Color(mapColors.getWaterColor()));
 				FontRenderContext frc = g2d.getFontRenderContext();
 				GlyphVector gv = g2d.getFont().createGlyphVector(frc, date);
 				// (0,0) because we need the offset

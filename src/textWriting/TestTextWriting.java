@@ -13,22 +13,15 @@ import java.util.PriorityQueue;
 
 import javax.imageio.ImageIO;
 
-public class TestTextWriting {
-	// RGB code of sea and unknown provinces
-	static private int SEA_R = 51;
-	static private int SEA_G = 67;
-	static private int SEA_B = 85;
-	static private int UNKNOWN_R = 38;
-	static private int UNKNOWN_G = 38;
-	static private int UNKNOWN_B = 38;
+import colors.Ck2MapColors;
 
+public class TestTextWriting {
 	public static void main(String[] args) {
 		try {
 			File mapFile = new File("tache.png");
 			BufferedImage map = ImageIO.read(mapFile);
 			HashMap<Integer, LinkedList<Line>> h = BlockCutting.enumerateLine(
-					map, (SEA_R << 16) + (SEA_G << 8) + SEA_B,
-					(UNKNOWN_R << 16) + (UNKNOWN_G << 8) + UNKNOWN_B);
+					map, new Ck2MapColors());
 			LinkedList<Line> state = h.get(0xff0000);
 			if (state == null) {
 				throw new IllegalArgumentException("No block to cut");

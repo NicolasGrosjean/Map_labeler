@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
+import colors.MapColors;
+
 public class BlockCutting {
 
 	/**
@@ -14,9 +16,8 @@ public class BlockCutting {
 	 * @param map The image to be cut
 	 * @return
 	 */
-	// TODO: Adapt to EUIV
 	public static HashMap<Integer, LinkedList<Line>> enumerateLine(
-			BufferedImage map, int waterColor, int borderColor) {
+			BufferedImage map, MapColors mapColors) {
 		HashMap<Integer, LinkedList<Line>> storeStateLines = 
 				new HashMap<Integer, LinkedList<Line>>();
 
@@ -36,8 +37,7 @@ public class BlockCutting {
 				// We search the end of this line
 				while (x < map.getWidth() && 
 						((map.getRGB(x, y) & 0xffffff) == rgb ||
-						(map.getRGB(x, y) & 0xffffff) == waterColor ||
-						(map.getRGB(x, y) & 0xffffff) == borderColor)) {				
+						!mapColors.isTrueState(map.getRGB(x, y)))) {				
 					if ((map.getRGB(x, y) & 0xffffff) == rgb) {
 						lastRGB = x;
 					}
@@ -52,24 +52,22 @@ public class BlockCutting {
 				int lastX = x;
 				x = lastRGB + 1;
 				while (x < lastX &&
-						(map.getRGB(x, y) & 0xffffff) != waterColor) {
+						(map.getRGB(x, y) & 0xffffff) != mapColors.getWaterColor()) {
 					x++;
 				}
 				beginLine = x;
-				while (x < lastX &&
-						((map.getRGB(x, y) & 0xffffff) == waterColor ||
-						(map.getRGB(x, y) & 0xffffff) == borderColor)) {
-					if ((map.getRGB(x, y) & 0xffffff) == waterColor) {
+				while (x < lastX && !mapColors.isTrueState(map.getRGB(x, y))) {
+					if ((map.getRGB(x, y) & 0xffffff) == mapColors.getWaterColor()) {
 						lastRGB = x;
 					}
 					x++;
 				}
 				// Store sea line
-				LinkedList<Line> seaLines = storeStateLines.get(waterColor);
+				LinkedList<Line> seaLines = storeStateLines.get(mapColors.getWaterColor());
 				if (seaLines == null) {
 					// It is the first pixel of sea
 					seaLines = new LinkedList<Line>();
-					storeStateLines.put(waterColor, seaLines);
+					storeStateLines.put(mapColors.getWaterColor(), seaLines);
 				}
 				if (beginLine < lastRGB) {
 					seaLines.addLast(new Line(new Point(beginLine, y),

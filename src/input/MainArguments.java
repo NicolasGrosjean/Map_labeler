@@ -2,6 +2,8 @@ package input;
 
 import java.util.LinkedList;
 
+import colors.Ck2MapColors;
+import colors.MapColors;
 import stateNames.Ck2Files;
 import stateNames.GameFiles;
 import Text.AbstractText;
@@ -23,6 +25,7 @@ public class MainArguments {
 	private GameFiles gameFiles;
 	private String gameDirectory = null;
 	private LinkedList<String> modDirectories = new LinkedList<String>();
+	private MapColors mapColors;
 	// Other parameters
 	private String fontName = null;
 	private int nbState = 0;
@@ -147,6 +150,7 @@ public class MainArguments {
 		
 		// TODO : EUIV
 		gameFiles = new Ck2Files(gameDirectory, modDirectories, text);
+		mapColors = new Ck2MapColors();
 		
 		
 		// Check the needed parameters are here and correct
@@ -197,6 +201,10 @@ public class MainArguments {
 
 	public GameFiles getGameFiles() {
 		return gameFiles;
+	}
+
+	public MapColors getMapColors() {
+		return mapColors;
 	}
 
 	public String getFontName() {
