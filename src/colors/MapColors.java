@@ -22,7 +22,7 @@ public abstract class MapColors {
 	 * @return
 	 */
 	public boolean isWater(int rgb) {
-		return rgb == getWaterColor();
+		return (rgb & 0xffffff) == getWaterColor();
 	}
 
 	/**

@@ -19,8 +19,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JProgressBar;
 
 import colors.MapColors;
-import stateNames.Ck2LandedTitle;
-import stateNames.Ck2Localisation;
 import stateNames.GameFiles;
 import textWriting.BlockCutting;
 import textWriting.Line;

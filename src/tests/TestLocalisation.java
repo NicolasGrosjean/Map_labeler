@@ -1,6 +1,5 @@
 package tests;
 
-import input.MainArguments;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -11,7 +10,6 @@ import org.junit.Test;
 
 import stateNames.Ck2DirectoryReader;
 import stateNames.Ck2Files;
-import stateNames.GameFiles;
 import Text.AbstractText;
 import Text.TextFrancais;
 

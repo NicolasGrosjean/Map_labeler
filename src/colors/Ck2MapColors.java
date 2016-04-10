@@ -18,7 +18,7 @@ public class Ck2MapColors extends MapColors {
 
 	@Override
 	public boolean isLandButFalseState(int rgb) {
-		return rgb == ((NOMANLAND_R << 16) + (NOMANLAND_G << 8) + NOMANLAND_B);
+		return (rgb & 0xffffff) == ((NOMANLAND_R << 16) + (NOMANLAND_G << 8) + NOMANLAND_B);
 	}
 
 	@Override
