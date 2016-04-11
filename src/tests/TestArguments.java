@@ -4,13 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import biggest_states.Main;
-import junit.framework.TestCase;
 
-public class TestArguments extends TestCase {
+public class TestArguments {
 	// To catch output
 	private ByteArrayOutputStream outContent;
 	// To restore output
@@ -45,7 +45,7 @@ public class TestArguments extends TestCase {
 	public void testBadArgument() {
 		String args[] = {"-fr", "bad"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : " + "bad" + " est un argument inconnu. " +
+		Assert.assertEquals("ERROR : " + "bad" + " est un argument inconnu. " +
 				"Les arguments doivent commencer par un '-'" + separator,
 				outContent.toString());
 	}
@@ -57,7 +57,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif",};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : language not specified" + separator,
+		Assert.assertEquals("ERROR : language not specified" + separator,
 				outContent.toString());
 	}
 
@@ -68,7 +68,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : fichier " + "bad_" + bmpFileName + " n'a pas été trouvé!" + separator,
+		Assert.assertEquals("ERROR : fichier " + "bad_" + bmpFileName + " n'a pas été trouvé!" + separator,
 				outContent.toString());
 	}
 
@@ -79,7 +79,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory, "-sta", "10",
 				"-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : fichier de la carte manquant" + separator,
+		Assert.assertEquals("ERROR : fichier de la carte manquant" + separator,
 				outContent.toString());
 	}
 
@@ -90,7 +90,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory, "-sta", "10",
 				"-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : fichier de l'image d'attente manquant" + separator,
+		Assert.assertEquals("ERROR : fichier de l'image d'attente manquant" + separator,
 				outContent.toString());
 	}
 
@@ -100,7 +100,7 @@ public class TestArguments extends TestCase {
 				"-img", "bad_" + waitingImage,"-game", gameDirectory,
 				"-mod", modDirectory, "-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : fichier " + "bad_" + waitingImage + " n'a pas été trouvé!" + separator,
+		Assert.assertEquals("ERROR : fichier " + "bad_" + waitingImage + " n'a pas été trouvé!" + separator,
 				outContent.toString());
 	}
 
@@ -111,7 +111,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory, "-sta", "10",
 				"-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : fichier de la carte résultat manquant" + separator,
+		Assert.assertEquals("ERROR : fichier de la carte résultat manquant" + separator,
 				outContent.toString());
 	}
 
@@ -122,7 +122,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : le nombre des plus grands Etats à afficher est manquant" + separator,
+		Assert.assertEquals("ERROR : le nombre des plus grands Etats à afficher est manquant" + separator,
 				outContent.toString());
 	}
 
@@ -133,7 +133,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-sta", "bad", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : un entier strictement positif est attendu après -sta. " +
+		Assert.assertEquals("ERROR : un entier strictement positif est attendu après -sta. " +
 				"Cet entier est le nombre des plus grands Etats à afficher" + separator,
 				outContent.toString());
 	}
@@ -145,7 +145,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-sta", "-1", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : un entier strictement positif est attendu après -sta. " +
+		Assert.assertEquals("ERROR : un entier strictement positif est attendu après -sta. " +
 				"Cet entier est le nombre des plus grands Etats à afficher" + separator,
 				outContent.toString());
 	}
@@ -157,7 +157,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "bad", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : un entier supérieur à 20 est attendu après -size. " +
+		Assert.assertEquals("ERROR : un entier supérieur à 20 est attendu après -size. " +
 				"Cet entier est la taille maximale du texte." + separator,
 				outContent.toString());
 	}
@@ -169,7 +169,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "-1", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : un entier supérieur à 20 est attendu après -size. " +
+		Assert.assertEquals("ERROR : un entier supérieur à 20 est attendu après -size. " +
 				"Cet entier est la taille maximale du texte." + separator,
 				outContent.toString());
 	}
@@ -181,7 +181,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : le numéro du jour présent dans le fichier de la carte est invalide!"
+		Assert.assertEquals("ERROR : le numéro du jour présent dans le fichier de la carte est invalide!"
 				+ separator, outContent.toString());
 	}
 
@@ -192,7 +192,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : le numéro du jour présent dans le fichier de la carte est invalide!"
+		Assert.assertEquals("ERROR : le numéro du jour présent dans le fichier de la carte est invalide!"
 				+ separator, outContent.toString());
 	}
 
@@ -204,7 +204,7 @@ public class TestArguments extends TestCase {
 				"-sta", "10", "-size", "100", "-pol", "Serif",
 				"-textualDate"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : le numéro du mois présent dans le fichier de la carte est invalide!"
+		Assert.assertEquals("ERROR : le numéro du mois présent dans le fichier de la carte est invalide!"
 				+ separator, outContent.toString());
 	}
 
@@ -215,7 +215,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : le numéro de l'année présent dans le fichier de la carte est invalide!"
+		Assert.assertEquals("ERROR : le numéro de l'année présent dans le fichier de la carte est invalide!"
 				+ separator, outContent.toString());
 	}
 
@@ -226,7 +226,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : la nom de la police d'écriture est manquante" + separator,
+		Assert.assertEquals("ERROR : la nom de la police d'écriture est manquante" + separator,
 				outContent.toString());
 	}
 
@@ -237,7 +237,7 @@ public class TestArguments extends TestCase {
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : nom de dossier " + "bad" + " incorrect"
+		Assert.assertEquals("ERROR : nom de dossier " + "bad" + " incorrect"
 				+ separator, outContent.toString());
 	}
 
@@ -248,7 +248,7 @@ public class TestArguments extends TestCase {
 				"-mod", "bad",
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : nom de dossier " + "bad" + " incorrect"
+		Assert.assertEquals("ERROR : nom de dossier " + "bad" + " incorrect"
 				+ separator, outContent.toString());
 	}
 
@@ -258,7 +258,7 @@ public class TestArguments extends TestCase {
 				"-img", waitingImage, "-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
-		assertEquals("ERROR : nom de dossier manquant"
+		Assert.assertEquals("ERROR : nom de dossier manquant"
 				+ separator, outContent.toString());
 	}
 }
