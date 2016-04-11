@@ -113,6 +113,11 @@ public class TextFrancais extends AbstractText {
 	}
 
 	@Override
+	public  String missingCountryFiles() {
+		return "ERROR : fichiers des pays (countries) manquant";
+	}
+
+	@Override
 	public  String missingLocalisationFiles() {
 		return "ERROR : fichiers de localisation manquant";
 	}

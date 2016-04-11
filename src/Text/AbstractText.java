@@ -164,6 +164,12 @@ public abstract class AbstractText {
 	public abstract String missingLandedTitleFile();
 
 	/**
+	 * The name of the country files is missing
+	 * @return
+	 */
+	public abstract String missingCountryFiles();
+
+	/**
 	 * The name of a localisation file is missing
 	 * @return
 	 */

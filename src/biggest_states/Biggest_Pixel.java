@@ -132,10 +132,6 @@ public class Biggest_Pixel {
 			// Writing text
 			bar.setString(text.textWritingMessage());
 			// Load texts
-			// TODO : Adapt to EUIV (http://www.eu4wiki.com/Country_creation)
-			// TODO : For EUIV, parse files in common/countries instead a landed_titles
-			// TODO : Then match with the tag in common/country_tags
-			// TODO : Finally match with the localisation : countries_l_french.yml
 			// Indicator for the progression bar
 			int displayedStates = 0;
 			for (State s : stateToDisplay) {
