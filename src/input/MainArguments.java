@@ -3,8 +3,10 @@ package input;
 import java.util.LinkedList;
 
 import colors.Ck2MapColors;
+import colors.EU4MapColors;
 import colors.MapColors;
 import stateNames.Ck2Files;
+import stateNames.EU4Files;
 import stateNames.GameFiles;
 import Text.AbstractText;
 import Text.TextEnglish;
@@ -26,6 +28,7 @@ public class MainArguments {
 	private String gameDirectory = null;
 	private LinkedList<String> modDirectories = new LinkedList<String>();
 	private MapColors mapColors;
+	private boolean ck2 = true;
 	// Other parameters
 	private String fontName = null;
 	private int nbState = 0;
@@ -88,6 +91,9 @@ public class MainArguments {
 					gameDirectory = args[i];
 				}
 				break;
+			case "-eu4" :
+				ck2 = false;
+				break;
 			case "-pol" :
 				i++;
 				if (i < args.length) {
@@ -148,10 +154,13 @@ public class MainArguments {
 			i++;
 		}
 		
-		// TODO : EUIV
-		gameFiles = new Ck2Files(gameDirectory, modDirectories, text);
-		mapColors = new Ck2MapColors();
-		
+		if (ck2) {
+			gameFiles = new Ck2Files(gameDirectory, modDirectories, text);
+			mapColors = new Ck2MapColors();
+		} else {
+			gameFiles = new EU4Files(gameDirectory, modDirectories, text);
+			mapColors = new EU4MapColors();
+		}		
 		
 		// Check the needed parameters are here and correct
 		checkArgs();

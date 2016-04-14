@@ -112,11 +112,11 @@ public class BlockCutting {
 	}
 
 	/**
-	 * Cut the blocks of the state
+	 * Cut the lines of the state into blocks 
 	 * @param state List of lines of the State (obtained by enumerateLine)
 	 * @return
 	 */
-	public static LinkedList<PriorityQueue<Line>> cutBlocks (LinkedList<Line> state) {
+	public static LinkedList<PriorityQueue<Line>> cutInBlocks(LinkedList<Line> state) {
 		// Create the first block of this State
 		Comparator<Line> comparator = new LineComparator();
 		PriorityQueue<Line> firstBlock = new PriorityQueue<Line>(10, comparator);

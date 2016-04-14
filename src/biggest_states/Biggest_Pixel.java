@@ -40,6 +40,8 @@ public class Biggest_Pixel {
 	private String fontName;
 	private MapColors mapColors;
 
+	private static int MIN_TEST_SIZE = 20;
+	
 	public Biggest_Pixel(File mapFile, String newMapFile,
 			JProgressBar bar, AbstractText text, int nbStates,
 			boolean allStates, String date, boolean harmonize,
@@ -147,7 +149,7 @@ public class Biggest_Pixel {
 						continue;
 					}
 					// Blocks for this state
-					LinkedList<PriorityQueue<Line>> l = BlockCutting.cutBlocks(state);
+					LinkedList<PriorityQueue<Line>> l = BlockCutting.cutInBlocks(state);
 					// Text to write
 					Writing w;
 					String textToWrite = stateName;
@@ -173,7 +175,7 @@ public class Biggest_Pixel {
 								j++;
 							}
 							resWriting.calculateWriting(p, res.split("[\n]"), map,
-									maxTextSize, false, leftDate, fontName);
+									maxTextSize, false, leftDate, fontName, MIN_TEST_SIZE);
 							if (w.getUnVerifiedTextSize() < resWriting.getUnVerifiedTextSize()) {
 								// Keep the best combination
 								textToWrite = res;
@@ -193,21 +195,39 @@ public class Biggest_Pixel {
 			bar.setString(text.dateWritingMessage());
 			LinkedList<Line> dateLines = h.get(mapColors.getWaterColor());
 			// Sea blocks
-			LinkedList<PriorityQueue<Line>> blocks = BlockCutting.cutBlocks(dateLines);
+			LinkedList<PriorityQueue<Line>> blocks = BlockCutting.cutInBlocks(dateLines);
 			bar.setValue(3 * map.getHeight() + map.getHeight()/2);
 			// Searching the higher position of date
 			Writing seaW = new Writing();
+			int maxDateTextSize = Math.max(3 * maxTextSize / 4, 21);
+			int minDateTextSize = maxDateTextSize - 1; // Search directly the maximum size - 1 
 			String dateTab[] = {date};
 			for (PriorityQueue<Line> p : blocks) {
 				Writing resWriting = new Writing();
-				resWriting.calculateWriting(p, dateTab, map, Math.max(3 * maxTextSize / 4, 21), true,
-						leftDate, fontName);
-				if (resWriting.getUnVerifiedTextSize() > 20) {
+				resWriting.calculateWriting(p, dateTab, map, maxDateTextSize, true,
+						leftDate, fontName, minDateTextSize);
+				if (resWriting.getUnVerifiedTextSize() > minDateTextSize) {
 					// Keep the first good combination because it is ordered by decreasing y
 					seaW = new Writing(resWriting);
 					break;
 				}
 			}
+			
+			// We were to ambitious on the text size
+			if (seaW.getTextOriginSolution() == null) {
+				minDateTextSize = 20; // Search directly the maximum size
+				for (PriorityQueue<Line> p : blocks) {
+					Writing resWriting = new Writing();
+					resWriting.calculateWriting(p, dateTab, map, maxDateTextSize, true,
+							leftDate, fontName, minDateTextSize);
+					if (resWriting.getUnVerifiedTextSize() > minDateTextSize) {
+						// Keep the first good combination because it is ordered by decreasing y
+						seaW = new Writing(resWriting);
+						break;
+					}
+				}
+			}
+
 			if (seaW.getTextOriginSolution() != null) {
 				// Write text
 				Graphics2D g2d = map.createGraphics();

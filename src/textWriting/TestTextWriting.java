@@ -26,7 +26,7 @@ public class TestTextWriting {
 			if (state == null) {
 				throw new IllegalArgumentException("No block to cut");
 			}
-			LinkedList<PriorityQueue<Line>> l = BlockCutting.cutBlocks(state);
+			LinkedList<PriorityQueue<Line>> l = BlockCutting.cutInBlocks(state);
 			System.out.println("Number of red blocks : " + l.size());
 			System.out.println("Red blocks :");
 			for (PriorityQueue<Line> p : l) {
@@ -38,7 +38,7 @@ public class TestTextWriting {
 			}
 			Writing w = new Writing();
 			String[] textToWrite = {"Heiliges", "Heiliges", "Römisches", "Reich", "Reich"};
-			w.calculateWriting(l.getFirst(), textToWrite, map, 100, false, true, "Serif");
+			w.calculateWriting(l.getFirst(), textToWrite, map, 100, false, true, "Serif", 20);
 			if (w.getTextOriginSolution() != null) {
 				Graphics2D g2d = map.createGraphics();
 				g2d.setFont(new Font("Serif", Font.BOLD, w.getTextSize() - 1));		        

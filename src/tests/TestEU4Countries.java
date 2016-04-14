@@ -13,7 +13,6 @@ import Text.TextFrancais;
 import stateNames.EU4Countries;
 import stateNames.EU4DirectoryReader;
 import stateNames.EU4Files;
-import stateNames.GameFiles.TimeFileComparator;
 
 public class TestEU4Countries {
 	private static EU4Countries countries;

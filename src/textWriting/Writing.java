@@ -60,12 +60,17 @@ public class Writing {
 	 * @param block Block of a state (obtained with BlockCutting.cutBlocks)
 	 * @param textToWrite Text to write by line, first element represent the upper line
 	 * @param map Image for size text calculation (the image in which text will be writing)
+	 * @param maxTextSize The maximum text size of the text
+	 * @param date Write a date
+	 * @param leftDate If we write a date put it at left?
+	 * @param fontName The font name of the text
+	 * @param minTextSize The minimum text size of the text
 	 */
 	public void calculateWriting(PriorityQueue<Line> block, String[] textToWrite,
 			BufferedImage map, int maxTextSize, boolean date, boolean leftDate,
-			String fontName) {
+			String fontName, int minTextSize) {
 		isCalculated = true;
-		textSize = 20;
+		textSize = minTextSize;
 		textOrigin = new Point[textToWrite.length];
 
 		// Variable for text size maximum limit
@@ -160,6 +165,7 @@ public class Writing {
 					if (textSize < maxTextSize) {
 						// textOrigin[0] is the better choice at this moment
 						saveSolution();
+						System.out.println("First solution : " + textOrigin[0].y);
 						// searching a better choice by adding textSize
 						g2d.setFont(new Font(fontName, Font.BOLD, ++textSize));
 						frc = g2d.getFontRenderContext();
@@ -168,18 +174,26 @@ public class Writing {
 						calculateTextOrigin(textToWrite, g2d, frc);
 					} else if (solutionNumber == 0) {
 						// textOrigin[0] is the better choice at this moment
-						if (!date || !leftDate || (textOriginSolution != null &&
-								textOriginSolution[0].y > textOrigin[0].y)) {
-							// For a date in left, we save only if it is higher
+						if (!date || (date && (!leftDate || (textOriginSolution != null &&
+								textOriginSolution[0].y > textOrigin[0].y)))) {
+							// For a date in left, we save only if it is higher in y
 							// Else always save
 							saveSolution();
 						}
-						// Now searching other solution of this size
-						nextCandidate(l);
+						System.out.println(textOrigin[0].y);
 						// For the date we store only the last solution
 						if (!date) {
 							// For State we search to center
 							solutionNumber++;
+						}
+						// Now searching other solution of this size
+						if (!date || (date && !leftDate)) {
+							// Search a next candidate to right
+							nextCandidate(l);
+						} else {
+							// Search a next candidate in a new Line
+							// So invalidate the while condition on the current Line
+							textOrigin[0].x = Integer.MAX_VALUE;
 						}
 					} else {
 						// Another solution found
