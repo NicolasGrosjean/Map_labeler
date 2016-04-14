@@ -165,7 +165,6 @@ public class Writing {
 					if (textSize < maxTextSize) {
 						// textOrigin[0] is the better choice at this moment
 						saveSolution();
-						System.out.println("First solution : " + textOrigin[0].y);
 						// searching a better choice by adding textSize
 						g2d.setFont(new Font(fontName, Font.BOLD, ++textSize));
 						frc = g2d.getFontRenderContext();
@@ -180,7 +179,6 @@ public class Writing {
 							// Else always save
 							saveSolution();
 						}
-						System.out.println(textOrigin[0].y);
 						// For the date we store only the last solution
 						if (!date) {
 							// For State we search to center
