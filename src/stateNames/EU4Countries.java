@@ -15,11 +15,16 @@ import java.util.regex.Pattern;
 // DONE : For EUIV, parse files in common/countries instead a landed_titles
 // TODO : Then match with the tag in common/country_tags
 // TODO : Finally match with the localisation : countries_l_french.yml
+/**
+ * Parse country files to map the color to an intermediate country name
+ * @author NicolasGrosjean
+ *
+ */
 public class EU4Countries {
-	private Map<Integer, String> countryName;
+	private Map<Integer, String> intermediateCountryName;
 
 	public EU4Countries(LinkedList<String> countryFileNames) {
-		this.countryName = new HashMap<Integer, String>();
+		this.intermediateCountryName = new HashMap<Integer, String>();
 		while (!countryFileNames.isEmpty()) {
 			init(countryFileNames.removeFirst());
 		}
@@ -36,11 +41,7 @@ public class EU4Countries {
 			fichierLecture = new FileInputStream(countryFileName); 
 			Scanner scanner=new Scanner(fichierLecture, "ISO-8859-1");
 			scanner.useDelimiter(Pattern.compile("[ \n\t]"));
-			// Searching empire, kingdoms, duchies and counties
 			while (scanner.hasNext()) {
-				// Words finishing by line.separator are not that we need
-				// A better thing is to see if the words is followed by "= {"
-				// Searching its color
 				while (scanner.hasNext()) {
 					String color = scanner.next();
 					// Skipping comment
@@ -87,7 +88,7 @@ public class EU4Countries {
 							b = scanner.nextInt();
 						}
 						// Storing state name with rgb code
-						countryName.put((r << 16)	+ (g << 8) + b, name);
+						intermediateCountryName.put((r << 16)	+ (g << 8) + b, name);
 						break;
 					}
 				}
@@ -104,9 +105,14 @@ public class EU4Countries {
 			}
 		}
 	}
-	
-	public String getStateName(int rgb) {
-		return countryName.get(rgb & 0xffffff);
+
+	/**
+	 * Get the intermediate country name associated to a RGB code
+	 * @param rgb
+	 * @return
+	 */
+	public String getIntermediateCountryName(int rgb) {
+		return intermediateCountryName.get(rgb & 0xffffff);
 	}
 
 	/**
@@ -115,7 +121,7 @@ public class EU4Countries {
 	 * @return
 	 */
 	public LinkedList<String> getDouble() {
-		Collection<String> states = countryName.values();
+		Collection<String> states = intermediateCountryName.values();
 		LinkedList<String> seenStates = new LinkedList<String>();
 		LinkedList<String> doubleStates = new LinkedList<String>();
 		for (String s : states) {

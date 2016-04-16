@@ -13,9 +13,11 @@ import Text.TextFrancais;
 import stateNames.EU4Countries;
 import stateNames.EU4DirectoryReader;
 import stateNames.EU4Files;
+import stateNames.EU4Tags;
 
 public class TestEU4Countries {
 	private static EU4Countries countries;
+	private static EU4Tags tags;
 
 	@BeforeClass
 	public static void SetUp() {
@@ -28,11 +30,12 @@ public class TestEU4Countries {
 		
 		// Read the directories and sort the files
 		PriorityQueue<File> countryFiles = new PriorityQueue<File>(20, files.new TimeFileComparator());
+		PriorityQueue<File> tagFiles = new PriorityQueue<File>(20, files.new TimeFileComparator());
 		EU4DirectoryReader.readAndSortDirectoryFiles(gameDirectory, text,
-				countryFiles);
+				countryFiles, tagFiles);
 		while (!modDirectories.isEmpty()) {
 			EU4DirectoryReader.readAndSortDirectoryFiles(modDirectories.removeFirst(),
-					text, countryFiles);
+					text, countryFiles, tagFiles);
 		}
 		
 		// Transform Files priority queues list into String list
@@ -40,14 +43,22 @@ public class TestEU4Countries {
 		while (!countryFiles.isEmpty()) {
 			countryFileNames.addLast(countryFiles.remove().toString());
 		}
+		LinkedList<String> tagFileNames = new LinkedList<String>();
+		while (!tagFiles.isEmpty()) {
+			tagFileNames.addLast(tagFiles.remove().toString());
+		}
 		
 		// Check that all is good
 		if (countryFileNames.isEmpty()) {
 			throw new IllegalArgumentException(text.missingCountryFiles());
 		}
+		if (tagFileNames.isEmpty()) {
+			throw new IllegalArgumentException(text.missingCountryFiles());
+		}
 		
 		// Final storage of the useful information
 		countries = new EU4Countries(countryFileNames);
+		tags = new EU4Tags(tagFileNames);
 	}
 
 	@Test
@@ -59,8 +70,21 @@ public class TestEU4Countries {
 
 	@Test
 	public void testCountryColor() {
-		Assert.assertEquals("Aachen", countries.getStateName((157 << 16) + (51 << 8) + 167));
-		Assert.assertEquals("Chimu", countries.getStateName((39 << 16) + (123 << 8) + 126));
+		Assert.assertEquals("Aachen", countries.getIntermediateCountryName((157 << 16) + (51 << 8) + 167));
+		Assert.assertEquals("Chimu", countries.getIntermediateCountryName((39 << 16) + (123 << 8) + 126));
+		// TODO : More examples
+	}
+
+	@Test
+	public void testTag() {
+		Assert.assertEquals("REB", tags.getTag("Rebels"));
+		Assert.assertEquals("PIR", tags.getTag("Pirates"));
+		Assert.assertEquals("SWE", tags.getTag("Sweden"));
+		Assert.assertEquals("ICE", tags.getTag("Iceland"));
+		Assert.assertEquals("MNS", tags.getTag("IRE_Munster"));
+		Assert.assertEquals("MIR", tags.getTag("Merina"));
+		Assert.assertEquals("SKA", tags.getTag("Sakalava"));
+		Assert.assertEquals("ROM", tags.getTag("RomanEmpire"));
 		// TODO : More examples
 	}
 }
