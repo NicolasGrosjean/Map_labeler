@@ -118,6 +118,11 @@ public class TextEnglish extends AbstractText {
 	}
 
 	@Override
+	public  String missingTagFiles() {
+		return "ERROR : missing tag files";
+	}
+
+	@Override
 	public  String missingLocalisationFiles() {
 		return "ERROR : missing localisation file";
 	}

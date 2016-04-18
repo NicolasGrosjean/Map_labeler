@@ -11,10 +11,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-// TODO : http://www.eu4wiki.com/Country_creation
-// DONE : For EUIV, parse files in common/countries instead a landed_titles
-// TODO : Then match with the tag in common/country_tags
-// TODO : Finally match with the localisation : countries_l_french.yml
 /**
  * Parse country files to map the color to an intermediate country name
  * @author NicolasGrosjean

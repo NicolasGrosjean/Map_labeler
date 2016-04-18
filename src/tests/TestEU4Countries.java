@@ -13,11 +13,14 @@ import Text.TextFrancais;
 import stateNames.EU4Countries;
 import stateNames.EU4DirectoryReader;
 import stateNames.EU4Files;
+import stateNames.EU4Localisation;
 import stateNames.EU4Tags;
+import stateNames.GameFiles.TimeFileComparator;
 
 public class TestEU4Countries {
 	private static EU4Countries countries;
 	private static EU4Tags tags;
+	private static EU4Localisation localisation;
 
 	@BeforeClass
 	public static void SetUp() {
@@ -31,11 +34,12 @@ public class TestEU4Countries {
 		// Read the directories and sort the files
 		PriorityQueue<File> countryFiles = new PriorityQueue<File>(20, files.new TimeFileComparator());
 		PriorityQueue<File> tagFiles = new PriorityQueue<File>(20, files.new TimeFileComparator());
+		PriorityQueue<File> localisationFiles = new PriorityQueue<File>(20, files.new TimeFileComparator());
 		EU4DirectoryReader.readAndSortDirectoryFiles(gameDirectory, text,
-				countryFiles, tagFiles);
+				countryFiles, tagFiles, localisationFiles);
 		while (!modDirectories.isEmpty()) {
 			EU4DirectoryReader.readAndSortDirectoryFiles(modDirectories.removeFirst(),
-					text, countryFiles, tagFiles);
+					text, countryFiles, tagFiles, localisationFiles);
 		}
 		
 		// Transform Files priority queues list into String list
@@ -47,18 +51,18 @@ public class TestEU4Countries {
 		while (!tagFiles.isEmpty()) {
 			tagFileNames.addLast(tagFiles.remove().toString());
 		}
-		
-		// Check that all is good
-		if (countryFileNames.isEmpty()) {
-			throw new IllegalArgumentException(text.missingCountryFiles());
+		LinkedList<String> localisationFileNames = new LinkedList<String>();
+		while (!localisationFiles.isEmpty()) {
+			localisationFileNames.addLast(localisationFiles.remove().toString());
 		}
-		if (tagFileNames.isEmpty()) {
+		if (localisationFileNames.isEmpty()) {
 			throw new IllegalArgumentException(text.missingCountryFiles());
 		}
 		
 		// Final storage of the useful information
 		countries = new EU4Countries(countryFileNames);
 		tags = new EU4Tags(tagFileNames);
+		localisation = new EU4Localisation(localisationFileNames);
 	}
 
 	@Test
@@ -85,6 +89,14 @@ public class TestEU4Countries {
 		Assert.assertEquals("MIR", tags.getTag("Merina"));
 		Assert.assertEquals("SKA", tags.getTag("Sakalava"));
 		Assert.assertEquals("ROM", tags.getTag("RomanEmpire"));
+		// TODO : More examples
+	}
+
+	@Test
+	public void testLocalisation() {
+		Assert.assertEquals("Adal", localisation.getStateName("ADA"));
+		Assert.assertEquals("Aragon", localisation.getStateName("ARA"));
+		Assert.assertEquals("Malte", localisation.getStateName("JAI"));
 		// TODO : More examples
 	}
 }

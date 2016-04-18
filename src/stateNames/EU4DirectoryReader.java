@@ -16,7 +16,8 @@ public class EU4DirectoryReader {
 	 * @param tagFiles OUTPUT : priority queue of tag files
 	 */
 	public static void readAndSortDirectoryFiles(String directoryName, AbstractText text,
-			PriorityQueue<File> countryFiles, PriorityQueue<File> tagFiles) {
+			PriorityQueue<File> countryFiles, PriorityQueue<File> tagFiles,
+			PriorityQueue<File> localisationFiles) {
 		if (directoryName != null) {
 			File mainDirectory = new File(directoryName);
 			if (!mainDirectory.isDirectory()) {
@@ -41,6 +42,23 @@ public class EU4DirectoryReader {
 		for (File f : countryTagDirectory.listFiles()) {
 			if (f.isFile()) {
 				tagFiles.offer(f);
+			}
+		}
+		File localisationDirectory = new File(directoryName + "/localisation");
+		if (!localisationDirectory.isDirectory()) {
+			throw new IllegalArgumentException(text.invalidDirectoryName(directoryName + "/localisation"));
+		}
+		for (File f : localisationDirectory.listFiles()) {
+			if (f.isFile()) {
+				localisationFiles.offer(f);
+			}
+		}
+		File replaceLocalisationDirectory = new File(directoryName + "/localisation/replace");
+		if (replaceLocalisationDirectory.isDirectory()) {
+			for (File f : replaceLocalisationDirectory.listFiles()) {
+				if (f.isFile()) {
+					localisationFiles.offer(f);
+				}
 			}
 		}
 	}
