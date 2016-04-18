@@ -40,7 +40,7 @@ public class Biggest_Pixel {
 	private String fontName;
 	private MapColors mapColors;
 
-	private static int MIN_TEST_SIZE = 20;
+	private static int MIN_TEST_SIZE = 15;
 	
 	public Biggest_Pixel(File mapFile, String newMapFile,
 			JProgressBar bar, AbstractText text, int nbStates,
