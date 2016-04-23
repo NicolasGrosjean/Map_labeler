@@ -20,7 +20,7 @@ public class TestArguments {
 	private final String separator = System.getProperty("line.separator");
 
 	// Files
-	private final String bmpFileName = "bla_bla_15_9_1066_blabla.bmp";
+	private final String bmpFileName = "bla_bla_1066_9_15_blabla.bmp";
 	private final String pngFileName = "res.png";
 	private final String waitingImage = "fond.png";
 	private final String gameDirectory = "C:/Jeux/Steam/SteamApps/common/Crusader Kings II";
@@ -176,7 +176,7 @@ public class TestArguments {
 
 	@Test
 	public void testBadDay1() {
-		String args[] = {"-fr", "-map", "blabla_-1_10_1066_bla_bla", "-out", pngFileName,
+		String args[] = {"-fr", "-map", "blabla_1066_10_-1_bla_bla", "-out", pngFileName,
 				"-img", waitingImage, "-game", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
@@ -187,7 +187,7 @@ public class TestArguments {
 
 	@Test
 	public void testBadDay2() {
-		String args[] = {"-fr", "-map", "blabla_42_10_1066_bla_bla", "-out", pngFileName,
+		String args[] = {"-fr", "-map", "blabla_1066_10_42_bla_bla", "-out", pngFileName,
 				"-img", waitingImage, "-game", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
@@ -198,7 +198,7 @@ public class TestArguments {
 
 	@Test
 	public void testBadMonth() {
-		String args[] = {"-fr", "-map", "blabla_1_42_1066_bla_bla", "-out", pngFileName,
+		String args[] = {"-fr", "-map", "blabla_1066_42_1_bla_bla", "-out", pngFileName,
 				"-img", waitingImage, "-game", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif",
@@ -210,7 +210,7 @@ public class TestArguments {
 
 	@Test
 	public void testBadYear() {
-		String args[] = {"-fr", "-map", "blabla_1_10_-42_bla_bla", "-out", pngFileName,
+		String args[] = {"-fr", "-map", "blabla_-42_10_1_bla_bla", "-out", pngFileName,
 				"-img", waitingImage, "-game", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};

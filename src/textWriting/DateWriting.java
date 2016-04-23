@@ -17,17 +17,22 @@ public class DateWriting {
 					int readInt = Integer.parseInt(words[i]);
 					intNb++;
 					if (intNb == 1) {
-						day = readInt;
+						year = readInt;
 					} else if (intNb == 2) {
 						month = readInt;
 					} else if (intNb == 3) {
-						year = readInt;
+						day = readInt;
 					}
 				} catch (NumberFormatException e) {
 				}
 			} else {
 				try {
 					year = Integer.parseInt(words[i]);
+					if (year > 31) {
+						// We suppose we have read the year because it cannot be a month or a day
+						// So we stop to search
+						break;
+					}
 				} catch (NumberFormatException e) {
 				}
 			}
