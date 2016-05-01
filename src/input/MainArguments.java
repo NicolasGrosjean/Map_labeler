@@ -85,7 +85,7 @@ public class MainArguments {
 				}
 				i--;
 				break;
-			case "-game" :
+			case "-gameDir" :
 				i++;
 				if (i < args.length) {
 					gameDirectory = args[i];
