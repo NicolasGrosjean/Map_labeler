@@ -66,16 +66,40 @@ public class EU4Files extends GameFiles {
 		localisation = new EU4Localisation(localisationFileNames);
 	}
 
-	@Override
-	public String getStateName(int stateRGB) {
-		// Internal/intermediate country name
-		String countryName = countries.getIntermediateCountryName(stateRGB);
-		
-		// Tag used internally in game
-		String tag = tags.getTag(countryName);
-		
-		// Localisation displayed in game
+	/**
+	 * Convert the RGB code to an intermediate country name
+	 * @param rgb
+	 * @return
+	 */
+	public String getIntermediateCountryName(int rgb) {
+		return countries.getIntermediateCountryName(rgb);
+	}
+
+	/**
+	 * Convert the intermediate country name to a tag
+	 * @param intermediateCountryName
+	 * @return
+	 */
+	public String getTag(String intermediateCountryName) {
+		return tags.getTag(intermediateCountryName);
+	}
+
+	/**
+	 * Convert the tag to the localisation name (name in game)
+	 * @param tag
+	 * @return
+	 */
+	public String getStateName(String tag) {
 		return localisation.getStateName(tag);
 	}
 
+	@Override
+	public String getStateName(int stateRGB) {
+		return getStateName(getTag(getIntermediateCountryName(stateRGB)));
+	}
+
+	/** TESTING FUNCTION **/
+	public LinkedList<String> getDoubleCountries() {
+		return countries.getDouble();
+	}
 }
