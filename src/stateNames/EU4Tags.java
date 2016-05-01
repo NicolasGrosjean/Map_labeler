@@ -26,26 +26,28 @@ public class EU4Tags {
 			Scanner scanner=new Scanner(fichierLecture, "ISO-8859-1");
 			scanner.useDelimiter(Pattern.compile("[ =\n\t]"));
 			while (scanner.hasNext()) {
-				while (scanner.hasNext()) {
-					String word = scanner.next();
-					// Skipping comment
-					if (word.contains("#")) {
+				String word = scanner.next();
+				// Skipping comment
+				if (word.contains("#")) {
+					if (scanner.hasNextLine()) {
 						word = scanner.nextLine();
-					} else if (word.length() == 3) {
-						// Tag found
-						String tag = word;
-						String fileName = "";
-						String stateName = null;
-						while (fileName.equals("") &&  scanner.hasNext()) {
-							fileName = scanner.next();
-							if (fileName.length() > 0 && fileName.charAt(0) == '"') {
-								stateName = fileName.split(Pattern.quote("/"))[1].split(Pattern.quote("."))[0];
-							}
-						}	
-						if (stateName != null) {
-							// Storing tag with the intermediate state name
-							countryTags.put(stateName, tag);
+					} else {
+						break;
+					}
+				} else if (word.length() == 3) {
+					// Tag found
+					String tag = word;
+					String fileName = "";
+					String stateName = null;
+					while (fileName.equals("") &&  scanner.hasNext()) {
+						fileName = scanner.next();
+						if (fileName.length() > 0 && fileName.charAt(0) == '"') {
+							stateName = fileName.split(Pattern.quote("/"))[1].split(Pattern.quote("."))[0];
 						}
+					}	
+					if (stateName != null) {
+						// Storing tag with the intermediate state name
+						countryTags.put(stateName, tag);
 					}
 				}
 			}

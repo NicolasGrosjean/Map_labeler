@@ -41,7 +41,7 @@ public class EU4Countries {
 				while (scanner.hasNext()) {
 					String color = scanner.next();
 					// Skipping comment
-					if (color.contains("#")) {
+					if (color.contains("#") && scanner.hasNextLine()) {
 						color = scanner.nextLine();
 					} else if (color.regionMatches(0, "color", 0, 5)) {
 						// Color found

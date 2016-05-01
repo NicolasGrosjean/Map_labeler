@@ -36,7 +36,11 @@ public class Ck2LandedTitle {
 				String word = scanner.next();
 				// Skipping comment
 				if (word.contains("#")) {
-					word = scanner.nextLine();
+					if (scanner.hasNextLine()) {
+						word = scanner.nextLine();
+					} else {
+						break;
+					}
 				} else if (word.regionMatches(0, "e_", 0, 2) ||
 						word.regionMatches(0, "k_", 0, 2) ||
 						word.regionMatches(0, "d_", 0, 2) ||
@@ -78,16 +82,14 @@ public class Ck2LandedTitle {
 					// Searching its color
 					while (scanner.hasNext()) {
 						String color = scanner.next();
-//						System.out.println(nbBlock +" : " + color);
 						if (nbBlock == 0) {
 							// We are not yet in the state
 							break;
 						}
 						// Skipping comment
-						if (color.contains("#")) {
+						if (color.contains("#") && scanner.hasNextLine()) {
 							color = scanner.nextLine();
 						} else if (color.regionMatches(0, "color", 0, 5)){
-//							System.out.println("COLOR : " + color);
 							// Color found
 							// Searching integer (r code)
 							int r = -1;

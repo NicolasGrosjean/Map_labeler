@@ -36,7 +36,11 @@ public class Ck2Localisation {
 				String word = scanner.next();
 				// Skipping comment
 				if (word.regionMatches(0, "#", 0, 1)) {
-					word = scanner.nextLine();
+					if (scanner.hasNextLine()) {
+						word = scanner.nextLine();
+					} else {
+						break;
+					}
 				} else if (word.regionMatches(0, "e_", 0, 2) ||
 						word.regionMatches(0, "k_", 0, 2) ||
 						word.regionMatches(0, "d_", 0, 2) ||
