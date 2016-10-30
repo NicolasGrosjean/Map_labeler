@@ -30,7 +30,7 @@ public class Ck2Files extends GameFiles {
 			landedTitlesFilesNames.addLast(landedTitlesFiles.remove().toString());
 		}
 		while (!localisationFiles.isEmpty()) {
-			localisationFilesNames.addLast(localisationFiles.remove().toString());
+			localisationFilesNames.addFirst(localisationFiles.remove().toString());
 		}
 		
 		// Check that all is good
