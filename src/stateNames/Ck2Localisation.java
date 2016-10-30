@@ -12,6 +12,9 @@ import java.util.regex.Pattern;
 import Text.AbstractText;
 
 public class Ck2Localisation {
+	private static final int ENGLISH_COLUMN = 1;
+	private static final int FRENCH_COLUMN = 2;
+
 	private Map<String, String> stateName;
 	private AbstractText text;
 
@@ -19,41 +22,45 @@ public class Ck2Localisation {
 		this.text = text;
 		stateName = new HashMap<String, String>();
 		while (!localisationFiles.isEmpty()) {
-			init(localisationFiles.removeFirst());
+			init(localisationFiles.removeFirst(), text.isFrench());
 		}
 	}
 
-	private void init(String nomFichierLecture) {
+	private void init(String nomFichierLecture, boolean french) {
 		boolean error = false;
 
 		FileInputStream fichierLecture = null;
 		try {
 			fichierLecture = new FileInputStream(nomFichierLecture);
-			Scanner scanner=new Scanner(fichierLecture, "ISO-8859-1");
-			scanner.useDelimiter(Pattern.compile("[;\n]"));
+			Scanner line = new Scanner(fichierLecture);
 			// Searching empire, kingdoms, duchies and counties
-			while (scanner.hasNext()) {
-				String word = scanner.next();
-				// Skipping comment
-				if (word.regionMatches(0, "#", 0, 1)) {
-					if (scanner.hasNextLine()) {
-						word = scanner.nextLine();
-					} else {
-						break;
-					}
-				} else if (word.regionMatches(0, "e_", 0, 2) ||
-						word.regionMatches(0, "k_", 0, 2) ||
-						word.regionMatches(0, "d_", 0, 2) ||
-						word.regionMatches(0, "c_", 0, 2)) {
-					stateName.put(word, scanner.next());
-					// French localisation erase English localisation if it exists
-					String frenchLocalisation = scanner.next();
-					if (!frenchLocalisation.equals("")) {
-						stateName.put(word, frenchLocalisation);
+			while (line.hasNext()) {
+				String sLine = line.next();
+				if (sLine.split(";").length > 0) {
+					String localisationKey = sLine.split(";")[0];
+					// Skipping comment
+					if (localisationKey.regionMatches(0, "#", 0, 1)) {
+						if (line.hasNext()) {
+							sLine = line.next();
+						} else {
+							break;
+						}
+					} else if (localisationKey.regionMatches(0, "e_", 0, 2) ||
+							localisationKey.regionMatches(0, "k_", 0, 2) ||
+							localisationKey.regionMatches(0, "d_", 0, 2) ||
+							localisationKey.regionMatches(0, "c_", 0, 2)) {
+						stateName.put(localisationKey, sLine.split(";")[ENGLISH_COLUMN]);
+						if (french) {
+							// French localisation erase English localisation if it exists
+							String frenchLocalisation = sLine.split(";")[FRENCH_COLUMN];
+							if (!frenchLocalisation.equals("")) {
+								stateName.put(localisationKey, frenchLocalisation);
+							}
+						}
 					}
 				}
 			}
-			scanner.close();
+			line.close();
 		} catch (FileNotFoundException e) {
 			error = true;
 		} finally {

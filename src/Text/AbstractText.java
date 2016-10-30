@@ -1,7 +1,13 @@
 package Text;
 
 public abstract class AbstractText {
-	
+
+	/**
+	 * Return if the language is the French language
+	 * @return
+	 */
+	public abstract boolean isFrench();
+
 	/**
 	 * Message in the JProgressBar when the text is written
 	 * @return

@@ -3,6 +3,11 @@ package Text;
 public class TextEnglish extends AbstractText {
 
 	@Override
+	public boolean isFrench() {
+		return false;
+	}
+
+	@Override
 	public String textWritingMessage() {
 		return "Writing text on image, please wait";
 	}
