@@ -36,7 +36,7 @@ public class Ck2Localisation {
 			// Searching empire, kingdoms, duchies and counties
 			while (line.hasNext()) {
 				String sLine = line.next();
-				if (sLine.split(";").length > 0) {
+				if (sLine.split(";").length > 1) {
 					String localisationKey = sLine.split(";")[0];
 					// Skipping comment
 					if (localisationKey.regionMatches(0, "#", 0, 1)) {
@@ -50,7 +50,7 @@ public class Ck2Localisation {
 							localisationKey.regionMatches(0, "d_", 0, 2) ||
 							localisationKey.regionMatches(0, "c_", 0, 2)) {
 						stateName.put(localisationKey, sLine.split(";")[ENGLISH_COLUMN]);
-						if (french) {
+						if (french && (sLine.split(";").length > 2)) {
 							// French localisation erase English localisation if it exists
 							String frenchLocalisation = sLine.split(";")[FRENCH_COLUMN];
 							if (!frenchLocalisation.equals("")) {
