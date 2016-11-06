@@ -32,7 +32,7 @@ public class Ck2Localisation {
 		FileInputStream fichierLecture = null;
 		try {
 			fichierLecture = new FileInputStream(nomFichierLecture);
-			Scanner line = new Scanner(fichierLecture);
+			Scanner line = new Scanner(fichierLecture, "ISO-8859-1");
 			// Searching empire, kingdoms, duchies and counties
 			while (line.hasNext()) {
 				String sLine = line.next();
