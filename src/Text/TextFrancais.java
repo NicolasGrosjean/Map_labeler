@@ -178,4 +178,9 @@ public class TextFrancais extends AbstractText {
 	public String missingDirectoryName() {
 		return "ERROR : nom de dossier manquant";
 	}
+
+	@Override
+	public String invalidRank() {
+		return "ERROR : rang invalide. Rang possible : count, duke, king or emperor";
+	}
 }

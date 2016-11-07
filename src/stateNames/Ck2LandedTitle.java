@@ -161,7 +161,12 @@ public class Ck2LandedTitle {
 		}
 	}
 
-	// TODO: rename in getLastStateCode
+	/**
+	 * Get the last read state code corresponding to the rgb code
+	 * Return null if no state code correspond
+	 * @param rgb
+	 * @return
+	 */
 	public String getStateCode(int rgb) {
 		if (stateCode.get(rgb & 0xffffff) == null) {
 			return null;
@@ -172,6 +177,31 @@ public class Ck2LandedTitle {
 					"; B:" + (rgb & 0xff) + stateCode.get(rgb & 0xffffff));
 		}
 		return stateCode.get(rgb & 0xffffff).getLast();
+	}
+
+	/**
+	/**
+	 * Get the last read state code which correspond to the rgb code and with the good rank
+	 * Return null if no state code correspond
+	 * @param rgb
+	 * @param rank
+	 * @return
+	 */
+	public String getStateCode(int rgb, Ck2Rank rank) {
+		if (stateCode.get(rgb & 0xffffff) == null) {
+			return null;
+		}
+		String res = null;
+		int i = stateCode.get(rgb & 0xffffff).size() - 1;
+		while ((res == null) && (i >= 0)) {
+			String title = stateCode.get(rgb & 0xffffff).get(i);
+			if (title.regionMatches(0, rank.toString(), 0, 2)) {
+				res = title;
+			} else {
+				i--;
+			}
+		}
+		return res;
 	}
 
 	/**

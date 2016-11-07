@@ -9,10 +9,11 @@ import Text.AbstractText;
 public class Ck2Files extends GameFiles {
 	private Ck2LandedTitle landedTitles;
 	private Ck2Localisation localisation;
-	
+	private Ck2Rank rank;	
 	
 	public Ck2Files(String gameDirectory, LinkedList<String> modDirectories,
-			AbstractText text) {
+			AbstractText text, Ck2Rank rank) {
+		this.rank = rank;
 		// Read the directories and sort the files
 		PriorityQueue<File> landedTitlesFiles = new PriorityQueue<File>(20, new TimeFileComparator());
 		PriorityQueue<File> localisationFiles = new PriorityQueue<File>(20, new LexicalFileComparator());
@@ -48,7 +49,12 @@ public class Ck2Files extends GameFiles {
 
 	@Override
 	public String getStateName(int stateRGB) {
-		String stateCode = landedTitles.getStateCode(stateRGB);
+		String stateCode = null;
+		if (rank != null) {
+			stateCode = landedTitles.getStateCode(stateRGB, rank);
+		} else {
+			stateCode = landedTitles.getStateCode(stateRGB);
+		}
 		if (stateCode == null) {
 			return null; // State not found
 		}

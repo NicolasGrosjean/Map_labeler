@@ -241,4 +241,10 @@ public abstract class AbstractText {
 	 * @return
 	 */
 	public abstract String missingDirectoryName();
+
+	/**
+	 * The rank is not valid
+	 * @return
+	 */
+	public abstract String invalidRank();
 }

@@ -6,6 +6,7 @@ import colors.Ck2MapColors;
 import colors.EU4MapColors;
 import colors.MapColors;
 import stateNames.Ck2Files;
+import stateNames.Ck2Rank;
 import stateNames.EU4Files;
 import stateNames.GameFiles;
 import Text.AbstractText;
@@ -35,12 +36,13 @@ public class MainArguments {
 	private boolean allStates = false;
 	private int maxTextSize = Integer.MAX_VALUE;
 	private boolean proportional = true; // if true -> proportional to map size
+	private Ck2Rank rank = null;
 	/* States text color (if true black and white -> harmonized
 	 * else it is the opposite color of the state -> multicolor) */
 	private boolean harmonize = true;
 	// Position of the date on the map
 	private boolean leftDate = true;
-	// Formatage de la date
+	// Date format
 	private boolean yearOnly = false;
 	private boolean textualDate = false;
 
@@ -75,6 +77,31 @@ public class MainArguments {
 				i++;
 				if (i < args.length) {
 					imageFileName = args[i];
+				}
+				break;
+			case "-rank" :
+				i++;
+				if (i < args.length) {
+					String sRank = args[i];
+					switch (sRank.toLowerCase()) {
+					case "count":
+						rank = Ck2Rank.COUNT;
+						break;
+					case "duke":
+						rank = Ck2Rank.DUKE;
+						break;
+					case "king":
+						rank = Ck2Rank.KING;
+						break;
+					case "emperor":
+						rank = Ck2Rank.EMPEROR;
+						break;
+					default:
+						if (text == null) {
+							throw new IllegalArgumentException("ERROR : language not specified");
+						}
+						throw new IllegalArgumentException(text.invalidRank());	
+					}
 				}
 				break;
 			case "-mod" :
@@ -158,7 +185,7 @@ public class MainArguments {
 		checkArgs();
 
 		if (ck2) {
-			gameFiles = new Ck2Files(gameDirectory, modDirectories, text);
+			gameFiles = new Ck2Files(gameDirectory, modDirectories, text, rank);
 			mapColors = new Ck2MapColors();
 		} else {
 			gameFiles = new EU4Files(gameDirectory, modDirectories, text);

@@ -28,7 +28,7 @@ public class TestLocalisation {
 		/* Game parameters */
 		gameDirectory = "C:/Jeux/Steam/SteamApps/common/Crusader Kings II";
 		modDirectories.add("C:/Users/Nicolas/Documents/Paradox Interactive/Crusader Kings II/MOD/Historical Immersion Project");
-		files = new Ck2Files(gameDirectory, modDirectories, text);
+		files = new Ck2Files(gameDirectory, modDirectories, text, null);
 		
 		/* Sort and read the files */
 		landedTitlesFiles = new PriorityQueue<File>(20, files.new TimeFileComparator());

@@ -178,4 +178,9 @@ public class TextEnglish extends AbstractText {
 	public String missingDirectoryName() {
 		return "ERROR : missing directory name";
 	}
+
+	@Override
+	public String invalidRank() {
+		return "ERROR : invalid rank. Only available : count, duke, king or emperor";
+	}
 }
