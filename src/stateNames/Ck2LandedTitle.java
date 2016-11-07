@@ -180,7 +180,6 @@ public class Ck2LandedTitle {
 	}
 
 	/**
-	/**
 	 * Get the last read state code which correspond to the rgb code and with the good rank
 	 * Return null if no state code correspond
 	 * @param rgb
@@ -191,17 +190,21 @@ public class Ck2LandedTitle {
 		if (stateCode.get(rgb & 0xffffff) == null) {
 			return null;
 		}
-		String res = null;
-		int i = stateCode.get(rgb & 0xffffff).size() - 1;
-		while ((res == null) && (i >= 0)) {
-			String title = stateCode.get(rgb & 0xffffff).get(i);
+		LinkedList<String> possibleStateCode = new LinkedList<String>();
+		for (String title : stateCode.get(rgb & 0xffffff)) {
 			if (title.regionMatches(0, rank.toString(), 0, 2)) {
-				res = title;
-			} else {
-				i--;
+				possibleStateCode.addLast(title);
 			}
 		}
-		return res;
+		if (possibleStateCode.size() == 0) {
+			return null;
+		}
+		if (possibleStateCode.size() > 1) {
+			System.out.println("WARNING last title get in the list of titles for R:" +
+					((rgb & 0xff0000) >> 16) + "; G:" + ((rgb & 0xff00) >> 8) +
+					"; B:" + (rgb & 0xff) + possibleStateCode);
+		}
+		return possibleStateCode.getLast();
 	}
 
 	/**
