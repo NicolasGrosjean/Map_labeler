@@ -3,7 +3,6 @@ package stateNames;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -16,10 +15,10 @@ import java.util.regex.Pattern;
  * @bug The case color={0 (missing space between those elements) is not manage
  */
 public class Ck2LandedTitle {
-	private Map<Integer, String> stateCode;
+	private Map<Integer, LinkedList<String>> stateCode;
 
 	public Ck2LandedTitle(LinkedList<String> landedTitlesFileNames) {
-		this.stateCode = new HashMap<Integer, String>();
+		this.stateCode = new HashMap<Integer, LinkedList<String>>();
 		while (!landedTitlesFileNames.isEmpty()) {
 			init(landedTitlesFileNames.removeFirst());
 		}
@@ -130,7 +129,14 @@ public class Ck2LandedTitle {
 								word = word.substring(0, word.indexOf("="));
 							}
 							// Storing state code with rgb code
-							stateCode.put((r << 16)	+ (g << 8) + b, word);
+							LinkedList<String> stateCodes = null;
+							if (stateCode.containsKey((r << 16)	+ (g << 8) + b)) {
+								stateCodes = stateCode.get((r << 16) + (g << 8) + b);
+							} else {
+								stateCodes = new LinkedList<String>();
+							}
+							stateCodes.addLast(word);
+							stateCode.put((r << 16)	+ (g << 8) + b, stateCodes);
 							break;
 						} else if (color.contains("{")) {
 							 // Enter in a new block eventually except color
@@ -155,8 +161,17 @@ public class Ck2LandedTitle {
 		}
 	}
 
+	// TODO: rename in getLastStateCode
 	public String getStateCode(int rgb) {
-		return stateCode.get(rgb & 0xffffff);
+		if (stateCode.get(rgb & 0xffffff) == null) {
+			return null;
+		}
+		if (stateCode.get(rgb & 0xffffff).size() > 1) {
+			System.out.println("WARNING last title get in the list of titles for R:" +
+					((rgb & 0xff0000) >> 16) + "; G:" + ((rgb & 0xff00) >> 8) +
+					"; B:" + (rgb & 0xff) + stateCode.get(rgb & 0xffffff));
+		}
+		return stateCode.get(rgb & 0xffffff).getLast();
 	}
 
 	/**
@@ -165,7 +180,10 @@ public class Ck2LandedTitle {
 	 * @return
 	 */
 	public LinkedList<String> getDouble() {
-		Collection<String> states = stateCode.values();
+		LinkedList<String> states = new LinkedList<String>();
+		for (LinkedList<String> l : stateCode.values()) {
+			states.add(l.getLast());
+		}
 		LinkedList<String> seenStates = new LinkedList<String>();
 		LinkedList<String> doubleStates = new LinkedList<String>();
 		for (String s : states) {
