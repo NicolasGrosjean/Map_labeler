@@ -154,6 +154,9 @@ public class MainArguments {
 			i++;
 		}
 		
+		// Check the needed parameters are here and correct
+		checkArgs();
+
 		if (ck2) {
 			gameFiles = new Ck2Files(gameDirectory, modDirectories, text);
 			mapColors = new Ck2MapColors();
@@ -161,9 +164,6 @@ public class MainArguments {
 			gameFiles = new EU4Files(gameDirectory, modDirectories, text);
 			mapColors = new EU4MapColors();
 		}		
-		
-		// Check the needed parameters are here and correct
-		checkArgs();
 	}
 
 	private void checkArgs() {
