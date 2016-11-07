@@ -10,8 +10,8 @@ Label a Paradox game map with state names
 # Usages
 * Rename if necessary the map file
 
-	format:  blabla_YYYY_MM_DD_bla_bla.X
-		with blabla and bla_bla anything (or nothing) but with no number
+	format:  blabla_YYYY_MM_DD_bla_bla.X	
+		with blabla and bla_bla anything (or nothing) but with no number	
 		X an image extension like bmp
 		
 	This format is the format of the EUIV screenshots
