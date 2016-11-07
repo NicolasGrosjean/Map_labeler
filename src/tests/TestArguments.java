@@ -53,7 +53,7 @@ public class TestArguments {
 	@Test
 	public void testMissingLanguage() {
 		String args[] = {"-map", bmpFileName, "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif",};
 		biggest_states.Main.main(args);
@@ -64,7 +64,7 @@ public class TestArguments {
 	@Test
 	public void testBadBMP() {
 		String args[] = {"-fr", "-map", "bad_" + bmpFileName, "-out", pngFileName,
-				"-img", waitingImage,"-game", gameDirectory,
+				"-img", waitingImage,"-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -75,7 +75,7 @@ public class TestArguments {
 	@Test
 	public void testMissingBMP() {
 		String args[] = {"-fr", "-out", pngFileName, "-img", waitingImage,
-				"-game", gameDirectory,
+				"-gameDir", gameDirectory,
 				"-mod", modDirectory, "-sta", "10",
 				"-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -86,7 +86,7 @@ public class TestArguments {
 	@Test
 	public void testMissingWaitingImage() {
 		String args[] = {"-fr", "-map", bmpFileName, "-out", pngFileName,
-				"-game", gameDirectory,
+				"-gameDir", gameDirectory,
 				"-mod", modDirectory, "-sta", "10",
 				"-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -97,7 +97,7 @@ public class TestArguments {
 	@Test
 	public void testBadWaitingImage() {
 		String args[] = {"-fr", "-map", bmpFileName, "-out", pngFileName,
-				"-img", "bad_" + waitingImage,"-game", gameDirectory,
+				"-img", "bad_" + waitingImage,"-gameDir", gameDirectory,
 				"-mod", modDirectory, "-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
 		Assert.assertEquals("ERROR : fichier " + "bad_" + waitingImage + " n'a pas été trouvé!" + separator,
@@ -107,7 +107,7 @@ public class TestArguments {
 	@Test
 	public void testMissingOut() {
 		String args[] = {"-fr", "-map", bmpFileName, "-img", waitingImage,
-				"-game", gameDirectory,
+				"-gameDir", gameDirectory,
 				"-mod", modDirectory, "-sta", "10",
 				"-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -118,7 +118,7 @@ public class TestArguments {
 	@Test
 	public void testMissingStateNumber() {
 		String args[] = {"-fr", "-map", bmpFileName, "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -129,7 +129,7 @@ public class TestArguments {
 	@Test
 	public void testBadStateNumber1() {
 		String args[] = {"-fr", "-map", bmpFileName, "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "bad", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -141,7 +141,7 @@ public class TestArguments {
 	@Test
 	public void testBadStateNumber2() {
 		String args[] = {"-fr", "-map", bmpFileName, "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "-1", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -153,7 +153,7 @@ public class TestArguments {
 	@Test
 	public void testBadMaxTextSize1() {
 		String args[] = {"-fr", "-map", bmpFileName, "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "bad", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -165,7 +165,7 @@ public class TestArguments {
 	@Test
 	public void testBadMaxTextSize2() {
 		String args[] = {"-fr", "-map", bmpFileName, "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "-1", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -177,7 +177,7 @@ public class TestArguments {
 	@Test
 	public void testBadDay1() {
 		String args[] = {"-fr", "-map", "blabla_1066_10_-1_bla_bla", "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -188,7 +188,7 @@ public class TestArguments {
 	@Test
 	public void testBadDay2() {
 		String args[] = {"-fr", "-map", "blabla_1066_10_42_bla_bla", "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -199,7 +199,7 @@ public class TestArguments {
 	@Test
 	public void testBadMonth() {
 		String args[] = {"-fr", "-map", "blabla_1066_42_1_bla_bla", "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif",
 				"-textualDate"};
@@ -211,7 +211,7 @@ public class TestArguments {
 	@Test
 	public void testBadYear() {
 		String args[] = {"-fr", "-map", "blabla_-42_10_1_bla_bla", "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -222,7 +222,7 @@ public class TestArguments {
 	@Test
 	public void testMissingFontName() {
 		String args[] = {"-fr", "-map", bmpFileName, "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100"};
 		biggest_states.Main.main(args);
@@ -233,7 +233,7 @@ public class TestArguments {
 	@Test
 	public void testInvalidDirectoryName() {
 		String args[] = {"-fr", "-map", bmpFileName, "-out", pngFileName,
-				"-img", waitingImage, "-game", "bad",
+				"-img", waitingImage, "-gameDir", "bad",
 				"-mod", modDirectory,
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
@@ -244,7 +244,7 @@ public class TestArguments {
 	@Test
 	public void testInvalidDirectoryName2() {
 		String args[] = {"-fr", "-map", bmpFileName, "-out", pngFileName,
-				"-img", waitingImage, "-game", gameDirectory,
+				"-img", waitingImage, "-gameDir", gameDirectory,
 				"-mod", "bad",
 				"-sta", "10", "-size", "100", "-pol", "Serif"};
 		biggest_states.Main.main(args);
