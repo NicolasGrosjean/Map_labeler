@@ -11,9 +11,6 @@ import javax.swing.JProgressBar;
 
 import textWriting.DateWriting;
 
-/* TODO
- * - Traduction de la date
- */
 /* MESURE DU TEMPS
  * long begin = System.currentTimeMillis();
  * CODE

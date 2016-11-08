@@ -55,33 +55,63 @@ public class DateWriting {
 	}
 
 	private static String monthToString(int month, AbstractText text) {
-		switch (month) {
+		if (text.isFrench()) {
+			switch (month) {
+				case 1 :
+					return "Janvier";
+				case 2 :
+					return "Février";
+				case 3 :
+					return "Mars";
+				case 4 :
+					return "Avril";
+				case 5 :
+					return "Mai";
+				case 6 :
+					return "Juin";
+				case 7 :
+					return "Juillet";
+				case 8 :
+					return "Août";
+				case 9 :
+					return "Septembre";
+				case 10 :
+					return "Octobre";
+				case 11 :
+					return "Novembre";
+				case 12 :
+					return "Décembre";
+			}
+			throw new IllegalArgumentException(text.invalidMonth());
+		} else {
+			switch (month) {
 			case 1 :
-				return "Janvier";
+				return "January";
 			case 2 :
-				return "Février";
+				return "February";
 			case 3 :
-				return "Mars";
+				return "March";
 			case 4 :
-				return "Avril";
+				return "April";
 			case 5 :
 				return "May";
 			case 6 :
-				return "Juin";
+				return "June";
 			case 7 :
-				return "Juillet";
+				return "July";
 			case 8 :
-				return "Août";
+				return "August";
 			case 9 :
-				return "Septembre";
+				return "September";
 			case 10 :
-				return "Octobre";
+				return "October";
 			case 11 :
-				return "Novembre";
+				return "November";
 			case 12 :
-				return "Décembre";
+				return "December";
 		}
 		throw new IllegalArgumentException(text.invalidMonth());
+		}
 	}
 
 	private static String numberToString(int number) {
