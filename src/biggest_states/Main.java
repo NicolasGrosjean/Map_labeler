@@ -13,7 +13,6 @@ import textWriting.DateWriting;
 
 /* TODO
  * - Traduction de la date
- * - Traduction dans le landed title
  */
 /* MESURE DU TEMPS
  * long begin = System.currentTimeMillis();
@@ -87,7 +86,7 @@ public class Main {
 					mainArgs.isHarmonize(), mainArgs.getMaxTextSize(),
 					mainArgs.isProportional(), mainArgs.isLeftDate(),
 					mainArgs.getGameFiles(), mainArgs.getFontName(),
-					mainArgs.getMapColors());
+					mainArgs.getMapColors(), mainArgs.getOverrideFileName());
 		} catch (IOException e) {
 			System.out.println(mainArgs.getText().fileNotFound(
 					mainArgs.getMapFileName()));

@@ -37,6 +37,7 @@ public class MainArguments {
 	private int maxTextSize = Integer.MAX_VALUE;
 	private boolean proportional = true; // if true -> proportional to map size
 	private Ck2Rank rank = null;
+	private String overrideFileName = null;
 	/* States text color (if true black and white -> harmonized
 	 * else it is the opposite color of the state -> multicolor) */
 	private boolean harmonize = true;
@@ -77,6 +78,12 @@ public class MainArguments {
 				i++;
 				if (i < args.length) {
 					imageFileName = args[i];
+				}
+				break;
+			case "-ov" :
+				i++;
+				if (i < args.length) {
+					overrideFileName = args[i];
 				}
 				break;
 			case "-rank" :
@@ -257,6 +264,10 @@ public class MainArguments {
 
 	public int getMaxTextSize() {
 		return maxTextSize;
+	}
+
+	public String getOverrideFileName() {
+		return overrideFileName;
 	}
 
 	public boolean isProportional() {

@@ -20,6 +20,7 @@ import javax.swing.JProgressBar;
 
 import colors.MapColors;
 import stateNames.GameFiles;
+import stateNames.OverrideNames;
 import textWriting.BlockCutting;
 import textWriting.Line;
 import textWriting.Writing;
@@ -39,6 +40,7 @@ public class Biggest_Pixel {
 	private GameFiles gameFiles;
 	private String fontName;
 	private MapColors mapColors;
+	private OverrideNames overrideNames;
 
 	private static int MIN_TEST_SIZE = 15;
 	
@@ -46,8 +48,8 @@ public class Biggest_Pixel {
 			JProgressBar bar, AbstractText text, int nbStates,
 			boolean allStates, String date, boolean harmonize,
 			int maxTextSize, boolean proportional, boolean leftDate,
-			GameFiles gameFiles, String fontName, MapColors mapColors)
-					throws IOException {
+			GameFiles gameFiles, String fontName, MapColors mapColors,
+			String overrideFileName) throws IOException {
 		this.bar = bar;
 		this.map = ImageIO.read(mapFile);
 		this.newMapFile = newMapFile;
@@ -66,6 +68,9 @@ public class Biggest_Pixel {
 		this.gameFiles = gameFiles;
 		this.fontName = fontName;
 		this.mapColors = mapColors;
+		if (overrideFileName != null) {
+			this.overrideNames = new OverrideNames(overrideFileName, text);
+		}
 		// To simplify we measure progression by line
 		bar.setMaximum(4 * map.getHeight());
 		bar.setMinimum(0);
@@ -140,7 +145,12 @@ public class Biggest_Pixel {
 				displayedStates++;
 				bar.setValue(2 * map.getHeight() +
 						displayedStates * map.getHeight() / stateToDisplay.size());
-				String stateName = gameFiles.getStateName(s.getRGB());
+				String stateName = null;
+				if ((overrideNames != null) && (overrideNames.contains(s.getRGB()))) {
+					stateName = overrideNames.get(s.getRGB());
+				} else {
+					stateName = gameFiles.getStateName(s.getRGB());
+				}
 				if (stateName != null) {
 					// Loads lines for this state
 					LinkedList<Line> state = h.get(s.getRGB());

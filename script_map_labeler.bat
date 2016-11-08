@@ -69,6 +69,9 @@ set dateAn="-yearOnly"
 ::set rank="duke"
 ::set rank="king"
 set rank="emperor"
+
+:: Override the names in the map. Put a CSV file with R;G;B;NameToDisplay
+:: set override="overrideFile.csv"
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :::::::::::: END JAVA SOFTWARE VARIABLES TO CHANGE IF NEEDED :::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -76,7 +79,7 @@ set rank="emperor"
 :: software execution
 java -jar Redacteur_etats_carte.jar %langue% -map %carte% -out %out% -img %illustration% ^
  %game% -gameDir %gameDir% -mod %mod1% %mod2% %mod3% -sta %nbEtats% -pol %police% %max% ^
- %multicolor% %dateDroite% %dateAn% %dateText% -rank %rank%
+ %multicolor% %dateDroite% %dateAn% %dateText% -rank %rank% -ov %override%
  
 :: command to pause in order to not close the console at the end
 :: (useful to see errors)

@@ -69,13 +69,16 @@ set dateAn="-yearOnly"
 ::set rank="duke"
 ::set rank="king"
 set rank="emperor"
+
+:: Remplace les noms sur la carte. Mettre un nom de fichier CSV contenant R;G;B;NomAAfficher
+:: set override="overrideFile.csv"
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :::::::::: FIN VARIABLES DU PROGRAMME JAVA A MODIFIER SI BESOIN ::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: commande du programme
 java -jar Redacteur_etats_carte.jar %langue% -map %carte% -out %out% -img %illustration% ^
  %game% -gameDir %gameDir% -mod %mod1% %mod2% %mod3% -sta %nbEtats% -pol %police% %max% ^
- %multicolor% %dateDroite% %dateAn% %dateText% -rank %rank%
+ %multicolor% %dateDroite% %dateAn% %dateText% -rank %rank% -ov %override%
  
 :: commande pour mettre en pause pour que la console ne se ferme pas à 
 :: la fin de de l'exécution. (utile pour voir les erreurs)
