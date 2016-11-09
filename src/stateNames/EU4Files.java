@@ -63,7 +63,7 @@ public class EU4Files extends GameFiles {
 		// Final storage of the useful information
 		countries = new EU4Countries(countryFileNames);
 		tags = new EU4Tags(tagFileNames);
-		localisation = new EU4Localisation(localisationFileNames);
+		localisation = new EU4Localisation(localisationFileNames, text);
 	}
 
 	/**
